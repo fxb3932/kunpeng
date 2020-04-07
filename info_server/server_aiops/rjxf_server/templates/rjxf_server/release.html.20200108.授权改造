@@ -1,0 +1,722 @@
+<!-- 20191107 准备更新选项卡点击变色 -->
+<!-- 20191028 准备更新安装说明选项卡 -->
+
+{% extends "rjxf_server/base.html" %}
+{% block content %}
+
+
+    <form class="layui-form" lay-filter="example">
+        <div class="layui-row">
+            <div class="layui-col-xs4">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">版本号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" placeholder="{{ rjxf_id }}" disabled>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">计划下发</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" placeholder="{{ date }}" disabled>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">版本类型</label>
+                    <div class="layui-input-block">
+                        {% if rjxf_type == '0' %}
+                            <input type="radio" name="rjxf_type" value="0" title="普通版本" checked="">
+                            <input type="radio" name="rjxf_type" value="1" title="紧急版本" disabled>
+                        {% elif rjxf_type == '1' %}
+                            <input type="radio" name="rjxf_type" value="0" title="普通版本" disabled>
+                            <input type="radio" name="rjxf_type" value="1" title="紧急版本" checked="">
+                        {% endif %}
+
+                        {#                    <input type="radio" name="rjxf_type" value="禁" title="禁用" disabled="">#}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">版本包大小</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" placeholder="{{ file_size }}" disabled>
+                    </div>
+                </div>
+                {#                <div class="layui-form-item">#}
+                {#                    <label class="layui-form-label">复核人</label>#}
+                {#                    <div class="layui-input-inline">#}
+                {#                        <input type="text" class="layui-input" placeholder="费学彬" disabled>#}
+                {#                    </div>#}
+                {#                </div>#}
+                <div class="layui-form-item">
+                    <label class="layui-form-label">云计算复核人</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="rjxf_chk_username" lay-verify="input" autocomplete="off"
+                               placeholder="请输入中文名称"
+                               class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">复核人密码</label>
+                    <div class="layui-input-inline">
+                        <input id="input_chk_passwd" type="password" name="rjxf_chk_password" lay-verify="input"
+                               placeholder="请输入密码"
+                               autocomplete="off"
+                               class="layui-input" lay-filter="input_passwd">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">特殊步骤</label>
+                    <div class="layui-input-inline">
+                        <select name="step_stat" lay-verify="required" lay-filter="select_filter2">
+                            <option value="0">未确认</option>
+                            <option value="1">存在特殊操作</option>
+                            <option value="2">无特殊操作</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">下发情况</label>
+                    <div class="layui-input-inline">
+                        <select name="acct_type" lay-verify="required" lay-filter="select_filter">
+                            <option value="0">未开始</option>
+                            <option value="1">部份完成</option>
+                            <option value="2">全部完成</option>
+                            <option value="3">下发失败</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-col-xs8">
+                <div class="layui-form-item">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">版本说明</label>
+                        <div class="layui-input-block">
+                            <textarea class="layui-textarea" disabled>{{ rjxf_txt }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layui-tab layui-tab-card">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">安装说明</li>
+                        {% for line in list_sub_dir %}
+                            <li>{{ line.text }}</li>
+                        {% endfor %}
+                    </ul>
+                    {#  <div class="layui-tab-content" style="height: 100px;">#}
+                    <div class="layui-tab-content">
+                        <div class="layui-tab-item layui-show">
+                            {% autoescape off %}
+                                {{ readme_buff }}
+                            {% endautoescape %}
+                        </div>
+                        {% for line in list_sub_dir %}
+                            <div class="layui-tab-item">
+                                {% autoescape off %}
+                                    {{ line.id }}
+                                {% endautoescape %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {#                <div id="tabs-file" style="width: 100%;"></div>#}
+                {#                <div id="selected-tab-file" style="padding: 10px 0px">#}
+                {#                            {% autoescape off %}#}
+                {#                            {{ readme_buff }}#}
+                {#                            {% endautoescape %}#}
+                {#                </div>#}
+
+                {#                <script type="text/javascript">#}
+                {#                    function get_rjxf_file_info(_rjxf_id) {#}
+                {#                        console.log('get_rjxf_file_info _rjxf_id = ' + _rjxf_id);#}
+                {#                        $.post("/rjxf_server/get_rjxf_file_info/",#}
+                {#                            {_rjxf_id: _rjxf_id},#}
+                {#                            function (data, status) {#}
+                {#                                console.log("Data: " + data + "\nStatus: " + status);#}
+                {#                                console.log(data);#}
+                {#                                sInfo = data.rjxf_file_list;#}
+                {#                                console.log(sInfo);#}
+                {#                                $(function () {#}
+                {#                                    $('#tabs-file').w2tabs({#}
+                {#                                        name: 'tabs-file',#}
+                {#                                        active: 'readme_info',#}
+                {#                                        tabs: sInfo,#}
+                {#                                        onClick: function (event) {#}
+                {##}
+                {#                                            $('#selected-tab-file').html(event.target);#}
+                {#                                        }#}
+                {#                                    });#}
+                {#                                });#}
+                {#                            }#}
+                {#                        );#}
+                {##}
+                {#                    }#}
+                {#                    get_rjxf_file_info('{{ rjxf_id }}');#}
+                {#                </script>#}
+
+
+            </div>
+
+
+        </div>
+    </form>
+
+    <fieldset class="layui-elem-field layui-field-title site-title">
+        <legend><a name="default">下发范围</a></legend>
+    </fieldset>
+    <!-- 下发进度条 -->
+    <div>
+        <!--  该进度条存在BUG 页面跳动 -->
+        <div class="layui-progress layui-progress-big" lay-showpercent="true" lay-filter="demo">
+            <div class="layui-progress-bar layui-bg-red" lay-percent="0%"></div>
+        </div>
+    </div>
+    </div>
+
+    <table class="layui-hide" id="table_file" lay-filter="lay_table_file"></table>
+
+    <script type="text/html" id="toolbar_table_file">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+            <button class="layui-btn layui-btn-sm" lay-event="runBatResp">查看下发结果</button>
+            {% for line in list_sub_dir %}
+                {% if line.shell_rjxf_stat == True %}
+                    <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="runBatXf-{{ line.name }}">
+                        执行[{{ line.name }}]
+                    </button>
+                {% else %}
+                    <button class="layui-btn layui-btn-sm layui-btn-disabled">执行[{{ line.name }}]</button>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </script>
+
+
+    <script type="text/html" id="bar_table_file">
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="run">下发</a>
+        <a class="layui-btn layui-btn-xs" lay-event="show">查看</a>
+
+    </script>
+
+
+
+
+    <!--
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>结果查看</legend>
+    </fieldset>
+
+    <div class="layui-tab layui-tab-card">
+        <ul class="layui-tab-title">
+{#            <li class="layui-this">网站设置</li>#}
+            {% for line in list_resp %}
+            <li>{{ line.name }}</li>
+            {% endfor %}
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+{#            <div class="layui-tab-item layui-show">默认宽度是相对于父元素100%适应的，你也可以固定宽度。</div>#}
+            <div class="layui-tab-item">2</div>
+            <div class="layui-tab-item">3</div>
+            <div class="layui-tab-item">4</div>
+            <div class="layui-tab-item">5</div>
+            <div class="layui-tab-item">6</div>
+        </div>
+    </div>
+    -->
+
+
+
+
+
+
+
+
+    {#    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">#}
+    {#        <legend>结果</legend>#}
+    {#    </fieldset>#}
+
+    <div class="layui-row">
+        <div class="layui-col-xs6">
+            {% for line in list_sub_dir %}
+                <a>-----{{ line.name }} 脚本-----</a>
+                <div class="demoTable">
+                    <div id="{{ line.name }}" style="width: 100%;" class="layui-btn"></div>
+
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#{{ line.name }}').w2tabs({
+                            name: '{{ line.name }}',
+                            active: '点击便签查看输出结果',
+                            tabs: [
+                                {id: '点击便签查看输出结果', text: '未查询'}
+                            ],
+                            onClick: function (event) {
+
+                                $('#selected-tab1').html(event.target);
+                            }
+                        });
+                    });
+                </script>
+            {% endfor %}
+        </div>
+        <div class="layui-col-xs3">
+            <fieldset class="layui-elem-field">
+                <legend>执行结果第一页</legend>
+                <div class="layui-field-box">
+                    <div id="selected-tab1" style="padding: 10px 0px; height: 800px">点击便签查看输出结果</div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="layui-col-xs3">
+            <fieldset class="layui-elem-field">
+                <legend>执行结果第二页</legend>
+                <div class="layui-field-box">
+                    <div id="selected-tab2" style="padding: 10px 0px; height: 800px">点击便签查看输出结果</div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+
+    {% comment %}{% verbatim %}
+
+<script type="text/html" id="rjxf_stat">
+    {{# var data = d.rjxf_stat ; }}
+    {{# if(data == '1'){ console.log(data) }}
+    <span style="background-color: #69f590;">已下发</span>
+    {{#  } else if(data == '0'){ }}
+    <span style="background-color: #f5df50">未下发</span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }}</span>
+    {{#  } }}
+</script>
+{% endverbatim %}{% endcomment %}
+
+
+
+    <script>
+
+
+        layui.use(['layer', 'table', 'element', 'laypage', 'form'], function () {
+            var $ = layui.jquery
+                , layer = layui.layer
+                , table = layui.table
+                , element = layui.element
+                , laypage = layui.laypage
+                , form = layui.form;
+
+            chk_passwd = '';
+
+            form.val('example', {
+                "acct_type": "{{ rjxf_stat}}" // "name": "value"
+                , "step_stat": "{{ chk_stat}}"
+            });
+
+            form.on('select(select_filter)', function (data) {
+                console.log(data.value); //得到select原始DOM对象
+                post_data = {
+                    rjxf_id: '{{ rjxf_id }}'
+                    , rjxf_stat: data.value
+                };
+                readme_buff = '{{ readme_buff }}';
+                // console.log(readme_buff);
+                check_txt_list = ['hosts', 'services', 'ofep'];
+                check_flag = 0;
+                check_data = [];
+                for (i = 0; i < check_txt_list.length; i++) {
+                    console.log(check_txt_list[i]);
+                    if (readme_buff.indexOf(check_txt_list[i]) !== -1) {
+                        check_flag = 1;
+                        check_data.push(check_txt_list[i]);
+                    }
+                }
+                console.log(check_data);
+                if (check_flag !== 0) {
+                    console.log('找到关键字');
+                    layer.confirm('该版本安装说明中存在更新 [ ' + check_data + ' ] 特殊步骤操作，请确认是否已手工完成！！！', {
+                        btn: ['确认', '取消'] //按钮
+                    }, function () {
+                        $.post("post_xf_stat/",
+                            //JSON.stringify(post_data),
+                            post_data,
+                            function (data, status) {
+                                console.log("Data: " + data + "\nStatus: " + status);
+                                console.log(data);
+                                layer.msg('更新成功');
+                            }
+                        );
+                    }, function () {
+                        layer.msg('更新已取消');
+                    });
+                } else {
+                    $.post("post_xf_stat/",
+                        //JSON.stringify(post_data),
+                        post_data,
+                        function (data, status) {
+                            console.log("Data: " + data + "\nStatus: " + status);
+                            console.log(data);
+                            layer.msg('更新成功');
+                        }
+                    );
+                }
+            });
+
+            form.on('select(select_filter2)', function (data) {
+                console.log(data.value); //得到select原始DOM对象
+                post_data = {
+                    rjxf_id: '{{ rjxf_id }}'
+                    , chk_stat: data.value
+                };
+
+                console.log(post_data);
+                $.post("post_chk_stat/",
+                    //JSON.stringify(post_data),
+                    post_data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        console.log(data);
+                        layer.msg('版本状态更新成功');
+                    }
+                );
+            });
+
+            chk_passwd_stat = -1;
+            $(function () {
+                //输入框的值改变时触发
+                $("#input_chk_passwd").on("change", function (e) {
+                    //获取input输入的值
+                    //console.log(e.delegateTarget.value);
+                    layer.prompt({title: '请输入您的中文名，并确认', formType: 2}, function (name, index) {
+                        layer.close(index);
+                        layer.prompt({title: '请输入授权密码，并确认', formType: 1}, function (pass, index) {
+                            layer.close(index);
+                            layer.msg('演示完毕！您的口令：' + name + '<br>您最后写下了：' + pass);
+                        });
+                    });
+                    console.log(e);
+                    chk_passwd = e.delegateTarget.value;
+                    post_data = {
+                        rjxf_id: '{{ rjxf_id }}'
+                        , chk_passwd: chk_passwd
+                    };
+
+                    console.log(post_data);
+                    $.post("post_chk_passwd/",
+                        //JSON.stringify(post_data),
+                        post_data,
+                        function (data, status) {
+                            console.log("Data: " + data + "\nStatus: " + status);
+                            console.log(data);
+                            chk_passwd_stat = data.code;
+                            layer.msg(data.msg);
+                        }
+                    );
+                });
+            });
+
+
+            /*
+                    let table_file_cols = [[ //标题栏
+                        {type: 'checkbox', fixed: 'left'}
+                        , {field: 'id', title: 'id', width: 100}
+                        , {field: 'sub_id', title: 'sub_id', width: 200}
+                        , {field: 'ip', title: 'ip', width: 150}
+                        , {field: 'title', title: 'title', width: 800}
+
+
+
+
+
+
+
+
+            {#, {field: 'stat', fixed: 'right', title: '下发状态', width: 165, align:'center'}#}
+            , {fixed: 'right', title: '操作', width: 165, align:'center', toolbar: '#bar_table_file'}
+        ]];
+        */
+
+            let table_file_cols = [[ //标题栏
+                {type: 'checkbox', fixed: 'left'}
+                , {field: 'id', title: 'id'}
+                , {field: 'title', title: 'title'}
+                , {field: 'ip', title: 'ip'}
+                , {field: 'sub_id', title: 'sub_id'}
+                {#, {field: 'rjxf_stat', fixed: 'right', title: '下发状态', align:'center', templet: '#rjxf_stat', sort: true}#}
+                {#, {fixed: 'right', title: '操作', align:'center', toolbar: '#bar_table_file'}#}
+            ]];
+            let file_data = [];
+
+
+            function table_show() {
+                table.render({
+                    elem: '#table_file'
+                    , url: "post_rjxffw_table_data?rjxf_id={{ rjxf_id }}"
+                    , toolbar: '#toolbar_table_file'
+                    //, initSort: {field: 'rjxf_stat', type: 'desc'}
+                    , id: 'testReload' //ID用于表格重载
+                    , width: 1100
+                    //, height: 540
+                    , height: 300
+                    , limit: 1000
+                    , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                    , page: {
+                        layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                        , curr: 1 //reload 后从第1页开始显示
+                        , groups: 1 //只显示 1 个连续页码
+                        , first: false //不显示首页
+                        , last: false //不显示尾页
+                    }
+                    , cols: table_file_cols
+                });
+            }
+
+            table_show();
+
+            function showResp(checkStatus) {
+                var data = checkStatus.data;
+                // 每次检查结果时重载全量表格
+                // table_show();
+
+                // console.log('{{ list_sub_dir }}');
+                list_sub_dir = [];
+                {% for line in list_sub_dir %}
+                    list_sub_dir.push('{{ line.name }}');
+                {% endfor %}
+                console.log(list_sub_dir);
+                post_data = {
+                    rjxf_id: '{{ rjxf_id }}'
+                    , data: JSON.stringify(data)
+                    , list_sub_dir: JSON.stringify(list_sub_dir)
+                };
+                index = layer.load(1);
+                $.post("post_resp/",
+                    //JSON.stringify(post_data),
+                    post_data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        console.log(data);
+                        layer.close(index);
+                        {#layer.alert(JSON.stringify(data));#}
+                        {#layer.alert(JSON.stringify(data.msg));#}
+
+                        {% for line in list_sub_dir %}
+                            // console.log(data.list_resp_{{ line.name }});
+                            TableData_{{ line.name }} = data.table_data_{{ line.name }};
+                            // console.log(TableData_{{ line.name }});
+                            $().w2destroy('{{ line.name }}');
+                            $('#{{ line.name }}').w2tabs({
+                                name: '{{ line.name }}',
+                                active: '',
+                                tabs: data.list_resp_{{ line.name }},
+                                tooltip: 'top',
+                                onClick: function (event) {
+                                    var tab_arr = event.target.split('<br>');
+                                    var tab_resp1 = [];
+
+                                    // 2019-11-07 实现点击变色效果
+                                    event.tab.style = "background-color: #ff9900";
+                                    this.refresh(event.target);
+
+                                    for (tab_i = 0; tab_i < 40; tab_i++) {
+                                        console.log(tab_arr[0]);
+                                        tab_resp1.push(tab_arr[0]);
+                                        tab_arr.splice(0, 1);
+                                    }
+                                    tab_txt_1 = tab_resp1.join('<br>');
+                                    tab_txt_2 = tab_arr.join('<br>');
+                                    $('#selected-tab1').html(tab_txt_1);
+                                    $('#selected-tab2').html(tab_txt_2);
+                                    console.log(event.target);  //id文本
+                                    console.log(event.tab.text);
+                                    console.log(TableData_{{ line.name }});
+                                    for (i = 0; i < TableData_{{ line.name }}.length; i++) {
+                                        if (event.target === TableData_{{ line.name }}[i].index) {
+                                            GetTableData = TableData_{{ line.name }}[i].data;
+                                        }
+
+                                    }
+                                    {#GetTableData = [{'ip': 'aaa'}];#}
+
+                                    table.reload('testReload', {
+                                        url: ''
+                                        , data: GetTableData
+                                    });
+
+                                }
+                            });
+                        {% endfor %}
+                        layer.msg('统计结果已经下方标签显示：）');
+                    }
+                );
+            }
+
+            {% for line in list_sub_dir %}
+                var TableData_{{ line.name }} = [];
+            {% endfor %}
+
+
+
+            var list_sub_dir = new Array();
+            var show_check = false;
+            //头工具栏事件
+            table.on('toolbar(lay_table_file)', function (obj) {
+                console.log(obj);
+                var checkStatus = table.checkStatus(obj.config.id);
+                var data = checkStatus.data;
+                if (data.length === 0) {
+                    layer.msg('请勾选范围后操作：）');
+                    return false;
+                }
+                console.log(show_check);
+                console.log(checkStatus);
+                if (show_check === false) {
+                    if (checkStatus.isAll === false) {
+                        layer.msg('第一次查询必需全选：）');
+                        return false;
+                    }
+                    checkStatus_def = checkStatus;
+
+                }
+
+
+                // 批量下发
+                switch (obj.event) {
+                    {% for line in list_sub_dir %}
+                        case 'runBatXf-{{ line.name }}':
+
+                            //layer.alert(JSON.stringify(data));
+
+                        {#console.log(data);#}
+                            // show_check 为确认下发操作人员是否先查看过下发结果，在查看时为更新为 true
+                            if (show_check == false) {
+                                layer.open({
+                                    type: 1,
+                                    title: false, //不显示标题栏
+                                    closeBtn: false,
+                                    area: '900px;',
+                                    shade: 0.8,
+                                    id: 'LAY_layuipro', //设定一个id，防止重复弹出
+                                    btn: ['好的'],
+                                    btnAlign: 'c',
+                                    moveType: 1, //拖拽模式，0或者1
+                                    content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' +
+                                        '<span style="color:#00D5FF;"><strong>请预先查看下发结果，并仔细确认下发结果中各脚本初始状态是否正确：</strong></span>' +
+                                        '<br><br><span style="color:#FFE500;"><strong>1、待下发状态：</strong></span>cat: *add*.log: <span style="color:#E53333;"><strong>No such file or directory</strong></span>' +
+                                        '<br><br><span style="color:#FFE500;"><strong>2、鲲鹏agent未启动：</strong></span>zabbix_get [*]: Get value error: cannot connect to [[*.*.*.*]:*]: [111] <span style="color:#E53333;"><strong>Connection refused</strong></span>' +
+                                        '<br>处理操作：登陆该IP的应用用户，执行 <span style="color:#FFE500;"><strong>run/myview_agent_*/sbin/run.sh , ps -fu `whoami`</strong></span> 查看 myview 进程是否启动' +
+                                        '<br><br><span style="color:#FFE500;"><strong>3、无需下发：</strong></span>系统会按下发规则自动决定是否需要进行下发，请配合安装说明进行查看，<span style="color:#E53333;"><strong>确认待下发范围是否复核预期！！！</strong></span>' +
+                                        '</div>',
+                                    success: function (layero) {
+                                        var btn = layero.find('.layui-layer-btn');
+                                        btn.find('.layui-layer-btn0').attr({
+                                            //href: '/rjxf_server/show', target: '_blank'
+                                            //href: '/rjxf_server/show'
+                                        });
+                                    }
+                                });
+                            } else if (chk_passwd_stat !== 0) {
+                                layer.msg('云计算未复核成功，请重试！');
+                                return false;
+                            } else {
+                                layer.confirm('请确认是否执行 ' + data.length + ' 家合作行 [ {{ line.name }} ] 下发：', {
+                                    btn: ['确认', '取消'] //按钮
+                                }, function () {
+
+
+                                    var index = layer.load(1);
+                                    console.log('length = ' + data.length);
+                                    count = 0;
+
+                                    all_length = data.length;
+                                    for (i = 0; i < data.length; i++) {
+                                        {#console.log(data[i]);#}
+                                        post_data = {
+                                            rjxf_id: '{{ rjxf_id }}'
+                                            , rjxf_dir: '{{ line.name }}'
+                                            , data: JSON.stringify([data[i]])
+                                        };
+
+
+                                        $.post("post_xf_command/",
+                                            //JSON.stringify(post_data),
+                                            post_data,
+                                            function (data, status) {
+                                                console.log("Data: " + data + "\nStatus: " + status);
+                                                console.log(data);
+                                                //layer.close(index);
+                                                //layer.alert(JSON.stringify(data));
+                                                count++;
+                                                console.log('count = ' + count);
+                                                element.progress('demo', Math.round(count / all_length * 100) + '%');
+                                                //element.progress('demo', count + ' / ' + all_length);
+                                                if (count === all_length) {
+                                                    //table_show();
+                                                    layer.close(index);
+                                                    layer.msg('执行完成：）');
+                                                    //showResp(checkStatus);
+                                                    showResp(checkStatus_def);
+
+                                                }
+                                            }
+                                        );
+                                    }
+                                }, function () {
+                                    layer.msg('操作已取消');
+                                });
+                            }
+                            break;
+                    {% endfor %}
+                    case 'getCheckLength':
+                        var data = checkStatus.data;
+                        layer.msg('选中了：' + data.length + ' 个');
+                        break;
+                    case 'runBatResp':
+                    {#layer.msg(checkStatus.isAll ? '全选' : '未全选');#}
+                        // showResp(checkStatus);
+                        // 每次检查结果时重载全量表格
+                        table_show();
+                        showResp(checkStatus_def);
+                        show_check = true;
+                        break;
+                }
+            });
+
+            //监听行工具事件
+            table.on('tool(lay_table_file)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                switch (obj.event) {
+                    case 'run':
+                        layer.msg('run');
+                        console.log(data);
+
+                        post_data = {
+                            rjxf_id: '{{ rjxf_id }}'
+                            , data: JSON.stringify([data])
+                        };
+
+                        var index = layer.load(0);
+                        $.post("post_xf_command/",
+                            //JSON.stringify(post_data),
+                            post_data,
+                            function (data, status) {
+                                console.log("Data: " + data + "\nStatus: " + status);
+                                console.log(data);
+                                layer.close(index);
+                                layer.alert(data.msg);
+                            }
+                        );
+                        break;
+                    case 'show':
+                        layer.msg('show');
+                        break;
+                }
+            });
+
+
+        });
+
+
+    </script>
+{% endblock %}

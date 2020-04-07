@@ -1,0 +1,2448 @@
+{
+  "name": "知识库",
+  "name_short": "知识库",
+  "count_sheet": 1,
+  "tags": [],
+  "connections": [
+    {
+      "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba",
+      "name": "示例数据",
+      "path": "data/示例数据.xlsx",
+      "timestamp": 1580870178,
+      "type": "file",
+      "type_sub": "xlsx",
+      "structures": [
+        {
+          "name": "实时进出监狱情况",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_A1",
+              "name": "A1",
+              "alias": "监狱名称",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_B1",
+              "name": "B1",
+              "alias": "警号",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_C1",
+              "name": "C1",
+              "alias": "姓名",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_D1",
+              "name": "D1",
+              "alias": "时间",
+              "random": 0,
+              "type": "date",
+              "children": [
+                {
+                  "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_D1%23%23day",
+                  "name": "D1##day",
+                  "alias": "日",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_D1%23%23month",
+                  "name": "D1##month",
+                  "alias": "月",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_D1%23%23quarter",
+                  "name": "D1##quarter",
+                  "alias": "季度",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_D1%23%23year",
+                  "name": "D1##year",
+                  "alias": "年",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_D1%23%23date",
+                  "name": "D1##date",
+                  "alias": "日期",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E5%AE%9E%E6%97%B6%E8%BF%9B%E5%87%BA%E7%9B%91%E7%8B%B1%E6%83%85%E5%86%B5_E1",
+              "name": "E1",
+              "alias": "进出类型",
+              "random": 0,
+              "type": "string",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "狱警学历分析",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E5%AD%A6%E5%8E%86%E5%88%86%E6%9E%90_A1",
+              "name": "A1",
+              "alias": "类型",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E5%AD%A6%E5%8E%86%E5%88%86%E6%9E%90_B1",
+              "name": "B1",
+              "alias": "人数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "狱警性别分析",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%80%A7%E5%88%AB%E5%88%86%E6%9E%90_A1",
+              "name": "A1",
+              "alias": "性别",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%80%A7%E5%88%AB%E5%88%86%E6%9E%90_B1",
+              "name": "B1",
+              "alias": "占比",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "狱警年龄分析",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E5%B9%B4%E9%BE%84%E5%88%86%E6%9E%90_A1",
+              "name": "A1",
+              "alias": "类型",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E5%B9%B4%E9%BE%84%E5%88%86%E6%9E%90_B1",
+              "name": "B1",
+              "alias": "人数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "狱警招录计划",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%8B%9B%E5%BD%95%E8%AE%A1%E5%88%92_A1",
+              "name": "A1",
+              "alias": "监狱名称",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%8B%9B%E5%BD%95%E8%AE%A1%E5%88%92_B1",
+              "name": "B1",
+              "alias": "招录人数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%8B%9B%E5%BD%95%E8%AE%A1%E5%88%92_C1",
+              "name": "C1",
+              "alias": "男性人数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%8B%9B%E5%BD%95%E8%AE%A1%E5%88%92_D1",
+              "name": "D1",
+              "alias": "女性人数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%8B%9B%E5%BD%95%E8%AE%A1%E5%88%92_E1",
+              "name": "E1",
+              "alias": "博士生",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%8B%9B%E5%BD%95%E8%AE%A1%E5%88%92_F1",
+              "name": "F1",
+              "alias": "硕士",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%8B%9B%E5%BD%95%E8%AE%A1%E5%88%92_G1",
+              "name": "G1",
+              "alias": "本科",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "狱警执法评估公正性",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%89%A7%E6%B3%95%E8%AF%84%E4%BC%B0%E5%85%AC%E6%AD%A3%E6%80%A7_A1",
+              "name": "A1",
+              "alias": "类型",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%89%A7%E6%B3%95%E8%AF%84%E4%BC%B0%E5%85%AC%E6%AD%A3%E6%80%A7_B1",
+              "name": "B1",
+              "alias": "各项得分",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%89%A7%E6%B3%95%E8%AF%84%E4%BC%B0%E5%85%AC%E6%AD%A3%E6%80%A7_C1",
+              "name": "C1",
+              "alias": "平均值",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "狱警执法评估时效性",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%89%A7%E6%B3%95%E8%AF%84%E4%BC%B0%E6%97%B6%E6%95%88%E6%80%A7_A1",
+              "name": "A1",
+              "alias": "类型",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E7%8B%B1%E8%AD%A6%E6%89%A7%E6%B3%95%E8%AF%84%E4%BC%B0%E6%97%B6%E6%95%88%E6%80%A7_B1",
+              "name": "B1",
+              "alias": "时效性",
+              "random": 0,
+              "postfix": "小时",
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "警务调度",
+          "dimensions": [
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E8%AD%A6%E5%8A%A1%E8%B0%83%E5%BA%A6_A1",
+              "name": "A1",
+              "alias": "总人数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "65ce01af-5c36-43eb-9908-f7287e6c07ba_%E8%AD%A6%E5%8A%A1%E8%B0%83%E5%BA%A6_B1",
+              "name": "B1",
+              "alias": "监区人数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        }
+      ],
+      "from": "THEME"
+    },
+    {
+      "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc",
+      "name": "search_problem_count",
+      "path": "http://163.1.6.40:19092/data_api/search_problem_count/",
+      "timestamp": 1583313211,
+      "type": "online",
+      "type_sub": "api",
+      "structures": [
+        {
+          "name": "统计数据",
+          "dimensions": [
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E6%80%BB%E9%97%AE%E9%A2%98%E6%95%B0",
+              "name": "总问题数",
+              "alias": "总问题数",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E7%9F%A5%E8%AF%86%E5%8D%A1%E7%89%87%E6%95%B0%E9%87%8F",
+              "name": "知识卡片数量",
+              "alias": "知识卡片数量",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E6%96%B9%E6%A1%88%E6%8F%90%E4%BE%9B%E7%8E%87",
+              "name": "方案提供率",
+              "alias": "方案提供率",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E8%AE%BF%E9%97%AE%E9%87%8F",
+              "name": "访问量",
+              "alias": "访问量",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E5%AE%A2%E6%9C%8D%E4%B8%93%E5%91%98%E6%83%85%E5%86%B5%E8%AF%B4%E6%98%8E",
+              "name": "客服专员情况说明",
+              "alias": "客服专员情况说明",
+              "random": 0,
+              "type": "string",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "渠道分类",
+          "dimensions": [
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E6%B8%A0%E9%81%93%E5%88%86%E7%B1%BB_id",
+              "name": "id",
+              "alias": "id",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E6%B8%A0%E9%81%93%E5%88%86%E7%B1%BB_code",
+              "name": "code",
+              "alias": "code",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E6%B8%A0%E9%81%93%E5%88%86%E7%B1%BB_name",
+              "name": "name",
+              "alias": "name",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E6%B8%A0%E9%81%93%E5%88%86%E7%B1%BB_sum",
+              "name": "sum",
+              "alias": "sum",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "类型分类",
+          "dimensions": [
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB_id",
+              "name": "id",
+              "alias": "id",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB_code",
+              "name": "code",
+              "alias": "code",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB_name",
+              "name": "name",
+              "alias": "name",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB_sum",
+              "name": "sum",
+              "alias": "sum",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "交易情况",
+          "dimensions": [
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_CreateTime",
+              "name": "CreateTime",
+              "alias": "CreateTime",
+              "random": 0,
+              "type": "string",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_count",
+              "name": "count",
+              "alias": "count",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "近期交易情况",
+          "dimensions": [
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_date",
+              "name": "date",
+              "alias": "date",
+              "random": 0,
+              "type": "date",
+              "children": [
+                {
+                  "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_date%23%23day",
+                  "name": "date##day",
+                  "alias": "日",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_date%23%23month",
+                  "name": "date##month",
+                  "alias": "月",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_date%23%23quarter",
+                  "name": "date##quarter",
+                  "alias": "季度",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_date%23%23year",
+                  "name": "date##year",
+                  "alias": "年",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                },
+                {
+                  "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_date%23%23date",
+                  "name": "date##date",
+                  "alias": "日期",
+                  "random": 0,
+                  "type": "string",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_%E5%BD%95%E5%85%A5%E9%87%8F",
+              "name": "录入量",
+              "alias": "录入量",
+              "random": 0,
+              "type": "number",
+              "children": []
+            },
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_%E8%AE%BF%E9%97%AE%E9%87%8F",
+              "name": "访问量",
+              "alias": "访问量",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        },
+        {
+          "name": "search_problem_count",
+          "dimensions": [
+            {
+              "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_search_problem_count_code",
+              "name": "code",
+              "alias": "code",
+              "random": 0,
+              "type": "number",
+              "children": []
+            }
+          ]
+        }
+      ],
+      "options": {
+        "headers": {}
+      },
+      "from": "CUSTOM"
+    }
+  ],
+  "new": false,
+  "sheets": [
+    {
+      "name": "仪表板 1",
+      "type": "dashboard",
+      "theme_path": "",
+      "canvas": {
+        "uid": "53cabb96-d8d7-4ac9-a627-5d86485b74f2",
+        "name": "组件",
+        "type": "component",
+        "options": {
+          "background-image": {
+            "value": "resources/resources",
+            "type": "file.image"
+          },
+          "animate-loop": {
+            "value": false,
+            "type": "boolean"
+          },
+          "background-color": {
+            "value": {
+              "angle": "0",
+              "colors": [
+                {
+                  "color": "rgba(22, 12, 99, 0.4725)",
+                  "position": 1
+                }
+              ]
+            },
+            "type": "color"
+          },
+          "background": {
+            "value": false,
+            "type": "boolean"
+          }
+        },
+        "widgets": [
+          {
+            "uid": "03400f84-03b0-4c06-8bf3-ac0108b53b62",
+            "name": "背景",
+            "type": "image",
+            "options": {
+              "width": {
+                "value": 1920,
+                "type": "number"
+              },
+              "height": {
+                "value": 1080,
+                "type": "number"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgba(18, 15, 104, 0.96)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "6397da67-31a3-46ad-ad49-0f495b125c35",
+            "name": "图片",
+            "type": "image",
+            "options": {
+              "left": {
+                "value": 1450,
+                "type": "number"
+              },
+              "top": {
+                "value": 715,
+                "type": "number"
+              },
+              "width": {
+                "value": 445,
+                "type": "number"
+              },
+              "height": {
+                "value": 340,
+                "type": "number"
+              },
+              "border": {
+                "value": false,
+                "type": "boolean"
+              },
+              "border-color": {
+                "value": "rgb(45, 34, 121)",
+                "type": "color"
+              },
+              "border-width": {
+                "value": 5,
+                "type": "number"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgba(57, 46, 122, 0.41)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "image": {
+                "value": "resources/bd6.png",
+                "type": "file.image"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "4ca32bf9-85e9-4359-9f07-136bfd5d8e54",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 1465,
+                "type": "number"
+              },
+              "top": {
+                "value": 730,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "类型分类",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "6b487fd4-04ef-4fff-91f7-5aa9d2fed883",
+            "name": "图片",
+            "type": "image",
+            "options": {
+              "left": {
+                "value": 1450,
+                "type": "number"
+              },
+              "top": {
+                "value": 375,
+                "type": "number"
+              },
+              "width": {
+                "value": 445,
+                "type": "number"
+              },
+              "height": {
+                "value": 319,
+                "type": "number"
+              },
+              "border": {
+                "value": false,
+                "type": "boolean"
+              },
+              "border-color": {
+                "value": "rgb(45, 34, 121)",
+                "type": "color"
+              },
+              "border-width": {
+                "value": 5,
+                "type": "number"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "image": {
+                "value": "resources/bd5.png",
+                "type": "file.image"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgba(57, 46, 122, 0.41)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "0a04d731-021d-41c9-9367-71bee9804244",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 1465,
+                "type": "number"
+              },
+              "top": {
+                "value": 390,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "渠道分类",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "1147b2ab-df6f-452d-975a-e3605e700914",
+            "name": "图片",
+            "type": "image",
+            "options": {
+              "left": {
+                "value": 1450,
+                "type": "number"
+              },
+              "top": {
+                "value": 105,
+                "type": "number"
+              },
+              "width": {
+                "value": 450,
+                "type": "number"
+              },
+              "height": {
+                "value": 251,
+                "type": "number"
+              },
+              "border": {
+                "value": false,
+                "type": "boolean"
+              },
+              "border-color": {
+                "value": "rgb(45, 34, 121)",
+                "type": "color"
+              },
+              "border-width": {
+                "value": 5,
+                "type": "number"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "image": {
+                "value": "resources/bd4.png",
+                "type": "file.image"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgba(57, 46, 122, 0.41)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "14d6a5da-3b7b-464b-bd8c-6890a2b69ee2",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 1465,
+                "type": "number"
+              },
+              "top": {
+                "value": 120,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "汇总数据",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "2bcd8c81-88de-4b64-abaf-bf3f6098e166",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 1465,
+                "type": "number"
+              },
+              "top": {
+                "value": 170,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "总问题数：",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "width": {
+                "value": 130,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "7b3c8bb4-ebc2-4e31-b4f0-24390db40ac9",
+            "name": "指标卡",
+            "type": "card",
+            "options": {
+              "axis-value": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E6%80%BB%E9%97%AE%E9%A2%98%E6%95%B0",
+                    "alias": "总问题数",
+                    "type": "number",
+                    "summary": "sum"
+                  },
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E8%AE%BF%E9%97%AE%E9%87%8F",
+                    "alias": "访问量",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "align": {
+                "value": "left",
+                "type": "align"
+              },
+              "left": {
+                "value": 1595,
+                "type": "number"
+              },
+              "top": {
+                "value": 160,
+                "type": "number"
+              },
+              "height": {
+                "value": 50,
+                "type": "number"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(241, 198, 28)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "font-size": {
+                "value": 40,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "b69d3207-336d-4b49-a3e4-1a6f8ddaff81",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 1465,
+                "type": "number"
+              },
+              "top": {
+                "value": "308",
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "方案提供率：",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "width": {
+                "value": 130,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "bedc2c62-83d1-4188-a14a-dcde1783ae9a",
+            "name": "百分比图",
+            "type": "progress",
+            "options": {
+              "axis-value": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E6%96%B9%E6%A1%88%E6%8F%90%E4%BE%9B%E7%8E%87",
+                    "alias": "方案提供率",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "shape": {
+                "value": "rect",
+                "type": "select"
+              },
+              "left": {
+                "value": 1581,
+                "type": "number"
+              },
+              "top": {
+                "value": 255,
+                "type": "number"
+              },
+              "shape-background": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(58, 48, 121)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "progress-color": {
+                "value": {
+                  "angle": "90",
+                  "colors": [
+                    {
+                      "color": "rgb(71, 250, 255)",
+                      "position": 0
+                    },
+                    {
+                      "color": "rgb(7, 198, 214)",
+                      "position": 100
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "width": {
+                "value": 300,
+                "type": "number"
+              },
+              "height": {
+                "value": 120,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": false,
+                "type": "boolean"
+              },
+              "font-size": {
+                "value": 25,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "285b7a59-40ec-4861-8829-10794d71a714",
+            "name": "图片",
+            "type": "image",
+            "options": {
+              "left": {
+                "value": 721,
+                "type": "number"
+              },
+              "top": {
+                "value": 375,
+                "type": "number"
+              },
+              "width": {
+                "value": 703,
+                "type": "number"
+              },
+              "height": {
+                "value": 324,
+                "type": "number"
+              },
+              "border": {
+                "value": false,
+                "type": "boolean"
+              },
+              "border-color": {
+                "value": "rgb(45, 34, 121)",
+                "type": "color"
+              },
+              "border-width": {
+                "value": 5,
+                "type": "number"
+              },
+              "image": {
+                "value": "resources/bd2.png",
+                "type": "file.image"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgba(57, 46, 122, 0.41)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "07af8485-7615-4033-8062-ccd68a7f2cba",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": "743",
+                "type": "number"
+              },
+              "top": {
+                "value": 405,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "今日知识库总访问量：",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "363bbbf0-01f9-4f88-9cef-b6e0d8414059",
+            "name": "环形图",
+            "type": "donut",
+            "options": {
+              "left": {
+                "value": 1467,
+                "type": "number"
+              },
+              "top": {
+                "value": 788,
+                "type": "number"
+              },
+              "shape-background": {
+                "value": "rgb(58, 48, 121)",
+                "type": "color"
+              },
+              "axis-category": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB_name",
+                    "alias": "name",
+                    "type": "string",
+                    "summary": ""
+                  }
+                ],
+                "type": "axis"
+              },
+              "axis-value": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%B1%BB%E5%9E%8B%E5%88%86%E7%B1%BB_sum",
+                    "alias": "sum",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "width": {
+                "value": 415,
+                "type": "number"
+              },
+              "height": {
+                "value": 235,
+                "type": "number"
+              },
+              "angle-start": {
+                "value": -60,
+                "type": "number"
+              },
+              "angle-end": {
+                "value": 300,
+                "type": "number"
+              },
+              "palette": {
+                "value": [
+                  {
+                    "angle": "0",
+                    "colors": [
+                      {
+                        "color": "rgb(24, 205, 222)",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  {
+                    "angle": "0",
+                    "colors": [
+                      {
+                        "color": "rgb(241, 205, 24)",
+                        "position": 1
+                      }
+                    ]
+                  }
+                ],
+                "type": "palette"
+              },
+              "label-font-size": {
+                "value": 16,
+                "type": "number"
+              },
+              "label-color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "ea35a145-c2dd-4ad7-8d07-b2c0d21c41b3",
+            "name": "环形图",
+            "type": "donut",
+            "options": {
+              "left": {
+                "value": 1468,
+                "type": "number"
+              },
+              "top": {
+                "value": 418,
+                "type": "number"
+              },
+              "shape-background": {
+                "value": "rgb(58, 48, 121)",
+                "type": "color"
+              },
+              "axis-category": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E6%B8%A0%E9%81%93%E5%88%86%E7%B1%BB_name",
+                    "alias": "name",
+                    "type": "string",
+                    "summary": ""
+                  }
+                ],
+                "type": "axis"
+              },
+              "axis-value": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E6%B8%A0%E9%81%93%E5%88%86%E7%B1%BB_sum",
+                    "alias": "sum",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "width": {
+                "value": 415,
+                "type": "number"
+              },
+              "height": {
+                "value": 235,
+                "type": "number"
+              },
+              "angle-start": {
+                "value": -60,
+                "type": "number"
+              },
+              "angle-end": {
+                "value": 300,
+                "type": "number"
+              },
+              "palette": {
+                "value": [
+                  {
+                    "angle": "0",
+                    "colors": [
+                      {
+                        "color": "rgb(59, 251, 254)",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  {
+                    "angle": "0",
+                    "colors": [
+                      {
+                        "color": "rgb(57, 117, 239)",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  {
+                    "angle": "0",
+                    "colors": [
+                      {
+                        "color": "rgb(29, 212, 223)",
+                        "position": 1
+                      }
+                    ]
+                  },
+                  {
+                    "angle": "0",
+                    "colors": [
+                      {
+                        "color": "rgb(241, 205, 24)",
+                        "position": 1
+                      }
+                    ]
+                  }
+                ],
+                "type": "palette"
+              },
+              "label-font-size": {
+                "value": 16,
+                "type": "number"
+              },
+              "label-color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "ab969cf5-ee53-49cc-9de8-ef9067515933",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 297,
+                "type": "number"
+              },
+              "top": {
+                "value": 0,
+                "type": "number"
+              },
+              "width": {
+                "value": 1920,
+                "type": "number"
+              },
+              "height": {
+                "value": 80,
+                "type": "number"
+              },
+              "text": {
+                "value": "知识库项目数据分析",
+                "type": "text"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "font-size": {
+                "value": 45,
+                "type": "number"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "font-spacing": {
+                "value": 1,
+                "type": "number"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(29, 10, 134)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "ec932d52-4ad6-43ef-8365-6488c1eb0a25",
+            "name": "图片",
+            "type": "image",
+            "options": {
+              "image": {
+                "value": "resources/icon1.png",
+                "type": "file.image"
+              },
+              "width": {
+                "value": 30,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "left": {
+                "value": 20,
+                "type": "number"
+              },
+              "top": {
+                "value": 25,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "7322b191-e33b-4abf-a436-e858b23bb59e",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 1465,
+                "type": "number"
+              },
+              "top": {
+                "value": "231",
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "知识卡片：",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "width": {
+                "value": 130,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "609b51f3-3528-4226-b363-47778f6f6aa8",
+            "name": "指标卡",
+            "type": "card",
+            "options": {
+              "axis-value": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E7%9F%A5%E8%AF%86%E5%8D%A1%E7%89%87%E6%95%B0%E9%87%8F",
+                    "alias": "知识卡片数量",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "align": {
+                "value": "left",
+                "type": "align"
+              },
+              "left": {
+                "value": 1595,
+                "type": "number"
+              },
+              "top": {
+                "value": 223,
+                "type": "number"
+              },
+              "height": {
+                "value": 50,
+                "type": "number"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(241, 198, 28)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "font-size": {
+                "value": 40,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "e2084e88-2f67-4559-8be8-a076eaedb9b8",
+            "name": "面积图",
+            "type": "area",
+            "options": {
+              "left": {
+                "value": 745,
+                "type": "number"
+              },
+              "top": {
+                "value": 434,
+                "type": "number"
+              },
+              "axis-x": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_CreateTime",
+                    "alias": "CreateTime",
+                    "type": "string",
+                    "summary": ""
+                  }
+                ],
+                "type": "axis"
+              },
+              "axis-y": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_count",
+                    "alias": "count",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "width": {
+                "value": 663,
+                "type": "number"
+              },
+              "height": {
+                "value": 252,
+                "type": "number"
+              },
+              "series-shape-type": {
+                "value": "smooth",
+                "type": "select"
+              },
+              "series-shape-shadow-color": {
+                "value": "rgba(31, 167, 159, 0.8)",
+                "type": "color"
+              },
+              "x-color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "y-color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "y-font-size": {
+                "value": 14,
+                "type": "number"
+              },
+              "x-font-size": {
+                "value": 14,
+                "type": "number"
+              },
+              "tooltip": {
+                "value": true,
+                "type": "boolean"
+              },
+              "legend": {
+                "value": false,
+                "type": "boolean"
+              },
+              "animate": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "1e46d6c8-4ba7-4568-ae88-76de0b07a42a",
+            "name": "图片",
+            "type": "image",
+            "options": {
+              "left": {
+                "value": 721,
+                "type": "number"
+              },
+              "top": {
+                "value": 106,
+                "type": "number"
+              },
+              "width": {
+                "value": 700,
+                "type": "number"
+              },
+              "height": {
+                "value": 252,
+                "type": "number"
+              },
+              "border": {
+                "value": false,
+                "type": "boolean"
+              },
+              "border-color": {
+                "value": "rgb(45, 34, 121)",
+                "type": "color"
+              },
+              "border-width": {
+                "value": 5,
+                "type": "number"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "image": {
+                "value": "resources/bd4.png",
+                "type": "file.image"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgba(57, 46, 122, 0.41)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "038072e3-bddd-4818-959c-dc22c62e31cb",
+            "name": "指标卡",
+            "type": "card",
+            "options": {
+              "axis-value": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E8%AE%BF%E9%97%AE%E9%87%8F",
+                    "alias": "访问量",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "align": {
+                "value": "left",
+                "type": "align"
+              },
+              "left": {
+                "value": 980,
+                "type": "number"
+              },
+              "top": {
+                "value": 395,
+                "type": "number"
+              },
+              "height": {
+                "value": 50,
+                "type": "number"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(241, 198, 28)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "font-size": {
+                "value": 40,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "244996b6-e54b-4d4d-b27b-bc7e8e1aa871",
+            "name": "图片",
+            "type": "image",
+            "options": {
+              "left": {
+                "value": 718,
+                "type": "number"
+              },
+              "top": {
+                "value": 723,
+                "type": "number"
+              },
+              "width": {
+                "value": 703,
+                "type": "number"
+              },
+              "height": {
+                "value": 324,
+                "type": "number"
+              },
+              "border": {
+                "value": false,
+                "type": "boolean"
+              },
+              "border-color": {
+                "value": "rgb(45, 34, 121)",
+                "type": "color"
+              },
+              "border-width": {
+                "value": 5,
+                "type": "number"
+              },
+              "image": {
+                "value": "resources/bd2.png",
+                "type": "file.image"
+              },
+              "background": {
+                "value": true,
+                "type": "boolean"
+              },
+              "background-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgba(57, 46, 122, 0.41)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "adda09a5-ebe5-4285-ba56-70a516935efe",
+            "name": "堆叠双轴图",
+            "type": "biaxial-stack",
+            "options": {
+              "left": {
+                "value": 736,
+                "type": "number"
+              },
+              "top": {
+                "value": 745,
+                "type": "number"
+              },
+              "axis-x": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_date",
+                    "alias": "date",
+                    "type": "date",
+                    "summary": ""
+                  }
+                ],
+                "type": "axis"
+              },
+              "axis-y": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_%E5%BD%95%E5%85%A5%E9%87%8F",
+                    "alias": "录入量",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "width": {
+                "value": 658,
+                "type": "number"
+              },
+              "height": {
+                "value": 294,
+                "type": "number"
+              },
+              "axis-line": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E8%BF%91%E6%9C%9F%E4%BA%A4%E6%98%93%E6%83%85%E5%86%B5_%E8%AE%BF%E9%97%AE%E9%87%8F",
+                    "alias": "访问量",
+                    "type": "number",
+                    "summary": "sum"
+                  }
+                ],
+                "type": "axis"
+              },
+              "bar-shape": {
+                "value": "normal",
+                "type": "select"
+              },
+              "legend-color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "legend-font-size": {
+                "value": 16,
+                "type": "number"
+              },
+              "x-color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "x-font-size": {
+                "value": 14,
+                "type": "number"
+              },
+              "y-color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "y-font-size": {
+                "value": 14,
+                "type": "number"
+              },
+              "label": {
+                "value": true,
+                "type": "boolean"
+              },
+              "label-color": {
+                "value": "rgb(181, 255, 0)",
+                "type": "color"
+              },
+              "label-font-size": {
+                "value": 16,
+                "type": "number"
+              },
+              "y-polyline-color": {
+                "value": "rgb(255, 255, 255)",
+                "type": "color"
+              },
+              "series-shape-type": {
+                "value": "line",
+                "type": "select"
+              },
+              "series-shape-shadow-color": {
+                "value": "rgba(200, 18, 18, 0.5)",
+                "type": "color"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "0a07e571-0646-408c-9062-1ba097ab82c9",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": "736",
+                "type": "number"
+              },
+              "top": {
+                "value": 120,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "客服专员",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "05c8f75a-4d53-4dfc-aa42-751ccd8c2a4f",
+            "name": "单行文本",
+            "type": "text",
+            "options": {
+              "left": {
+                "value": 736,
+                "type": "number"
+              },
+              "top": {
+                "value": 740,
+                "type": "number"
+              },
+              "height": {
+                "value": 30,
+                "type": "number"
+              },
+              "text-position": {
+                "value": "left",
+                "type": "select"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(255, 255, 255)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "text": {
+                "value": "近期使用情况",
+                "type": "text"
+              },
+              "font-size": {
+                "value": 24,
+                "type": "number"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          },
+          {
+            "uid": "938dc4f9-9769-4d68-8e2d-79c3b0fbb7ca",
+            "name": "指标卡",
+            "type": "card",
+            "options": {
+              "axis-value": {
+                "value": [
+                  {
+                    "uid": "8320657d-a4ac-43ae-a914-11bb870eb5bc_%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE_%E5%AE%A2%E6%9C%8D%E4%B8%93%E5%91%98%E6%83%85%E5%86%B5%E8%AF%B4%E6%98%8E",
+                    "alias": "客服专员情况说明",
+                    "type": "string",
+                    "summary": ""
+                  }
+                ],
+                "type": "axis"
+              },
+              "align": {
+                "value": "left",
+                "type": "align"
+              },
+              "left": {
+                "value": 745,
+                "type": "number"
+              },
+              "top": {
+                "value": 173,
+                "type": "number"
+              },
+              "height": {
+                "value": 163,
+                "type": "number"
+              },
+              "color": {
+                "value": {
+                  "angle": "0",
+                  "colors": [
+                    {
+                      "color": "rgb(227, 255, 0)",
+                      "position": 1
+                    }
+                  ]
+                },
+                "type": "color"
+              },
+              "font-bold": {
+                "value": true,
+                "type": "boolean"
+              },
+              "font-size": {
+                "value": 40,
+                "type": "number"
+              },
+              "animate-loop": {
+                "value": false,
+                "type": "boolean"
+              },
+              "display": {
+                "value": true,
+                "type": "boolean"
+              },
+              "width": {
+                "value": 629,
+                "type": "number"
+              },
+              "type": {
+                "value": "normal",
+                "type": "select"
+              },
+              "comma-display": {
+                "value": false,
+                "type": "boolean"
+              },
+              "percentage-format": {
+                "value": false,
+                "type": "boolean"
+              }
+            },
+            "widgets": [],
+            "states": [],
+            "states_options": {}
+          }
+        ],
+        "states": [],
+        "states_options": {}
+      },
+      "widgets": [],
+      "new": true,
+      "plan": "FREE",
+      "md5": "d005180fd95d60a96b2378023d794dec",
+      "version": "3"
+    }
+  ]
+}

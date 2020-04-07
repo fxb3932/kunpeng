@@ -1,0 +1,102 @@
+{% extends "rjxf_server/base.html" %}
+{% block content %}
+
+
+
+    <table class="layui-hide" id="rjxf_show" lay-filter="rjxf_lay"></table>
+
+    <script type="text/html" id="rjxf_control">
+        <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="rjxf" >版本下发</a>
+{#        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>#}
+{#        <a class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="del">删除</a>#}
+    </script>
+
+    {% verbatim %}
+    <script type="text/html" id="rjxf_type">
+        {{# var data = d.rjxf_type ;}}
+        {{# if(data === '0'){ }}
+        <span style="background-color: #69f590;">普通版本</span>
+        {{#  } else if(data === '1') { }}
+        <span style="background-color: #f5d613;color: #f5364c;">紧急版本</span>
+        {{#  } else { }}
+        <span style="background-color: #f50815;color: #efe6f5;">未知版本</span>
+        {{#  } }}
+    </script>
+
+    <script type="text/html" id="rjxf_stat">
+        {{# var data = d.rjxf_stat ; }}
+        {{# if(data == '2'){ console.log(data) }}
+        <span style="background-color: #69f590;">全部完成</span>
+        {{#  } else if(data == '1'){ }}
+        <span style="background-color: #f5df50">部分完成</span>
+        {{#  } else { }}
+        <span style="background-color: #f51346;color: #f5ebf5;">未开始</span>
+        {{#  } }}
+    </script>
+    {% endverbatim %}
+
+    <script>
+        layui.use('table', function () {
+            var table = layui.table;
+
+            //监听工具条
+            table.on('tool(rjxf_lay)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    //layer.msg('ID：' + data.rjxf_id + ' 的查看操作');
+                    layer.msg('该功能正在开发中......')
+                } else if (obj.event === 'edit') {
+                    // layer.alert('编辑行：<br>' + JSON.stringify(data))
+                    layer.msg('该功能正在开发中......')
+                } else if (obj.event === 'rjxf') {
+                    //layer.alert('rjxf：<br>' + JSON.stringify(data))
+                    //console.log(data);
+                    window.location.href = "/rjxf_server/release?rjxf_id=" + data.rjxf_id;
+                }
+            });
+
+
+
+            table.render({
+                elem: '#rjxf_show'
+                , url: 'get/'
+                //, toolbar: '#toolbarDemo'
+                //, initSort: {field:'rjxf_id', type:'desc'}
+                , initSort: {field:'date', type:'desc'}
+                , page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    //,curr: 5 //设定初始在第 5 页
+                    , groups: 1 //只显示 1 个连续页码
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+
+                }
+                , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                , cols: [[ // file_name file_size rjxf_txt date
+                    {field:'rjxf_control', width: 200, title:'操作', templet: '#rjxf_control'}
+                    , {field: 'rjxf_stat', width: 120, title: '下发状态', sort: true, templet:'#rjxf_stat'}
+                    , {field: 'date', width: 145, title: '计划下发时间', sort: true}
+                    , {field: 'rjxf_id', width: 250, title: '下发版本号', sort: true}
+                    , {field: 'rjxf_num_count', width: 120, title: '下发范围', sort: true}
+                    , {field: 'rjxf_type', width: 100, title: '版本类型', templet:'#rjxf_type', sort: true}
+                    , {field: 'rjxf_txt', width: 300, title: '版本说明'}
+                    , {field: 'make_date', width: 170, title: '版本制作时间', sort: true}
+                    , {field: 'update_date', width: 170, title: '下发状态更新', sort: true}
+                    , {field: 'update_oper', width: 100, title: '操作人', sort: true}
+
+                ]]
+            });
+
+            //头工具栏事件
+            /*
+            table.on('toolbar(rjxf_lay)', function (obj) {
+                {#var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态#}
+                console.log(obj);
+                window.location.href="/rjxf_server/make";
+            });
+            */
+        });
+    </script>
+{% endblock %}

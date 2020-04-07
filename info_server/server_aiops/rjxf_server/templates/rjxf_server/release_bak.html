@@ -1,0 +1,291 @@
+{% extends "rjxf_server/base.html" %}
+{% block content %}
+
+
+    <form class="layui-form" lay-filter="example">
+        <div class="layui-row">
+            <div class="layui-col-xs6">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">版本号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" placeholder="{{ rjxf_id }}" disabled>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">计划下发</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" placeholder="{{ date }}" disabled>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">版本类型</label>
+                    <div class="layui-input-block">
+                        {% if rjxf_type == '0' %}
+                            <input type="radio" name="rjxf_type" value="0" title="普通版本" checked="">
+                            <input type="radio" name="rjxf_type" value="1" title="紧急版本" disabled>
+                        {% elif rjxf_type == '1' %}
+                            <input type="radio" name="rjxf_type" value="0" title="普通版本" disabled>
+                            <input type="radio" name="rjxf_type" value="1" title="紧急版本" checked="">
+                        {% endif %}
+
+                        {#                    <input type="radio" name="rjxf_type" value="禁" title="禁用" disabled="">#}
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">版本说明</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" disabled>{{ rjxf_txt }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <fieldset class="layui-elem-field layui-field-title site-title">
+        <legend><a name="default">下发范围</a></legend>
+    </fieldset>
+
+    <table class="layui-hide" id="table_file" lay-filter="lay_table_file"></table>
+
+    <script type="text/html" id="toolbar_table_file">
+        <div class="layui-btn-container">
+            <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+            <button class="layui-btn layui-btn-sm" lay-event="runBatXf">下发选中范围版本</button>
+            <button class="layui-btn layui-btn-sm" lay-event="runBatResp">查看下发结果</button>
+        </div>
+    </script>
+
+    <script type="text/html" id="bar_table_file">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="run">下发</a>
+        <a class="layui-btn layui-btn-xs" lay-event="show">查看</a>
+
+    </script>
+
+    <!--
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>结果查看</legend>
+    </fieldset>
+
+    <div class="layui-tab layui-tab-card">
+        <ul class="layui-tab-title">
+{#            <li class="layui-this">网站设置</li>#}
+            {% for line in list_resp %}
+            <li>{{ line.name }}</li>
+            {% endfor %}
+        </ul>
+        <div class="layui-tab-content" style="height: 100px;">
+{#            <div class="layui-tab-item layui-show">默认宽度是相对于父元素100%适应的，你也可以固定宽度。</div>#}
+            <div class="layui-tab-item">2</div>
+            <div class="layui-tab-item">3</div>
+            <div class="layui-tab-item">4</div>
+            <div class="layui-tab-item">5</div>
+            <div class="layui-tab-item">6</div>
+        </div>
+    </div>
+    -->
+
+
+
+
+
+
+{#    <div class="layui-form-item">#}
+{#        <div class="layui-input-block">#}
+{#            <button class="layui-btn" lay-submit lay-filter="transSearch">一键下发</button>#}
+{#            <button type="reset" class="layui-btn layui-btn-primary">重置</button>#}
+{#        </div>#}
+{#    </div>#}
+
+    <script src="/static/w2ui/jquery.js"></script>
+    <script type="text/javascript" src="/static/w2ui/w2ui-1.5.rc1.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/w2ui/w2ui-1.5.rc1.css"/>
+
+
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+        <legend>结果查看</legend>
+    </fieldset>
+    
+    <div class="demoTable">
+        <div id="tabs" style="width: 100%;" class="layui-btn"></div>
+        <div id="selected-tab" style="padding: 10px 0px">点击便签查看输出结果</div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#tabs').w2tabs({
+                name: 'tabs',
+                active: '点击便签查看输出结果',
+                tabs: [
+                    {id: '点击便签查看输出结果', text: '未查询'}
+                ],
+                onClick: function (event) {
+                    $('#selected-tab').html(event.target);
+                }
+            });
+        });
+    </script>
+
+
+
+
+<script>
+    layui.use(['layer', 'table', 'element', 'laypage'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , table = layui.table
+            , element = layui.element
+            , laypage = layui.laypage;
+
+
+        let table_file_cols = [[ //标题栏
+            {type: 'checkbox', fixed: 'left'}
+            , {field: 'id', title: 'id', width: 100}
+            , {field: 'sub_id', title: 'sub_id', width: 200}
+            , {field: 'ip', title: 'ip', width: 150}
+            , {field: 'title', title: 'title', width: 800}
+            , {field: 'stat', fixed: 'right', title: '下发状态', width: 165, align:'center'}
+            , {fixed: 'right', title: '操作', width: 165, align:'center', toolbar: '#bar_table_file'}
+        ]];
+        let file_data = [];
+
+
+        table.render({
+            elem: '#table_file'
+            , url: "post_rjxffw_table_data?rjxf_id={{ rjxf_id }}"
+            , toolbar: '#toolbar_table_file'
+            , initSort: {field: 'id', type: 'desc'}
+            , id: 'testReload' //ID用于表格重载
+            , cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+            , cols: table_file_cols
+        });
+
+        var TableData = [];
+
+        //头工具栏事件
+        table.on('toolbar(lay_table_file)', function (obj) {
+            console.log(obj);
+            var checkStatus = table.checkStatus(obj.config.id);
+
+            // 批量下发
+            switch (obj.event) {
+                case 'runBatXf':
+                    var data = checkStatus.data;
+                    //layer.alert(JSON.stringify(data));
+
+                    post_data = {
+                        rjxf_id: '{{ rjxf_id }}'
+                        , data: JSON.stringify(data)
+                    };
+
+                    var index = layer.load(0);
+                    $.post("post_xf_command/",
+                        //JSON.stringify(post_data),
+                        post_data,
+                        function (data, status) {
+                            console.log("Data: " + data + "\nStatus: " + status);
+                            console.log(data);
+                            layer.close(index);
+                            layer.alert(JSON.stringify(data));
+                        }
+                    );
+                    break;
+                case 'getCheckLength':
+                    var data = checkStatus.data;
+                    layer.msg('选中了：' + data.length + ' 个');
+                    break;
+                case 'runBatResp':
+                    {#layer.msg(checkStatus.isAll ? '全选' : '未全选');#}
+                    var data = checkStatus.data;
+                    post_data = {
+                        rjxf_id: '{{ rjxf_id }}'
+                        , data: JSON.stringify(data)
+                    };
+                    index = layer.load(0);
+                    $.post("post_resp/",
+                        //JSON.stringify(post_data),
+                        post_data,
+                        function (data, status) {
+                            console.log("Data: " + data + "\nStatus: " + status);
+                            console.log(data);
+                            layer.close(index);
+                            {#layer.alert(JSON.stringify(data));#}
+                            layer.alert(JSON.stringify(data.msg));
+                            console.log(data.list_resp);
+                            TableData = data.table_data ;
+                            console.log(TableData);
+                            $().w2destroy('tabs');
+                            $('#tabs').w2tabs({
+                                name: 'tabs',
+                                active: '',
+                                tabs: data.list_resp,
+                                onClick: function (event) {
+                                    $('#selected-tab').html(event.target);
+                                    console.log(event.target);
+                                    console.log(event.tab.text);
+                                }
+                            });
+                        }
+                    );
+                    break;
+            }
+        });
+
+        //监听行工具事件
+        table.on('tool(lay_table_file)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            switch (obj.event) {
+                case 'run':
+                    layer.msg('run');
+                    console.log(data);
+
+                    post_data = {
+                        rjxf_id: '{{ rjxf_id }}'
+                        , data: JSON.stringify([data])
+                    };
+
+                    var index = layer.load(0);
+                    $.post("post_xf_command/",
+                        //JSON.stringify(post_data),
+                        post_data,
+                        function (data, status) {
+                            console.log("Data: " + data + "\nStatus: " + status);
+                            console.log(data);
+                            layer.close(index);
+                            layer.alert(data.msg);
+                        }
+                    );
+                    break;
+                case 'show':
+                    layer.msg('show');
+                    break;
+            }
+        });
+
+        //根据分页点击事件重载表格数据
+
+        $('.demoTable .layui-btn').on('click', function (data) {
+            console.log(TableData);
+            console.log(data.target.innerText);
+            var GetTableData = [];
+            for (i = 0; i < TableData.length; i++) {
+                if ( TableData[i].index === data.target.innerText ) {
+
+                    //console.log(TableData[i].data);
+                    GetTableData = TableData[i].data
+                }
+            }
+
+            table.reload('testReload', {
+                url: ''
+                , data: GetTableData
+            });
+
+
+        });
+
+    });
+
+
+</script>
+{% endblock %}

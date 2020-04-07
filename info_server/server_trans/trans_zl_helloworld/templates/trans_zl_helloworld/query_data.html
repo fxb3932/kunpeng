@@ -1,0 +1,242 @@
+{% extends "trans_zl_helloworld/base.html" %}
+{% block content %}
+
+</br>
+<blockquote class="layui-elem-quote layui-text">
+    运营看板——事项查看
+</blockquote>
+
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-row">
+        <div class="layui-col-xs4">
+            <div class="grid-demo grid-demo-bg1">
+                <fieldset class="layui-elem-field">
+                    <legend>运营事项</legend>
+                    <div class="layui-field-box">
+                        {{row_data.title}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-xs4">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>上报原因</legend>
+                    <div class="layui-field-box">
+                        {{row_data.reason}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-xs4">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>困难（若有）</legend>
+                    <div class="layui-field-box">
+                        {{row_data.diffcult}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row">
+        <div class="layui-col-xs3">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>影响合作行</legend>
+                    <div class="layui-field-box">
+                        {{row_data.banknames}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-xs3">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>处理人</legend>
+                    <div class="layui-field-box">
+                        {{row_data.deal_person}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-xs3">
+            <div class="grid-demo grid-demo-bg1">
+                <fieldset class="layui-elem-field">
+                    <legend>处理团队</legend>
+                    <div class="layui-field-box">
+                        {{row_data.t_team}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-xs3">
+            <div class="grid-demo grid-demo-bg1">
+                <fieldset class="layui-elem-field">
+                    <legend>协助部门（若有）</legend>
+                    <div class="layui-field-box">
+                        {{row_data.support_org}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="layui-row">
+        <div class="layui-col-sm3">
+            <div class="grid-demo grid-demo-bg1">
+                <fieldset class="layui-elem-field">
+                    <legend>类型</legend>
+                    <div class="layui-field-box">
+                        {{row_data.t_type}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm3">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>重要程度</legend>
+                    <div class="layui-field-box">
+                        {{row_data.t_zycd}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm3">
+            <div class="grid-demo grid-demo-bg1">
+                <fieldset class="layui-elem-field">
+                    <legend>紧急程度</legend>
+                    <div class="layui-field-box">
+                        {{row_data.t_jjcd}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm3">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>当前状态</legend>
+                    <div class="layui-field-box">
+                        {{row_data.stat}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-row">
+        <div class="layui-col-sm2">
+            <div class="grid-demo grid-demo-bg1">
+                <fieldset class="layui-elem-field">
+                    <legend>提出时间</legend>
+                    <div class="layui-field-box">
+                        {{row_data.submit_date}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm2">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>期望解决时间</legend>
+                    <div class="layui-field-box">
+                        {{row_data.want_date}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm2">
+            <div class="grid-demo grid-demo-bg1">
+                <fieldset class="layui-elem-field">
+                    <legend>完成时间</legend>
+                    <div class="layui-field-box">
+                        {{row_data.close_date}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm2">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>是否得到客户验证</legend>
+                    <div class="layui-field-box">
+                        {{row_data.yanzheng}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm2">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>是否需继续跟进</legend>
+                    <div class="layui-field-box">
+                        {{row_data.genjin}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="layui-col-sm2">
+            <div class="grid-demo">
+                <fieldset class="layui-elem-field">
+                    <legend>上报人</legend>
+                    <div class="layui-field-box">
+                        {{row_data.submit_person}}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+
+    <fieldset class="layui-elem-field">
+        <legend>备注</legend>
+        <div class="layui-field-box">
+            {{row_data.beizhu}}
+        </div>
+    </fieldset>
+
+</form>
+
+<script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['table', 'upload', 'form', 'layedit', 'element', 'layer', 'laydate'], function () {
+        var $ = layui.jquery
+            , upload = layui.upload
+            , form = layui.form
+            , layedit = layui.layedit
+            , element = layui.element
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , table = layui.table;
+
+        form.val('example', {
+            "want_date": "{{ row_data.want_date }}" // "name": "value"
+            , "title": "{{ row_data.title }}" // "name": "value"
+            , "submit_person": "{{ row_data.submit_person }}" // "name": "value"
+            , "reason": "{{ row_data.reason }}" // "name": "value"
+            , "banknames": "{{ row_data.banknames }}" // "name": "value"
+            , "deal_person": "{{ row_data.deal_person }}" // "name": "value"
+            , "support_org": "{{ row_data.support_org }}" // "name": "value"
+            , "stat": "{{ row_data.stat }}" // "name": "value"
+            , "diffcult": "{{ row_data.diffcult }}" // "name": "value"
+            , "submit_date": "{{ row_data.submit_date }}" // "name": "value"
+            , "close_date": "{{ row_data.close_date }}" // "name": "value"
+            , "beizhu": "{{ row_data.beizhu }}" // "name": "value"
+            , "t_team": "{{ row_data.t_team }}" // "name": "value"
+            , "t_type": "{{ row_data.t_type }}" // "name": "value"
+            , "t_zycd": "{{ row_data.t_zycd }}" // "name": "value"
+            , "t_jjcd": "{{ row_data.t_jjcd }}" // "name": "value"
+            , "genjin": "{{ row_data.genjin }}" // "name": "value"
+            , "yanzheng": "{{ row_data.yanzheng }}" // "name": "value"
+            // , "want_date": "{{ row_data.want_date }}" // "name": "value"
+            // , "want_date": "{{ row_data.want_date }}" // "name": "value"
+        });
+
+    });
+</script>
+{% endblock %}

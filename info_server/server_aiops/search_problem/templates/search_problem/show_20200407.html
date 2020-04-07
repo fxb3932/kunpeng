@@ -1,0 +1,317 @@
+{% extends "search_problem/base.html" %}
+{% block content %}
+
+    <!-- 这段非常重要，决定上传文件缩略图的大小 -->
+    <style>
+        .layui-upload-img {
+            width: 92px;
+            height: 92px;
+            margin: 0 10px 10px 0;
+        }
+    </style>
+
+
+    <!--
+                    //t.push('<li title="' + e + '"><img src="' + i + '" alt="' + e + '" style="width: 92px;"></li>')
+    -->
+
+    <form class="layui-form" action="" lay-filter="example">
+
+        <!--
+                <blockquote class="layui-elem-quote layui-text">
+                    查看
+                </blockquote>
+            -->
+        {% if data.info_check_flag == 1 %}
+            <span class="layui-badge">知识库</span>
+        {% endif %}
+        <strong><span style="color:#4C33E5;font-size:24px;">{{ data.title }}</span></strong><br><br>
+        {% if data.trans_code != '' %}
+            --- <strong><span style="font-size:16px;">{{ data.trans_code }}交易
+            {{ data.trans_err }}</span></strong><br><br>
+        {% endif %}
+        {% if data.bank_id != None %}
+            <strong><span style="font-size:16px;">{{ data.bank_id }}
+            </span></strong><br><br>
+        {% endif %}
+        {% autoescape off %}
+            {{ data.problem_info }}
+        {% endautoescape %}
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+            {% if stat == 1 %}
+                <legend>{{ data.answer_oper }} 已解答:</legend></fieldset>
+                {% autoescape off %}
+                    <blockquote class="layui-elem-quote">{{ data.problem_answer }}</blockquote>
+                {% endautoescape %}
+                {% if app_auth == 1 %}
+                    <a href="update/"> <u><span style="color:#337FE5;">我要完善标准答案</span></u></a><br>
+                {% endif %}
+                <hr class="layui-bg-green">
+
+
+
+
+                {% for line in comments_data %}
+                    <em>{{ line.update_oper }} {{ line.update_date }}</em><br>
+                    {% autoescape off %}
+                        {{ line.name }}
+                    {% endautoescape %}
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
+
+
+                {% endfor %}
+                <br>
+                <!-- 富文本输入框 -->
+                <textarea id="fwb_text_comments" style="display: none;">
+                </textarea><br>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo3">提交回答</button>
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo2">关闭</button>
+
+            {% else %}
+                <legend>解答修正</legend>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" lay-verify="required" autocomplete="off"
+                               placeholder="一句完整的描述您的问题"
+                               class="layui-input">
+                    </div>
+                </div>
+                <!-- 富文本输入框 -->
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标准解答</label>
+                    <div class="layui-input-block">
+                        <textarea id="fwb_text" style="display: none;">
+                            {{ data.problem_answer }}
+                        </textarea>
+                    </div>
+                </div>
+                <!--
+                <textarea id="fwb_text" style="display: none;">
+                    {{ data.problem_answer }}
+                </textarea>
+                -->
+                <br>
+                <div class="layui-col-md6">
+                    {% if type == 'update' %}
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">认证</label>
+                            <div class="layui-input-block">
+                                {% if data.info_check_flag == 1 %}
+                                    <input type="checkbox" name="info_check_flag" title="知识库" checked="">
+                                {% else %}
+                                    <input type="checkbox" name="info_check_flag" title="知识库">
+                                    <!--<input type="checkbox" name="like[read]" title="阅读" checked="">-->
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">团队</label>
+                            <div class="layui-input-inline">
+                                <select name="channel" lay-verify="required" lay-search="" lay-filter="select_filter2">
+                                    <option value="">直接选择</option>
+                                    {% for line in channel %}
+                                        {% if line.code == data_channel_id %}
+                                            <option value="{{ line.code }}" selected="">{{ line.name }}</option>
+                                        {% else %}
+                                            <option value="{{ line.code }}">{{ line.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select></div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">类型</label>
+                            <div class="layui-input-inline">
+                                <select name="info_type" lay-verify="required" lay-search=""
+                                        lay-filter="select_filter2">
+                                    <option value="">直接选择</option>
+                                    {% for line in type_data %}
+                                        {% if line.code == data_type_id %}
+                                            <option value="{{ line.code }}" selected="">{{ line.name }}</option>
+                                        {% else %}
+                                            <option value="{{ line.code }}">{{ line.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                </div>
+                <div class="layui-col-md12">
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">更新知识库</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo2">关闭</button>
+                <hr class="layui-bg-green">
+                {% for line in comments_data %}
+                    <em>{{ line.update_oper }} {{ line.update_date }}</em><br>
+                    {% autoescape off %}
+                        {{ line.name }}
+                    {% endautoescape %}
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
+                {% endfor %}
+
+                </div>
+            {% endif %}
+
+
+        </fieldset>
+        <br><br>
+        <!-- /static/app/search_problem/tupian/2020-03-23-00:46:37-WX20200323-004609@2x.png -->
+        <!--
+                <a href="javascript:void(0);" class="img_big"
+                   title="/static/app/search_problem/tupian/2020-03-23-00:46:37-WX20200323-004609@2x.png">
+                                                                    <img class="***"
+                                                                         src="/static/app/search_problem/tupian/2020-03-23-00:46:37-WX20200323-004609@2x.png"
+                                                                         height="150px" width="150px"> 
+                                                             </a>
+                    -->
+
+
+    </form>
+
+
+
+    <script>
+        layui.config({
+            base: '/static/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['table', 'upload', 'form', 'layedit', 'layer'], function () {
+            var $ = layui.jquery
+                , upload = layui.upload
+                , form = layui.form
+                , layer = layui.layer
+                , layedit = layui.layedit
+                , table = layui.table;
+
+            form.val('example', {
+                "title": "{{ data.title}}" // "name": "value"
+            });
+
+            // 配置富文本编辑器
+            layedit.set({
+                uploadImage: {
+                    url: '/search_problem/new/new_text_upload/' //接口url
+                    , type: 'post' //默认post
+                }
+            });
+
+
+            var index = layedit.build('fwb_text'); //建立编辑器
+            var index_comments = layedit.build('fwb_text_comments'); //建立编辑器
+
+            var text = layedit.getContent(index);
+            console.log(text);
+
+            // <p><a target="_blank" href="http://ora.com"><b><u>http://ora.com</u></b></a><br></p>
+            //$("#fwb_text").val(text + '<br>' + 'test');//先赋值
+            //$("#fwb_text").val(text);
+            index = layedit.build('fwb_text');//渲染build
+
+
+            //提交答案
+            form.on('submit(demo1)', function (data) {
+                console.log(layedit.getContent(index));
+                console.log(data.field);
+                req_data = {
+                    input_data: JSON.stringify(data.field)
+                    , fwb_data: layedit.getContent(index)
+                    , type: '{{ type }}'
+                };
+                $.post("submit/",
+                    req_data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        console.log(data);
+
+
+                        if (data.code === 0) {
+                            // window.location.href = "submit/ok/";
+                            layer.msg('提交成功', {icon: 1, time: 1500}, function () {
+                                //parent.location.reload();
+                                parent.layui.admin.events.closeThisTabs()
+                            });
+                        } else {
+                            layer.msg(data.msg, {
+                                time: 60000, //20s后自动关闭
+                                btn: ['知道了']
+                            });
+                        }
+
+
+                    }
+                );
+                return false;
+            });
+
+            // 关闭
+            form.on('submit(demo2)', function (data) {
+                parent.layui.admin.events.closeThisTabs();
+                return false;
+            });
+
+            // 评论
+            form.on('submit(demo3)', function (data) {
+                req_data = {
+                    input_data: JSON.stringify(data.field)
+                    , fwb_data: layedit.getContent(index_comments)
+                    , type: '{{ type }}'
+                };
+                console.log(req_data);
+                $.post("submit_comments/",
+                    req_data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        console.log(data);
+
+
+                        if (data.code === 0) {
+                            // window.location.href = "submit/ok/";
+                            layer.msg('提交成功', {icon: 1, time: 1500}, function () {
+                                //parent.location.reload();
+                                //parent.layui.admin.events.closeThisTabs();
+                                parent.layui.admin.events.refresh();
+                            });
+                        } else {
+                            layer.msg(data.msg, {
+                                time: 60000, //20s后自动关闭
+                                btn: ['知道了']
+                            });
+                        }
+
+
+                    }
+                );
+                return false;
+            });
+
+            $(".img_big").click(function () {
+                var url = $(this).attr('title');
+                $("#displayImg").attr("src", url);
+                var height = $("#displayImg").height();
+                var width = $("#displayImg").width();
+                layer.open({
+                    type: 1,
+                    title: false,
+                    //closeBtn: 0,//隐藏关闭按钮
+                    shade: [0.3, '#000'],//黑色背景（0.3代表颜色深度）
+                    shadeClose: true,//点击遮罩关闭大图
+                    area: [width + 'px', height + 'px'], //宽高
+                    //area: ['80%', '80%'],
+                    //resize: false,//不可拖拽缩放
+                    skin: 'myskin',//大图背景色定义类
+                    // content: "<img alt=" + name + " title=" + name + " src=" + url + " height=500px; width=500px;" + "/>"
+                    content: "<img alt=" + name + " title=" + name + " src=" + url + " height=100%; width=100%;" + "/>"
+                });
+            });
+
+
+        });
+    </script>
+
+{% endblock %}

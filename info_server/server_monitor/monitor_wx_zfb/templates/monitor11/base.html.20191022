@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--<meta http-equiv="X-Frame-Options" content="allow-from">-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    {#  注意引入文件的方式  #}
+    <link rel="stylesheet" href="../static/layui/css/layui.css" media="all">
+    <script src="../static/layui/layui.js"></script>
+    <script src="/static/echarts/echarts.min.js"></script>
+
+    <link rel="stylesheet" href="/static/app/yhchart/assets/index.css">
+    <!--<script src="/static/app/yhchart/assets/assets/index.js"></script>-->
+    <script type="text/javascript" src="/static/app/yhchart/assets/echarts.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/worldcloud.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/china.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/china-map.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/left-1.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/left-2.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/left-3.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/left-4.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/left-5.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/left-6.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/right-1.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/right-2.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/right-3.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/right-4.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/right-5.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/right-6.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/jquery.js"></script>
+    <script type="text/javascript" src="/static/app/yhchart/assets/countup.js"></script>
+
+</head>
+<body>
+    {% block content %}
+
+    {% endblock %}
+</body>
+</html>

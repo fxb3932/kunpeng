@@ -1,0 +1,263 @@
+{% extends "search_problem/base.html" %}
+{% block content %}
+
+    <form class="layui-form" action="" lay-filter="example">
+
+
+        <blockquote class="layui-elem-quote layui-text">
+            问题清单
+            <!--<a href="#">如何提问？</a>-->
+        </blockquote>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">进展</label>
+                <div class="layui-inline">
+                    <select name="comm_i_info_stat">
+                        <option value="">全部</option>
+
+                        {% for line in data.comm_i_info_stat %}
+
+                            {% if line.stat_id == 0 %}
+                                <option value={{ line.stat_id }} selected="">{{ line.stat_name }}</option>
+                            {% else %}
+                                <option value={{ line.stat_id }}>{{ line.stat_name }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">团队</label>
+                <div class="layui-inline">
+                    <select name="comm_i_info_channel">
+                        <option value="">全部</option>
+                        {% for line in data.comm_i_info_channel %}
+                            <option value={{ line.code }}>{{ line.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-inline">
+                    <select name="comm_i_info_type">
+                        <option value="">全部</option>
+                        {% for line in data.comm_i_info_type %}
+                            <option value={{ line.code }}>{{ line.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+
+            <div class="layui-inline">
+                <label class="layui-form-label">认证</label>
+                <div class="layui-inline">
+                    <select name="comm_i_info_check_flag">
+                        <option value="">全部</option>
+                        {% for line in data.comm_i_info_check_flag %}
+                            <option value={{ line.code }}>{{ line.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">评论</label>
+                <div class="layui-inline">
+                    <select name="comm_i_info_check_update">
+                        <option value="">全部</option>
+                        {% for line in data.comm_i_info_check_update %}
+                            <option value={{ line.code }}>{{ line.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="layui-inline">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+            </div>
+        </div>
+
+
+    </form>
+    <table class="layui-hide" id="demo" lay-filter="lay-filter"></table>
+
+    {% verbatim %}
+    <script type="text/html" id="barDemo">
+        {{# var data = d.t_stat_name ;}}
+        {{# if(data === '未解答'){ }}
+        <a class="layui-btn layui-btn-xs" lay-event="answer">我来解答</a>
+        {{#  } else { }}
+        <a class="layui-btn layui-btn-xs" lay-event="answer">查看</a>
+        {{#  } }}
+        <!--
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">知识库认证</a>
+        -->
+    </script>
+    <script type="text/html" id="info_check_flag_bar">
+        {{# var data = d.info_check_flag ;}}
+        {{# if(data === 1){ }}
+        <span class="layui-badge">知识库</span>
+        {{#  } else { }}
+        {{#  } }}
+        <!--
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">知识库认证</a>
+        -->
+    </script>
+    <script type="text/html" id="info_check_flag_bar">
+        {{# var data = d.info_check_flag ;}}
+        {{# if(data === 1){ }}
+        <span class="layui-badge">知识库</span>
+        {{#  } else { }}
+        {{#  } }}
+        <!--
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">知识库认证</a>
+        -->
+    </script>
+    <script type="text/html" id="info_check_update_bar">
+        {{# var data = d.info_check_update ;}}
+        {{# if(data === 1){ }}
+        <span class="layui-badge">待处理</span>
+        {{#  } else { }}
+        {{#  } }}
+        <!--
+        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">知识库认证</a>
+        -->
+    </script>
+    {% endverbatim %}
+
+
+    <script>
+        layui.config({
+            base: '/static/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['table', 'form'], function () {
+            var $ = layui.jquery
+                , form = layui.form
+                , table = layui.table;
+
+            req_data = {'comm_i_info_stat': 0};
+
+            table_file_cols = [[ //标题栏
+                {field: 'id', title: 'ID', width: 80, sort: true}
+                , {field: 'count_sum', title: '热度', width: 100, sort: true}
+                , {field: 'title', title: '标题', width: 400}
+                , {field: 'answer_oper', title: '解答人', width: 120, sort: true}
+                , {field: 'input_date', title: '录入日期', width: 125, sort: true}
+
+                , {field: 't_stat_name', title: '进展', width: 120, sort: true}
+
+                , {field: 'info__channel_name', title: '团队', width: 120, sort: true}
+                , {field: 'info__type_name', title: '类型', width: 120, sort: true}
+                , {field: 'info_check_flag', title: '认证', toolbar: '#info_check_flag_bar', width: 120, sort: true}
+                , {
+                    field: 'info_check_update', title: '待处理评论', toolbar: '#info_check_update_bar'
+                    , width: 120, sort: true
+                }
+
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 100}
+            ]];
+            table.render({
+                elem: '#demo'
+                , id: 'testReload' //ID用于表格重载
+                , cols: table_file_cols
+                , initSort: {field: 'count_sum', type: 'desc'}
+                , page: {
+                    layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                    , curr: 1 //reload 后从第1页开始显示
+                    , groups: 1 //只显示 1 个连续页码
+                    , first: false //不显示首页
+                    , last: false //不显示尾页
+                }
+                , data: []
+                //,skin: 'line' //表格风格
+                , even: true
+                // , page: true //是否显示分页
+                // , limits: [5, 7, 10]
+                , limit: 10 //每页默认显示的数量
+                , limits: [10, 20, 30, 60, 90, 1000]
+
+            });
+
+            index = layer.load(1);
+            $.post("get_table_data/",
+                req_data,
+                function (data, status) {
+                    console.log("Data: " + data + "\nStatus: " + status);
+                    console.log(data);
+
+                    table.reload('testReload', {
+                        data: data.data
+                    });
+                    layer.close(index);
+                }
+            );
+
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                console.log(data);
+                req_data = {
+                    input_data: JSON.stringify(data.field)
+                };
+                console.log(req_data);
+                index = layer.load(1);
+
+                $.post("get_table_data/",
+                    req_data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        console.log(data);
+
+                        table.reload('testReload', {
+                            data: data.data
+                            , page: {
+                                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                                , curr: 1 //reload 后从第1页开始显示
+                                , groups: 1 //只显示 1 个连续页码
+                                , first: false //不显示首页
+                                , last: false //不显示尾页
+                            }
+                        });
+                        layer.close(index);
+                    }
+                );
+
+                return false;
+            });
+
+            //监听行工具事件
+            table.on('tool(lay-filter)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'answer') {
+                    console.log(obj);
+                    console.log('console answer');
+                    url = "/search_problem/show/" + obj.data.id + "/";
+                    title = obj.data.title;
+                    parent.layui.index.openTabsPage(url, title);
+                    //window.location.href="/search_problem/show/" + obj.data.id + "/";
+                }
+            });
+
+            //监听行单击事件（双击事件为：rowDouble）
+            table.on('rowDouble(lay-filter)', function (obj) {
+                var data = obj.data;
+
+                console.log(JSON.stringify(data));
+                console.log(obj);
+                console.log('console answer');
+                url = "/search_problem/show/" + obj.data.id + "/";
+                title = obj.data.title;
+                parent.layui.index.openTabsPage(url, title);
+                //window.location.href="/search_problem/show/" + obj.data.id + "/";
+
+                //标注选中样式
+                obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+            });
+        });
+    </script>
+{% endblock %}

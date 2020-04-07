@@ -1,0 +1,205 @@
+{% extends "chkpcl_V2/pclbase.html" %}
+{% block chkpcl_V2 %}
+
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>[{{ yhtitle }}]</legend>
+</fieldset>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md9">
+
+            <form class="layui-form" action="" lay-filter="component-form-element">
+                <div class="layui-row layui-col-space10 layui-form-item">
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">检查日期</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="date" id="yhdate" lay-verify="date" placeholder="yyyy-MM-dd"
+                                   autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+
+                    <div class="layui-inline">
+                        <label class="layui-form-label">平台选择</label>
+                        <div class="layui-input-block">
+                            <select name="type" lay-verify="required" lay-filter="aihao">
+                                {% for type in yhtypelist %}
+                                <option value={{type}}>{{ type }}</option>
+                                {% endfor%}
+                                <!--                                <option value="前端工程师" selected>前端工程师</option>-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button class="layui-btn" lay-submit lay-filter="component-form-element">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+
+
+            </form>
+
+        </div>
+
+
+    </div>
+    <table class="layui-hide" id="test-table-onrow" lay-filter="test-table-onrow"></table>
+</div>
+
+
+{% verbatim %}
+<!--<script type="text/html" id="getSexId">-->
+<!--    {{#  if(d.sex === '女'){ }}-->
+<!--    <span style="color: #F581B1;">{{ d.sex }}</span>-->
+<!--    {{#  } else { }}-->
+<!--    {{ d.sex }}-->
+<!--    {{#  } }}-->
+<!--</script>-->
+{% endverbatim %}
+
+
+<script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form', 'laydate', 'table'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , element = layui.element
+            , form = layui.form
+            , table = layui.table
+            , laydate = layui.laydate;
+
+
+        //日期
+        laydate.render({
+            elem: '#yhdate'
+            , value: '{{ yhdate }}'
+            //"date": "2019-06-27"
+        });
+        form.render(null, 'component-form-element');
+        element.render('breadcrumb', 'breadcrumb');
+
+
+        form.on('submit(component-form-element)', function (data) {
+            layer.msg(JSON.stringify(data.field));
+            var index = layer.load(1); //添加laoding,0-2两种方式
+            //layer.msg("按钮触发事件");
+            $.post("post_V2pcl",
+                data.field,
+                function (data, status) {
+                    console.log("Data: " + data + "\nStatus: " + status);
+                    console.log(data);
+                    table.render({
+                        elem: '#test-table-onrow'
+                        // , height: 2500
+                        // , toolbar: '#toolbarDemo'
+                        // , defaultToolbar: ['filter', 'exports', 'print']
+                        //, url: 'post' //数据接口
+                        // , initSort: {field:'count_banknologin', type:'desc'}
+                        // ,page: { limits:[5,10,15,20]}
+                        ,page: { limit:20}
+                        // , page: true //开启分页
+                        , cols: table_filed
+                        , data: data.return_list
+
+                        ,done:function (res) {
+                res.data.forEach(function (item,index){
+                    if (item.jgnum_num == '0') {
+                        $(".layui-table-body tbody  tr[ data-index='" + index + "'] td[data-field='jgnum_num']").css({"background-color": "#2cf54e"})   //单列
+                    }
+                    if (item.jgnum_num != '0') {
+                        $(".layui-table-body tbody  tr[ data-index='" + index + "'] td[data-field='jgnum_num']").css({"background-color": "#ff5dd4"})   //单列
+                    }
+
+
+
+                    if (item.xd_result == '未开始') {
+                        $(".layui-table-body tbody  tr[ data-index='" + index + "'] td[data-field='xd_result']").css({"background-color": "#ffcb38"})   //单列
+                    }
+                    if (item.xd_result == '已完成') {
+                        //单行
+                        $(".layui-table-body tbody  tr[ data-index='" + index + "'] td[data-field='xd_result']").css({"background-color": "#2cf54e"})  //单列
+                    }
+
+
+                    if (item.pcl_result == '未开始') {
+                        $(".layui-table-body tbody  tr[ data-index='" + index + "'] td[data-field='pcl_result']").css({"background-color": "#ffcb38"})   //单列
+                    }
+                    if (item.pcl_result == '已完成') {
+                        //单行
+                        $(".layui-table-body tbody  tr[ data-index='" + index + "'] td[data-field='pcl_result']").css({"background-color": "#2cf54e"})  //单列
+                    }
+                    if (item.pcl_result == '进行中') {
+                        //单行
+                        $(".layui-table-body tbody  tr[ data-index='" + index + "'] td[data-field='pcl_result']").css({"background-color": "#9c88f5"})  //单列
+                    }
+
+                })}
+                    });
+                    layer.close(index);
+                }
+            );
+
+
+            return false;
+        });
+
+
+        table_filed = [[
+            {field: 'bank_name', title: 'ID', fixed: 'left', unresize: true, sort: true}
+            , {field: 'bank_chname', title: '银行名称'}
+            , {field: 'check_status', title: '查询状态'}
+            , {field: 'jgnum_num', title: '未签退机构数', sort: true, templet: "#getSexId"}
+            , {field: 'gy_num', title: '未签退柜员数'}
+            , {field: 'xd_result', title: '信贷批处理状态'}
+            , {field: 'pcl_result', title: '核心批处理状态', sort: true}
+            , {field: 'bank_no', title: '行号'}
+
+        ]]
+
+        mydata = [{
+            "bank_name": "10001"
+            , "bank_chname": "杜甫"
+            , "check_status": "xianxin@layui.com"
+            , "jgnum_num": "1234"
+            , "gy_num": "浙江杭州"
+            , "xy_result": "点击此处，显示更多123。"
+            , "pcl_result": "116"
+            , "bank_no": "192.168.0.8"
+        }, {
+            "bank_name": "10001"
+            , "bank_chname": "杜甫"
+            , "check_status": "xianxin@layui.com"
+            , "jgnum_num": "1234"
+            , "gy_num": "浙江杭州"
+            , "xy_result": "点击此处，显示更多。"
+            , "pcl_result": "116"
+            , "bank_no": "192.168.0.8"
+        }]
+        table.render({
+            elem: '#test-table-onrow'
+            , data: mydata          //初始化数据
+            , cols: table_filed   //初始化表头
+            , page: true
+        });
+
+        //监听行单击事件（单击事件为：rowDouble）
+        table.on('row(test-table-onrow)', function (obj) {
+            var data = obj.data;
+
+            layer.alert(JSON.stringify(data), {
+                title: '当前行数据：'
+            });
+
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+        });
+
+    });
+</script>
+
+
+{% endblock %}

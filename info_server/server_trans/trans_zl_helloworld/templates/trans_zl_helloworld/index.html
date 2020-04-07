@@ -1,0 +1,125 @@
+{% extends "trans_zl_helloworld/base.html" %}
+{% block content %}
+
+</br>
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <label class="layui-form-label">选择合作行</label>
+        <div class="layui-input-inline">
+            <select name="bank_id" lay-verify="required" lay-search="">
+                <option value="">直接选择或搜索选择</option>
+                {% for name in req %}
+                <option value="{{ name.bank_name }}">{{ name.bank_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">需要查询的账号</label>
+        <div class="layui-inline">
+            <input type="text" name="zh" placeholder="请输入账号" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="transSearch">查询</button>
+
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<div class="layui-input-block">
+                        <textarea name="resultshow" id="ar1" lay-verify="resultshow" placeholder="查询结果"
+                                  class="layui-textarea"></textarea>
+</div>
+
+<style>
+    .layui-form-label {
+        float: left;
+        display: block;
+        width: 150px;
+        font-weight: 400;
+    }
+</style>
+
+
+<table id="demo" lay-filter="test"></table>
+
+{{ req.date }}
+<script>
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form', 'element', 'table', 'laydate', 'layedit'], function () {
+        var layer = layui.layer
+            , form = layui.form
+            , laydate = layui.laydate
+            , layedit = layui.layedit
+            , $ = layui.jquery;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+            , min: -100
+            , max: 0
+        });
+
+        //赋默认值
+        form.val('example', {
+            //"date": "2019-06-27" // "name": "value"
+            "date": "{{ date }}"
+        });
+
+        tableField = [ //表头
+            {field: 'inst_date', title: '交易日期', width: 150, sort: true, fixed: 'left'}
+            , {field: 'trans_code', title: '交易类型', width: 90}
+            , {field: 'resp_code', title: '交易返回码', width: 90}
+            , {field: 'amt_trans', title: '交易金额', width: 100}
+            , {field: 'card_accp_term_id', title: '交易终端号', width: 130}
+            , {field: 'card_accp_id', title: '交易受理方', width: 160, sort: true}
+            , {field: 'card_accp_name', title: '受理方名称', width: 120, sort: true}
+            , {field: 'acct_id1', title: '交易方信息', width: 90}
+            , {field: 'acct_id2', title: '对手信息', width: 80, sort: true}
+        ];
+
+        //监听提交
+        form.on('submit(transSearch)', function (data) {
+            console.log("data:" + data);
+            console.log("data.field:" + JSON.stringify(data.field));
+            obj_data = data.field;
+            var index = layer.load(0);
+            $.post("post/",
+                data.field,
+                function (res, status) {
+                    console.log("res: " + res + "\nStatus: " + status);
+                    console.log(res);
+                    console.log(res.data);
+                    console.log(res.data[0]);
+                    console.log(res.data[0].query_result);
+                    res = res.data[0].query_result;
+                    // res = res.replace('\\,', '<br>');
+                    res = res.replace("\n", "<br>");
+
+                    console.log("res: " + res);
+
+                    layui.use(['layedit'], function () {
+                        // var index = layedit.build('ar1'); //建立编辑器
+                        // layedit.setContent(index, res, false);
+                        document.getElementById('ar1').value = res;
+                        // document.getElementById("remarks").innerHTML = "有值了";
+                    });
+
+
+                    // document.getElementById("ar1").innerHTML = res;
+
+                    layer.close(index);
+                }
+            );
+
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}
