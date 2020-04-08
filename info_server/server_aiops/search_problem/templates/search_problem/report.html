@@ -1,0 +1,32 @@
+{% extends "search_problem/base.html" %}
+{% block content %}
+
+
+
+    <form class="layui-form" action="" lay-filter="example">
+
+
+                <blockquote class="layui-elem-quote layui-text">
+                    查看
+                </blockquote>
+
+    </form>
+
+
+
+    <script>
+        layui.config({
+            base: '/static/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['table', 'upload', 'form', 'layedit'], function () {
+            var $ = layui.jquery
+                , upload = layui.upload
+                , form = layui.form
+                , layedit = layui.layedit
+                , table = layui.table;
+
+
+        });
+    </script>
+{% endblock %}

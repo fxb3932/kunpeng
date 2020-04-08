@@ -1,0 +1,179 @@
+{% extends "topfe_reportform/base.html" %}
+{% block content %}
+
+        </br>
+<form class="layui-form" action="" lay-filter="example">
+
+<!--    <div class="layui-form-item">-->
+<!--        <div class="layui-inline">-->
+<!--            <label class="layui-form-label">交易日期(限3个月内)</label>-->
+<!--            <div class="layui-input-inline">-->
+<!--                <input type="text" name="inst_date" id="date" lay-verify="date" placeholder="YYYY-MM-DD" autocomplete="off"-->
+<!--                       class="layui-input">-->
+<!--            </div>-->
+<!--        </div>-->
+    <div class="layui-inline">
+            <label class="layui-form-label">选择合作行</label>
+            <div class="layui-input-inline">
+                <select name="bank_id" lay-verify="required" lay-search="">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for name in req %}
+                    <option value="{{ name.bank_name }}">{{ name.bank_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+<!--    <div class="layui-form-item">-->
+<!--        <label class="layui-form-label">需要查询的卡号</label>-->
+<!--        <div class="layui-input-block">-->
+<!--            <input type="text" name="pan" placeholder="请输入卡号" autocomplete="off" class="layui-input">-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="transSearch">查询</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<style>
+    .layui-form-label {
+        float:left;
+        display:block;
+        width:150px;
+        font-weight:400;}
+</style>
+
+<table id="demo" lay-filter="test"></table>
+
+
+
+{{ req.date }}
+<script>
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form', 'element', 'table', 'laydate'], function () {
+        var layer = layui.layer
+            , form = layui.form
+            , laydate = layui.laydate
+            , $ = layui.jquery;
+
+        //日期
+        laydate.render({
+            elem: '#date'
+            ,min: -100
+            ,max: 0
+        });
+
+
+
+        //赋默认值
+        form.val('example', {
+            //"date": "2019-06-27" // "name": "value"
+            "date": "{{ date }}"
+        })
+
+        tableField = [ //表头
+            {field: 'inst_date', title: '类型', width: 150, sort: true, fixed: 'left'}
+            , {field: 'trans_code', title: '交易量', width: 90}
+        ];
+
+        //监听提交
+        form.on('submit(transSearch)', function (data) {
+            //layer.msg(JSON.stringify(data.field));
+            console.log(JSON.stringify(data.field));
+            obj_data = data.field ;
+            var index = layer.load(0);
+            $.post("post/",
+                data.field,
+                function (data, status) {
+                    console.log("Data: " + data + "\nStatus: " + status);
+                    console.log(data);
+                    table.render({
+                        elem: '#demo'
+                        , height: 400
+                        //, url: 'post' //数据接口
+                        , page: true //开启分页
+                        , cols: [tableField]
+                        , data: data.data
+                    });
+                    layer.close(index);
+                }
+            );
+
+            return false;
+        });
+
+        //第一个实例
+        var table = layui.table;
+
+        table.render({
+            elem: '#demo'
+            , height: 500
+            , page: true //开启分页
+            , cols: [tableField]
+            , data: []
+        });
+
+        //监听行单击事件（单击事件为：rowDouble）
+        table.on('row(test)', function (obj) {
+            var data = obj.data;
+            var index = layer.load(1);
+            /*
+            layer.alert(JSON.stringify(data), {
+                title: '当前行数据：'
+            });
+             */
+
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+
+                $.post("postTrans/",
+                    data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        console.log(data);
+                        textTransInfo = '';
+                        for (let i in data) {
+                            textTransInfo = textTransInfo + i + ': ' + data[i] + '</br>';
+                        }
+
+                        //多窗口模式，层叠置顶
+                        layer.open({
+                            type: 1 //content 1-文本 2-URL 此处以iframe举例
+                            , title: obj_data.bank_id + ':' + data.id
+                            , area: ['390px', '350px']
+                            , shade: 0
+                            , maxmin: true
+                            , offset: [ //为了演示，随机坐标
+                                Math.random() * ($(window).height() - 300)
+                                , Math.random() * ($(window).width() - 390)
+                            ]
+                            , content: textTransInfo
+                            , btn: ['', '全部关闭'] //只是为了演示
+                            , yes: function () {
+                                //$(that).click();
+                            }
+                            , btn2: function () {
+                                layer.closeAll();
+                            }
+
+                            , zIndex: layer.zIndex //重点1
+                            , success: function (layero) {
+                                layer.setTop(layero); //重点2
+                            }
+                        });
+                        layer.close(index);
+                    });
+            }
+        );
+
+
+
+
+    });
+</script>
+{% endblock %}

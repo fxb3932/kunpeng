@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+</head>
+<meta charset="utf-8">
+<style type="text/css">
+ul{
+list-style: none;
+}
+.attack-show{
+width: 200px;
+    height: 57px;
+    position: absolute;
+    top: 50px;
+    overflow: hidden;
+}
+.num-attack,
+.num-speed{
+    height: 15px;
+    line-height: -38px;
+    float: left;
+    padding-top: -27px;
+    position: relative;
+    box-sizing: content-box;
+}
+.num-speed{
+    margin-left: 130px;
+}
+.num-title{
+    line-height: 19px;
+    height: 19px;
+    color: #2C3E50;
+}
+.num-s{
+    position: relative;
+    color: #65d02c;
+    font-size: 42px;
+    line-height: 68px;
+    font-weight: 700;
+    height: 58px;
+    font-family: 'Helvetica Neue';
+    float: left;
+}
+.num-attack .num,
+.num-speed .num{
+    position: relative;
+    color: #5ad03d;
+    font-size: 42px;
+    line-height: 50px;
+    font-weight: 700;
+    margin-top: -34px;
+    padding-bottom: 42px;
+    height: 50px;
+    font-family: 'Helvetica Neue';
+    float: left;
+}
+
+
+.num-s{
+    width: 15px;
+}
+
+
+.num-attack .num-inner
+{ padding-left: 0;
+    position: relative;
+    float: left;
+    top: 0;
+}
+.num-speed .num-inner{
+    position: relative;
+    float: left;
+    top: 0;
+}
+</style>
+<body>
+<div class="attack-show">
+<div class="num-attack"  data-count="552856">
+   </div>
+    </div>
+    <div class="num-speed" data-count="552860" style="display: none">
+        <div class="num-title">加速流量</div>
+        <span class="num-role">MB</span>
+    </div>
+
+
+
+
+<script type="text/html" id="tpl">
+<div class="num">
+    <ul class="num-inner">
+        <li>0</li>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li> 
+    </ul>
+</div>
+</script>
+<script id="ntpl" type="text/tpl">
+<div class="num-s">,&nbsp;</div>
+</script>
+<script type="text/javascript" src="assets/jquery.js"></script>
+<script type="text/javascript">
+
+var num = 0;
+    var tpl = $('#tpl').html().replace(/[\n\t]|\s{2,}/g,'');
+    var ntpl = $('#ntpl').html().replace(/[\n\t]|\s{2,}/g,'');
+
+
+    function setNumber($wrap, num){ 
+        var $nums = $wrap.find('.num');
+        var nums = [];
+        var num = num.toString().split(''); 
+
+
+        if($nums.length<num.length){
+            var diff = num.length- $nums.length;
+            for(var i=0; i<diff; i++){
+                var $tmpNum = $wrap.find('.num');
+                if($tmpNum.length){ 
+                    if( !($tmpNum.length % 3) ){ 
+                        var $s= $(ntpl);
+                        $s.insertBefore($tmpNum.eq(0)); 
+                        $(tpl).insertBefore($s);
+                    } else {
+                        $(tpl).insertBefore($tmpNum.eq(0));
+                    } 
+                }else{
+                    $wrap.append(tpl); 
+                } 
+            }
+        }
+        
+        $nums = $wrap.find('.num'); 
+        for(var i=$nums.length-1; i>-1; i--){ 
+            $nums.eq(i).find('.num-inner').animate({
+                top: -50 * num[i]
+            });
+        }
+    } 
+
+
+    var $numAttack    = $('.num-attack');
+    var $attack_total = $numAttack.data("count");
+    setNumber($numAttack, $attack_total);
+    setInterval(function(){
+        var add1 = Math.round(Math.random());
+        setNumber($numAttack, ($attack_total = $attack_total + add1) );
+    }, 1000);
+
+
+    var $numSpeed    = $('.num-speed');
+    var $speed_total = $numSpeed.data("count");
+    setNumber($numSpeed, $speed_total);
+    setInterval(function(){
+        var add2 = Math.round(Math.random() * 2);
+        setNumber($numSpeed , ($speed_total = $speed_total + add2) );
+    }, 1000);
+</script>
+</body>
+</html>

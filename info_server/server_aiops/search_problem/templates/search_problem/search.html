@@ -1,0 +1,82 @@
+{% extends "search_problem/base.html" %}
+{% block content %}
+
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card layadmin-serach-main">
+                    <div class="layui-card-header">
+                        <p style="font-size: 18px;">
+                            <span style="color: #01AAED">{{ problem_id }}</span> 查询到
+                            <strong>{{ len }}</strong> 个结果
+                        </p>
+                        <p class="layadmin-font-em">耗时：{{ use_time }} ms</p>
+                    </div>
+                    <div class="layui-card-body">
+
+                        <ul class="layadmin-serach-list layui-text">
+                            {% for line in data %}
+                                <li>
+                                    <div class="layui-serachlist-text">
+                                        <h3>
+                                            {% if line.info_check_flag == 1 %}
+                                            <span class="layui-badge">知识库</span>
+                                            {% endif %}
+                                            <a lay-href="/search_problem/show/{{ line.id }}/">
+                                                {{ line.title }}
+                                                {% if line.trans_code != '' %}
+                                                    --- {{ line.trans_code }}交易
+                                                    {{ line.trans_err }}
+                                                {% endif %}
+                                            </a>
+                                        </h3>
+                                        <p><em>{{ line.answer_oper }}</em>
+                                            {{ line.problem_answer_txt }}
+                                        </p>
+                                        <p>
+                                            {% if line.t_stat_id == 1 %}
+                                                <span class="layui-badge layui-bg-green">已解答</span>
+                                            {% else %}
+                                                <span class="layui-badge layui-bg-red">未解答</span>
+                                            {% endif %}
+                                            {% if line.info__channel_name != '' and line.info__channel_name != None %}
+                                                <span class="layui-badge layui-bg-cyan">{{ line.info__channel_name }}</span>{% endif %}
+                                            {% if line.info__channel_name != '' and line.info__channel_name != None %}
+                                                <span class="layui-badge layui-bg-orange">{{ line.info__type_name }}</span>{% endif %}
+
+                                        </p>
+
+
+                                    </div>
+                                </li>
+                            {% endfor %}
+
+                        </ul>
+                        <div id="LAY-template-search-page" style="text-align: center;"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.config({
+            base: '/static/' //静态资源所在路径
+        }).extend({
+            index: 'lib/index' //主入口模块
+        }).use(['index', 'laypage'], function () {
+            var laypage = layui.laypage;
+
+            laypage.render({
+                elem: 'LAY-template-search-page'
+                , count: 2
+                , jump: function (obj, first) {
+                    if (!first) {
+                        layer.msg('第' + obj.curr + '页');
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}

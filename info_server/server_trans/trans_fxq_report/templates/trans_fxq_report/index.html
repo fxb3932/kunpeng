@@ -1,0 +1,277 @@
+{% extends "trans_fxq_report/base.html" %}
+{% block content %}
+
+        </br>
+<form class="layui-form" action="" lay-filter="example">
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">开始日期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="start_date" id="start_date" lay-verify="start_date" placeholder="YYYY-MM-DD" autocomplete="off"
+                       class="layui-input">
+
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">结束日期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="end_date" id="end_date" lay-verify="end_date" placeholder="YYYY-MM-DD" autocomplete="off"
+                       class="layui-input">
+
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">选择系统</label>
+            <div class="layui-input-inline">
+                <select name="bank_id" lay-verify="required" lay-search="">
+<!--                    <option value="">直接选择或搜索选择</option>-->
+<!--                    <option value="{{ name.bank_id }}">{{ name.bank_id }}_{{ name.bank_name }}</option>-->
+                    {% for name in req %}
+                    <option value="{{ name.bank_id }}">{{ name.bank_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-submit lay-filter="transSearch">查询</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+</form>
+
+<table id="demo" lay-filter="test"></table>
+
+{% verbatim %}
+<script type="text/html" id="DECBL">
+    {{# var data = d.DECBL ;}}
+    {{# if(data == 0){ }}
+    <span style="background-color: #69f590;">{{ data }} %</span>
+    {{#  } else if( data < 5) { }}
+    <span style="background-color: #f5df50;">{{ data }} %</span>
+    {{#  } else   {}}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }} %</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="LBL">
+    {{# var data = d.LBL ;}}
+    {{# if(data < 1){ }}
+    <span style="background-color: #69f590;">{{ data }} %</span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }} %</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="KYALBSL_COUNT">
+    {{# var data = d.KYALBSL_COUNT ;}}
+    {{# if(data < 10){ }}
+    <span style="background-color: #69f590;">{{ data }} %</span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }} %</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="KHSBCQ_COUNT">
+    {{# var data = d.KHSBCQ_COUNT ;}}
+    {{# if(data < 1){ }}
+    <span style="background-color: #69f590;">{{ data }} </span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }} </span>
+    {{#  } }}
+</script>
+<script type="text/html" id="XKFXPJCQ_COUNT">
+    {{# var data = d.XKFXPJCQ_COUNT ;}}
+    {{# if(data < 1){ }}
+    <span style="background-color: #69f590;">{{ data }} </span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }} </span>
+    {{#  } }}
+</script>
+<script type="text/html" id="CLFXPJCQ_COUNT">
+    {{# var data = d.CLFXPJCQ_COUNT ;}}
+    {{# if(data < 5){ }}
+    <span style="background-color: #69f590;">{{ data }} </span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }} </span>
+    {{#  } }}
+</script>
+<script type="text/html" id="KYALCLCQ_COUNT">
+    {{# var data = d.KYALCLCQ_COUNT ;}}
+    {{# if(data < 5){ }}
+    <span style="background-color: #69f590;">{{ data }} </span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }} </span>
+    {{#  } }}
+</script>
+<script type="text/html" id="err_list">
+    {{# var data = d.err_list ;}}
+    {{# if(data[0] === '0'){ }}
+    <span style="background-color: #69f590;">OK</span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }}</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="gdxy_pcl_stat">
+    {{# var data = d.gdxy_pcl_stat ; }}
+    {{# if(data == '已完成'){ console.log(data) }}
+    <span style="background-color: #69f590;">{{ data }}</span>
+    {{#  } else { }}
+    <span style="background-color: #f5df50">{{ data }}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="cib_pcl_stat">
+    {{# var data = d.cib_pcl_stat ; }}
+    {{# if(data == '已完成'){ console.log(data) }}
+    <span style="background-color: #69f590;">{{ data }}</span>
+    {{#  } else if(data == '进行中'){ }}
+    <span style="background-color: #f5df50">{{ data }}</span>
+    {{#  } else if(data == '未开始'){ }}
+    <span style="background-color: #f5df50">{{ data }}</span>
+    {{#  } else { }}
+    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }}</span>
+    {{#  } }}
+</script>
+{% endverbatim %}
+
+{{ req.date }}
+<script>
+    //一般直接写在一个js文件中
+    layui.use(['layer', 'form', 'element', 'table', 'laydate'], function () {
+        var layer = layui.layer
+            , form = layui.form
+            , laydate = layui.laydate
+            , $ = layui.jquery;
+
+        //日期
+        laydate.render({
+            elem: '#start_date'
+        });
+        laydate.render({
+            elem: '#end_date'
+        });
+
+
+
+        //赋默认值
+        form.val('example', {
+            //"date": "2019-06-27" // "name": "value"
+            "start_date": "{{ start_date }}"
+            , "end_date": "{{ end_date }}"
+        });
+
+        tableField = [ //表头
+            {field: '_name', title: 'ID', width: 100, sort: true, fixed: 'left'}
+            , {field: '_name_ch', title: '银行名称', width: 120, sort: true}
+            , {field: 'err_list', title: '查询状态', width: 100, sort: true, templet: '#err_list'}
+            , {field: 'DECBL', title: '大额交易迟报率', width: 150, sort: true, templet: '#DECBL'}
+            , {field: 'LBL', title: '数据包漏报率', width: 150, sort: true, templet: '#LBL'}
+            , {field: 'KYALBSL_COUNT', title: '可疑案例报送率', width: 150, sort: true, templet: '#KYALBSL_COUNT'}
+            , {field: 'KYALCLCQ_COUNT', title: '可疑案例处理超期', width: 180, sort: true, templet: '#KYALCLCQ_COUNT'}
+            , {field: 'KHSBCQ_COUNT', title: '客户识别超期', width: 150, sort: true, templet: '#KHSBCQ_COUNT'}
+            , {field: 'XKFXPJCQ_COUNT', title: '新开客户风险评级超期', width: 180, sort: true, templet: '#XKFXPJCQ_COUNT'}
+            , {field: 'CLFXPJCQ_COUNT', title: '存量客户风险评级超期', width: 180, sort: true, templet: '#CLFXPJCQ_COUNT'}
+
+
+        ];
+
+        //监听提交
+        form.on('submit(transSearch)', function (data) {
+            //layer.msg(JSON.stringify(data.field));
+            console.log(JSON.stringify(data.field));
+            obj_data = data.field ;
+            var index = layer.load(0);
+            $.post("post/",
+                data.field,
+                function (data, status) {
+                    console.log("Data: " + data + "\nStatus: " + status);
+                    console.log(data);
+                    table.render({
+                        elem: '#demo'
+                        , height: 1000
+                        , toolbar: '#toolbarDemo'
+                        //, url: 'post' //数据接口
+                        , initSort: {field:'err_list', type:'desc'}
+                        , page: false //开启分页
+                        , limit:200
+                        , cols: [tableField]
+                        , data: data.data
+                    });
+                    layer.close(index);
+                }
+            );
+
+            return false;
+        });
+
+        //第一个实例
+        var table = layui.table;
+
+        table.render({
+            elem: '#demo'
+            , height: 500
+            //, page: true //开启分页
+            , cols: [tableField]
+            , data: []
+        });
+
+        //监听行单击事件（单击事件为：rowDouble）
+        table.on('row(test)', function (obj) {
+            var data = obj.data;
+            var index = layer.load(1);
+            /*
+            layer.alert(JSON.stringify(data), {
+                title: '当前行数据：'
+            });
+             */
+
+            //标注选中样式
+            obj.tr.addClass('layui-table-click').siblings().removeClass('layui-table-click');
+
+                $.post("postTrans/",
+                    data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        // console.log(data);
+                        // console.log(obj_data)
+                        textTransInfo = '';
+                        for (let i in data) {
+                            textTransInfo = textTransInfo + i + ': ' + data[i] + '</br>';
+                        }
+
+                        //多窗口模式，层叠置顶
+                        layer.open({
+                            type: 1 //content 1-文本 2-URL 此处以iframe举例
+                            , title: obj_data.bank_id + ':' + data.BANK_NAME
+                            , area: ['390px', '350px']
+                            , shade: 0
+                            , maxmin: true
+                            , offset: [ //为了演示，随机坐标
+                                Math.random() * ($(window).height() - 300)
+                                , Math.random() * ($(window).width() - 390)
+                            ]
+                            , content: textTransInfo
+                            , btn: ['', '全部关闭'] //只是为了演示
+                            , yes: function () {
+                                //$(that).click();
+                            }
+                            , btn2: function () {
+                                layer.closeAll();
+                            }
+
+                            , zIndex: layer.zIndex //重点1
+                            , success: function (layero) {
+                                layer.setTop(layero); //重点2
+                            }
+                        });
+                        layer.close(index);
+                    });
+            }
+        );
+
+
+
+
+    });
+</script>
+{% endblock %}

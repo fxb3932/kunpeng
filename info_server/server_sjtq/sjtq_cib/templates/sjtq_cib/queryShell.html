@@ -1,0 +1,30 @@
+{% extends "sjtq_cib/base.html" %}
+{% block content %}
+
+
+
+      <pre class="layui-code" lay-title="Shell" >
+          {{ code }}
+      </pre>
+
+
+<script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['table', 'laydate','form','code'], function () {
+        var $ = layui.jquery
+            , table = layui.table
+            , form = layui.form
+            , laydate = layui.laydate;
+
+
+
+
+          // console.log(res)
+    // console.log(res[0].type)
+
+    });
+</script>
+{% endblock %}
