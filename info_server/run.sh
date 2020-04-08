@@ -6,22 +6,21 @@ python manage.py runserver 0.0.0.0:19096
 
 exit
 
-#½¨ÏîÄ¿
+#å»ºé¡¹ç›®
 django-admin startproject mysite
 
 python manage.py startapp myApp
 
-#Éú³ÉÇ¨ÒÆÎÄ¼ş
+#ç”Ÿæˆè¿ç§»æ–‡ä»¶
 python manage.py makemigrations polls
 
-#²é¿´Ç¨ÒÆÃüÁî»áÖ´ĞĞÄÄĞ©SQLÓï¾ä
+#æŸ¥çœ‹è¿ç§»å‘½ä»¤ä¼šæ‰§è¡Œå“ªäº›SQLè¯­å¥
 python manage.py sqlmigrate polls 0001
 
-#Ö´ĞĞÇ¨ÒÆ
+#æ‰§è¡Œè¿ç§»
 python manage.py migrate
 
-#´´½¨¹ÜÀíÔ±ÕËºÅ
+#åˆ›å»ºç®¡ç†å‘˜è´¦å·
 python manage.py createsuperuser
 
 python manage.py collectstatic
-
