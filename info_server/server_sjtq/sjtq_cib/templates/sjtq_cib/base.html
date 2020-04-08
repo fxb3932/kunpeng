@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!--<meta http-equiv="X-Frame-Options" content="allow-from">-->
+<html lang="en">
+<div style="padding: 20px; background-color: #ffffff;">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+    {#  注意引入文件的方式  #}
+    <link rel="stylesheet" href="/static/layui/css/layui.css" media="all">
+    <script src="/static/layui/layui.js"></script>
+</head>
+<body>
+    {% block content %}
+
+    {% endblock %}
+</body>
+</div>
+</html>

@@ -1,0 +1,258 @@
+{% extends "monitor_nzjs_szk/base.html" %}
+{% block content %}
+
+    <script type="text/javascript">
+        //定时器
+        var c=0;
+        var sTime=5000;
+        var LocString=String(window.document.location.href);
+        function GetQueryString(str){
+            var rs=new RegExp("(^|)"+str+"=([^&]*)(&|$)","gi").exec(LocString),tmp;
+            if(tmp=rs)return tmp[2];
+            return "";
+        }
+    </script>
+
+
+    <div id="Container">
+        <div id="header" class="nav">
+            <h1>　　　　　</h1>
+            <ul>
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#">安全运行</a></li>
+                <li><a href="#">重于泰山</a></li>
+            </ul>
+        </div>
+        <div id="left"></div>
+
+<!--
+		<div id="toolbar"></div>
+-->
+		<div id="toolbar2"></div>
+       	<div id="right"></div>
+	</div>
+
+    <script type="text/javascript">
+        var sId ;
+        var sInput ;
+        var myChart = echarts.init(document.getElementById('right'));
+        var myChart4 = echarts.init(document.getElementById('toolbar2'));
+
+		var fxbData = [];
+		var respData = [];
+		var fxbLinks = [];
+		var NewLinks = [];
+		var par2 = [];
+		var par3 = [];
+		var tmpData=[];
+
+		sId = GetQueryString("id") ;
+		sSound = GetQueryString("sound") ;
+
+		sId = 'ALL';
+		//sId = 'DEMO';
+		var NewData=[];
+		var setSid='';
+
+        function setWorkerData(){
+            tmpData=[];
+            for (var i = 0; i < barData.length; i++) {
+                if ( barData[i]['user'] == sId ) {
+                    tmpData.push(barData[i]);
+                }
+            }
+            barData=tmpData;
+            swInit_Bar();
+            myChart.setOption(option);
+        }
+
+		function sortBy(field) {
+			return function(a,b) {
+				return a[field] - b[field];
+			}
+		}
+		function sortBy_desc(field) {
+			return function(a,b) {
+				return b[field] - a[field];
+			}
+		}
+
+		function loadData(){
+            //$.get("./json/" + sId, {} , function(respData){
+            $.get("/static/app/monitor_nzjs/" + 'ALL', {} , function(respData){
+				console.log('loadData ing');
+                if ( respData !== NewData ) {
+					if ( setSid == 'HEALTH' ) {
+                		allData = JSON.parse(respData);
+						swInitPie();
+						myChart.clear();
+                		myChart.setOption(option);
+					} else {
+						myChart.clear();
+                		barData = JSON.parse(respData);
+                		allData = barData ;
+						if ( setSid == 'ALL_desc' ) {
+							barData.sort(sortBy_desc("countSuc"));
+						} else {
+							barData.sort(sortBy("countSuc"));
+						}
+						if ( sId !== 'ALL' ) { setWorkerData(); }
+                		swInit_Bar();
+						//swMp3();
+						swMp3Init();
+						console.log('[get]n1=' + n1 + '    n2=' + n2 + '    m=' + m);
+						fxbHeadData = [m,n1,n3];
+						swInit_head();
+						myChart4.setOption(option4);
+
+                		myChart.setOption(option);
+					}
+				}
+				if ( sSound == 'OPEN' && setSid == 'ALL' ) swMp3();
+
+                NewData = respData ;
+            });
+		}
+		toolbar_bar();
+		loadData();
+        setInterval(function(){loadData();},5000);
+
+
+		//barData = []; toolbar_bar(); sInitDataAll(); swInit_Bar(); myChart.setOption(option);
+
+        window.onresize = function () {
+            myChart.resize();
+			myChart.setOption(option);
+        };
+
+
+		$(function () {
+    		$('#left').w2sidebar({
+        		name: 'sidebar',
+        		//flatButton: true,
+        		nodes: [
+            		{ id: 'PLAT', text: '客户服务中心--年终决算驾驶舱', img: 'icon-folder', expanded: true, group: true,
+           	   			nodes: [
+							//	{ id: 'MAIN', text: '总控台(全屏)-还没搞，不要点#_#!', icon: 'fa-home' },
+           	   				{ id: 'HEALTH', text: '总控台', icon: 'fa-home' },
+              		   		{ id: 'ALL', text: '所有合作银行', icon: 'fa-star' },
+              		   		{ id: 'ALL_desc', text: '所有合作银行(倒序)', icon: 'fa-star' },
+						]
+					},
+            		{ id: 'TEAM', text: '操作人', img: 'icon-folder', expanded: true, group: true,
+           	   			nodes: [
+              		   		{ id: 'HX', text: '核心产品团队(4)', icon: 'fa-star' ,
+           	   					nodes: [
+              		   				{ id: '杨磊', text: '杨磊', icon: 'fa-star' },
+              		   				{ id: '肖贵阳', text: '肖贵阳', icon: 'fa-star' },
+              		   				{ id: '彭绍勇', text: '彭绍勇', icon: 'fa-star' },
+              		   				{ id: '汤伟', text: '汤伟', icon: 'fa-star' },
+								]
+							},
+              		   		{ id: 'JG', text: '监管产品团队(2)', icon: 'fa-star' ,
+           	   					nodes: [
+              		   				{ id: '费学彬', text: '费学彬', icon: 'fa-star' },
+              		   				{ id: '任航', text: '任航', icon: 'fa-star' },
+								]
+							},
+              		   		{ id: 'GL', text: '管理产品团队(0)', icon: 'fa-star' ,
+							},
+              		   		{ id: 'QD', text: '渠道产品团队(4)', icon: 'fa-star' ,
+           	   					nodes: [
+              		   				{ id: '孙兆昆', text: '孙兆昆', icon: 'fa-star' },
+              		   				{ id: '张俞蕾', text: '张俞蕾', icon: 'fa-star' },
+              		   				{ id: '柳阳', text: '柳阳', icon: 'fa-star' },
+              		   				{ id: '田亮', text: '田亮', icon: 'fa-star' },
+								]
+							},
+              		   		{ id: 'HLW', text: '互联网产品团队(1)', icon: 'fa-star' ,
+           	   					nodes: [
+              		   				{ id: '张岭', text: '张岭', icon: 'fa-star' },
+								]
+							},
+              		   		{ id: 'FW', text: '服务团队(2)', icon: 'fa-star' ,
+           	   					nodes: [
+              		   				{ id: '高晓莹', text: '高晓莹', icon: 'fa-star' },
+              		   				{ id: '樊博文', text: '樊博文', icon: 'fa-star' },
+								]
+							},
+              		   		{ id: 'HZH', text: '合作行操作人(2)', icon: 'fa-star' ,
+           	   					nodes: [
+              		   				{ id: '黄检华', text: '黄检华', icon: 'fa-star' },
+              		   				{ id: '朱小辉', text: '朱小辉', icon: 'fa-star' },
+								]
+							},
+              		   		{ id: 'OTHER', text: '其它(15)', icon: 'fa-star' ,
+           	   					nodes: [
+              		   				{ id: '张国兵', text: '张国兵', icon: 'fa-star' },
+              		   				{ id: '钟超', text: '钟超', icon: 'fa-star' },
+              		   				{ id: '徐洪', text: '徐洪', icon: 'fa-star' },
+              		   				{ id: '姜海', text: '姜海', icon: 'fa-star' },
+              		   				{ id: '范忆', text: '范忆', icon: 'fa-star' },
+              		   				{ id: '鲍海洋', text: '鲍海洋', icon: 'fa-star' },
+              		   				{ id: '卞成亮', text: '卞成亮', icon: 'fa-star' },
+              		   				{ id: '郭承宗', text: '郭承宗', icon: 'fa-star' },
+              		   				{ id: '刘磊', text: '刘磊', icon: 'fa-star' },
+              		   				{ id: '刘正华', text: '刘正华', icon: 'fa-star' },
+              		   				{ id: '覃振华', text: '覃振华', icon: 'fa-star' },
+              		   				{ id: '全海燕', text: '全海燕', icon: 'fa-star' },
+              		   				{ id: '荣鹏珍', text: '荣鹏珍', icon: 'fa-star' },
+              		   				{ id: '石志广', text: '石志广', icon: 'fa-star' },
+              		   				{ id: '向文龙', text: '向文龙', icon: 'fa-star' },
+								]
+							},
+                     	]
+            		}
+        		]
+    		});
+    		w2ui.sidebar.on('*', function (event) {
+        		//$('#event').html('<span style="color: #999">Event</span>: ' + event.type + '<span style="color: #999">Target</span>: ' + event.target);
+        		//console.log('Last Event: ' + event.type + ' Target: ' + event.target);
+        		//console.log(event);
+
+        		if ( event.type === 'click' ) {
+console.log(event.target);
+            		if ( event.target !== 'sidebar' &&
+						event.target !== 'HX' &&
+						event.target !== 'GL' &&
+						event.target !== 'FW' &&
+						event.target !== 'HLW' &&
+						event.target !== 'QD' &&
+						event.target !== 'HZH' &&
+						event.target !== 'OTHER' &&
+						event.target !== 'JG' ) {
+                		sId=event.target;
+                		myChart.clear();
+						if ( sId == 'MAIN' ) {
+							window.location.href="../main_server/index.html";
+						} else if ( sId == 'HEALTH' ) {
+							setSid=sId;
+							$().w2destroy('toolbar');
+							swInitPie();
+							myChart.clear();
+							myChart.setOption(option);
+						} else if ( sId == 'ALL' ) {
+							setSid=sId;
+							console.log('check ALL');
+							NewData=[];
+							loadData();
+						} else if ( sId == 'ALL_desc' ) {
+							setSid=sId;
+							sId='ALL';
+							console.log('check ALL');
+							NewData=[];
+							loadData();
+						} else {
+							setSid=sId;
+							console.log('set-' + sId);
+							NewData=[];
+							loadData();
+						}
+            		}
+        		}
+    		});
+		});
+    </script>
+
+{% endblock %}

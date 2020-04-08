@@ -1,0 +1,301 @@
+{% extends "trans_zl_helloworld/base.html" %}
+{% block content %}
+
+</br>
+<blockquote class="layui-elem-quote layui-text">
+    运营看板——事项修改
+    <!--<a href="#">如何提问？</a>-->
+</blockquote>
+
+<form class="layui-form" action="" lay-filter="example">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">运营事项</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" required lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-inline">
+                <select name="t_type">
+                    <option value="">请选择</option>
+                    {% for line in type_list_json %}
+                    <option value="{{ line.type_name }}">{{ line.type_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">影响合作行</label>
+            <div class="layui-input-inline">
+                <input type="text" name="banknames" required lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input" value={{ row_data.banknames }}>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">报告人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="submit_person" required lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">重要程度</label>
+            <div class="layui-input-inline">
+                <select name="t_zycd" id="t_zycd_id">
+                    <option value="">请选择</option>
+                    {% for line in zycd_list_json %}
+                    <option value="{{ line.zycd_name }}">{{ line.zycd_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">紧急程度</label>
+            <div class="layui-input-inline">
+                <select name="t_jjcd">
+                    <option value="">请选择</option>
+                    {% for line in jjcd_list_json %}
+                    <option value="{{ line.jjcd_name }}">{{ line.jjcd_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">上报原因</label>
+            <div class="layui-input-inline">
+                <input type="text" name="reason" lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">处理人</label>
+            <div class="layui-input-inline">
+                <input type="text" name="deal_person" lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">处理团队</label>
+            <div class="layui-input-inline">
+                <input type="text" name="t_team" placeholder="" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">协助部门（若有）</label>
+            <div class="layui-input-inline">
+                <input type="text" name="support_org" placeholder="" autocomplete="off" class="layui-input"
+                       value={{ row_data.support_org }}>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">困难（若有）</label>
+            <div class="layui-input-inline">
+                <input type="text" name="difficult" placeholder="" autocomplete="off" class="layui-input"
+                       value={{ row_data.difficult }}>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">当前状态</label>
+            <div class="layui-input-inline">
+                <select name="stat">
+                    <option value="">请选择</option>
+                    {% for line in stat_list_json %}
+                    {% if line.stat_name == row_data.stat %}
+                    <option value="{{ line.stat_name }}" selected="">{{ line.stat_name }}</option>
+                    {% else %}
+                    <option value="{{ line.stat_name }}">{{ line.stat_name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">期望解决时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="want_date" id="want_date" lay-verify="datetime"
+                       placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">提出时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="submit_date" id="submit_date" lay-verify="required" lay-verify="datetime"
+                       placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">完成时间</label>
+            <div class="layui-input-inline">
+                <input type="text" name="close_date" id="close_date" lay-verify="datetime"
+                       placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <!--
+    <div class="layui-form-item" hidden="true">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="id" placeholder="" autocomplete="off" class="layui-input"
+                   value={{ row_data.id }}>
+        </div>
+    </div>
+    -->
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">是否需继续跟进</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="genjin" lay-skin="switch" checked lay-text="是|否" value="1">
+                <!--<input type="checkbox" name="switch" lay-skin="switch">-->
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">是否得到客户验证</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="yanzheng" lay-skin="switch" lay-text="是|否" value="1">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注</label>
+        <div class="layui-input-block">
+            <textarea name="beizhu" placeholder="请输入内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">确认修改</button>
+            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+</form>
+
+<style>
+    .layui-form-label {
+        float: left;
+        display: block;
+        width: 150px;
+        font-weight: 400;
+    }
+</style>
+
+<br>{{row_data}}}
+<!--<br>{{stat_list_json}}}-->
+<!--<br>{{type_list_json}}}-->
+<!--<br>{{zycd_list_json}}}-->
+<!--<br>{{jjcd_list_json}}}-->
+<table id="demo" lay-filter="test"></table>
+
+{{ req.date }}
+<script>
+    layui.config({
+        base: '/static/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['table', 'upload', 'form', 'layedit', 'element', 'layer', 'laydate'], function () {
+        var $ = layui.jquery
+            , upload = layui.upload
+            , form = layui.form
+            , layedit = layui.layedit
+            , element = layui.element
+            , layer = layui.layer
+            , laydate = layui.laydate
+            , table = layui.table;
+
+        form.val('example', {
+            "want_date": "{{ row_data.want_date }}" // "name": "value"
+            , "title": "{{ row_data.title }}" // "name": "value"
+            , "submit_person": "{{ row_data.submit_person }}" // "name": "value"
+            , "reason": "{{ row_data.reason }}" // "name": "value"
+            , "banknames": "{{ row_data.banknames }}" // "name": "value"
+            , "deal_person": "{{ row_data.deal_person }}" // "name": "value"
+            , "support_org": "{{ row_data.support_org }}" // "name": "value"
+            , "stat": "{{ row_data.stat }}" // "name": "value"
+            , "diffcult": "{{ row_data.diffcult }}" // "name": "value"
+            , "submit_date": "{{ row_data.submit_date }}" // "name": "value"
+            , "close_date": "{{ row_data.close_date }}" // "name": "value"
+            , "beizhu": "{{ row_data.beizhu }}" // "name": "value"
+            , "t_team": "{{ row_data.t_team }}" // "name": "value"
+            , "t_type": "{{ row_data.t_type }}" // "name": "value"
+            , "t_zycd": "{{ row_data.t_zycd }}" // "name": "value"
+            , "t_jjcd": "{{ row_data.t_jjcd }}" // "name": "value"
+            , "genjin": "{{ row_data.genjin }}" // "name": "value"
+            , "yanzheng": "{{ row_data.yanzheng }}" // "name": "value"
+            // , "want_date": "{{ row_data.want_date }}" // "name": "value"
+            // , "want_date": "{{ row_data.want_date }}" // "name": "value"
+        });
+        console.log("data.field.yanzheng : " + "{{ row_data.genjin }}")
+        console.log("data.field.genjin : " + "{{ row_data.yanzheng }}")
+        form.render();
+        var index = layedit.build('fwb_text'); //建立编辑器
+        //日期
+        laydate.render({
+            elem: '#want_date'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm' //可任意组合 yyyy年MM月dd日 HH时mm分ss秒===2017年08月18日 20时08分08秒，'yyyy/mm/dd'
+            // , value: '2020-01-01 18:00' //必须遵循format参数设定的格式String，默认值：new Date()
+        });
+        laydate.render({
+            elem: '#submit_date'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm' //可任意组合 yyyy年MM月dd日 HH时mm分ss秒===2017年08月18日 20时08分08秒，'yyyy/mm/dd'
+            // , value: '2020-01-01 18:00' //必须遵循format参数设定的格式String，默认值：new Date()
+        });
+        laydate.render({
+            elem: '#close_date'
+            , type: 'datetime'
+            , format: 'yyyy-MM-dd HH:mm' //可任意组合 yyyy年MM月dd日 HH时mm分ss秒===2017年08月18日 20时08分08秒，'yyyy/mm/dd'
+            // , value: '2020-01-01 18:00' //必须遵循format参数设定的格式String，默认值：new Date()
+        });
+
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            console.log(data);
+            console.log("data.field.genjin :" + data.field.genjin)
+            console.log("data.field.yanzheng :" + data.field.yanzheng)
+            req_data = {
+                input_data: JSON.stringify(data.field)
+            };
+
+            $.post("update_submit",
+                req_data,
+                function (data, status) {
+                    console.log("Data: " + data + "\nStatus: " + status);
+                    console.log(data);
+
+                    layer.msg(data.msg, {
+                        time: 60000, //20s后自动关闭
+                        btn: ['知道了']
+                    });
+
+                    // url = "/trans_zl_helloworld/abcd/show";
+                    // console.log("url:" + url);
+                    // window.location.href = url;
+                }
+            );
+            return false;
+        });
+
+    });
+</script>
+{% endblock %}

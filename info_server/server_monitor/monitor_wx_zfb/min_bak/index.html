@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <link rel="stylesheet" href="assets/index.css">
+    <script src="assets/index.js"></script>
+    <script type="text/javascript" src="assets/echarts.js"></script>
+    <script type="text/javascript" src="assets/worldcloud.js"></script>
+    <script type="text/javascript" src="assets/china.js"></script>
+    <script type="text/javascript" src="assets/china-map.js"></script>
+    <script type="text/javascript" src="assets/left-1.js"></script>
+    <script type="text/javascript" src="assets/left-2.js"></script>
+    <script type="text/javascript" src="assets/left-3.js"></script>
+    <script type="text/javascript" src="assets/left-4.js"></script>
+    <script type="text/javascript" src="assets/left-5.js"></script>
+    <script type="text/javascript" src="assets/left-6.js"></script>
+    <script type="text/javascript" src="assets/right-1.js"></script>
+    <script type="text/javascript" src="assets/right-2.js"></script>
+    <script type="text/javascript" src="assets/right-3.js"></script>
+    <script type="text/javascript" src="assets/right-4.js"></script>
+    <script type="text/javascript" src="assets/right-5.js"></script>
+    <script type="text/javascript" src="assets/right-6.js"></script>
+    <script type="text/javascript" src="assets/jquery.js"></script>
+    <script type="text/javascript" src="assets/countup.js"></script>
+</head>
+<body>
+<div class="page" id="page">
+    <div class="page-main clearfix">
+        <img class="bg" src="assets/images/bg1.png">
+        <div class="top-title clearfix">
+            <img class="logo" src="assets/images/logo.png">
+            <span class="title">交易可视化平台</span>
+            <span class="time">2018年4月23日 12:00:00  </span>
+            
+        </div>
+        <div class="main-left">
+            <div class="chart-section clearfix">
+                <div class="chart chart-l assist-img"><div id="left-1" style="width: 100%;height: 100%"></div></div>
+                <div class="chart chart-r"><div id="left-2" style="width: 100%;height: 100%"></div></div>
+            </div>
+            <div class="chart-section clearfix">
+                <div class="chart-l clearfix">
+                    <div class="chart chart-s"><div id="left-3" style="width: 100%;height: 100%"></div></div>
+                    <div class="chart chart-s margin-10 assist-img"><div id="left-4" style="width: 100%;height: 100%"></div> </div>
+                </div>
+                <div class="chart-r">
+                 <div class="chart chart-rl chart-m"><div id="left-5" style="width: 100%;height: 100%"></div></div>
+                    <div class="chart chart-rr chart-m">
+                    
+                           <div class="chart-title">分公司交易量TOP10</div>
+                           <ul class="rank-list">
+                            <li>
+                                <span>1</span>
+                                <span>江苏</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>2</span>
+                                <span>浙江</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>3</span>
+                                <span>厦门</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>4</span>
+                                <span>福建</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>5</span>
+                                <span>青岛</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>6</span>
+                                <span>山东</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>7</span>
+                                <span>湖北</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>8</span>
+                                <span>河南</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>9</span>
+                                <span>河北</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                            <li>
+                                <span>10</span>
+                                <span>四川</span>
+                                <span>99<i>万笔</i></span>
+                            </li>
+                        </ul>
+                   </div>
+                    <!--  
+                    <div class="chart chart-s margin-10 assist-img"><div id="left-6" style="width: 100%;height: 100%"></div></div>
+                    --> 
+                </div>
+            </div>
+        </div>
+        <div class="main-center">
+            <div class="num">
+                <div class="title">当日受理交易量</div>
+                <div class="num-main">
+                    <i id="num-main-box" style=" letter-spacing:20px;align:center;"></i>
+                    
+                    <span class="font-s">笔</span>
+                </div>
+            </div>
+            <div class="chart chart-map"><div id="china-map" style="width: 100%;height: 100%"></div></div>
+        </div>
+        <div class="main-right">
+            <div class="chart-section clearfix">
+                <div class="chartz chart-lz assist-img assist-img-lt"><div id="right-1" style="width: 100%;height: 100%"></div></div>
+                <div class="chartz chart-rz"><div id="right-2" style="width: 100%;height: 100%"></div></div>
+            </div>
+            <div class="chart-section clearfix">
+            
+                <div class="chart-l">
+                 
+                        <div class="chart chart-s"><div id="right-3" style="width: 100%;height: 100%"></div></div>
+                        <div class="chart chart-s margin-10 assist-img assist-img-lt"><div id="right-4" style="width: 100%;height: 100%"></div></div>
+                    <!-- 
+                      <div class="chart-r">
+                      <div class="chart chart-m">
+                      <div id="right-5" style="width: 100%;height: 100%"></div></div></div>
+                    -->
+                    
+                </div>
+               
+            
+                
+                
+                <div class="chart-r">
+                    <div class="chart chart-m assist-img assist-img-lt"> 
+                       <div id="right-6" style="width: 100%;height: 100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<!-- china-map   中国地图 引用自定义assets/china-map.js文件-->
+<script>
+    var dom = document.getElementById("china-map");
+    var china_map_myChart = echarts.init(dom);
+    var china_map_option=getChinaMapOption();
+    if (china_map_option && typeof china_map_option === "object") {
+        china_map_myChart.setOption(china_map_option, true);
+    }
+</script>
+
+
+<!-- left-1 柱形图   引用自定义assets/left-1.js文件 -->
+<script>
+    var left_1_myChart = echarts.init(document.getElementById('left-1'));
+    var left_1_option = getLeft_1Option();
+    left_1_myChart.setOption(left_1_option);
+</script>
+
+<!-- left-2    引用自定义assets/left-2.js文件 -->
+<script>
+    var left_2_myChart = echarts.init(document.getElementById('left-2'));
+    var left_2_option = getLeft_2Option();
+    left_2_myChart.setOption(left_2_option);
+</script>
+
+
+<!-- left-3    引用自定义assets/left-3.js文件 -->
+<script>
+    var left_3_myChart = echarts.init(document.getElementById('left-3'));
+    var left_3_option = getLeft_3Option();
+    left_3_myChart.setOption(left_3_option);
+</script>
+
+<!-- left-4    引用自定义assets/left-4.js文件 -->
+<script>
+    var left_4_myChart = echarts.init(document.getElementById('left-4'));
+    var left_4_option = getLeft_4Option();
+    left_4_myChart.setOption(left_4_option);
+</script>
+
+<!-- left-5    引用自定义assets/left-5.js文件 -->
+<script>
+    var left_5_myChart = echarts.init(document.getElementById('left-5'));
+    var left_5_option = getLeft_5Option();
+    left_5_myChart.setOption(left_5_option);
+</script>
+
+
+<!-- left-6    引用自定义assets/left-6.js文件 -->
+<script>
+    var left_6_myChart = echarts.init(document.getElementById('left-6'));
+    var left_6_option = getLeft_6Option();
+    left_6_myChart.setOption(left_6_option);
+</script>
+
+
+<!-- right-1 饼图   引用自定义assets/righ1t-1.js文件 -->
+<script>
+   var right_1_myChart = echarts.init(document.getElementById('right-1'));
+   var right_1_option = getRight_1Option();
+   right_1_myChart.setOption(right_1_option);
+</script>
+
+
+
+<!-- right-2  温度计柱形图  引用自定义assets/right-2.js文件 -->
+<script>
+
+    var right_2_myChart = echarts.init(document.getElementById('right-2'));
+    var right_2_option=getRight_2Option();
+    right_2_myChart.setOption(right_2_option); 
+ 
+</script>    
+
+
+<!-- right-3    引用自定义assets/right-3.js文件 -->
+<script>
+    var right_3_myChart = echarts.init(document.getElementById('right-3'));
+    var right_3_option=getRight_3Option();
+    right_3_myChart.setOption(right_3_option); 
+</script>
+
+
+<!-- right-4    引用自定义assets/right-4.js文件 -->
+<script>
+    var right_4_myChart = echarts.init(document.getElementById('right-4'));
+    var right_4_option=getRight_4Option();
+    right_4_myChart.setOption(right_4_option); 
+</script>
+
+
+<!-- right-5    引用自定义assets/right-5.js文件 -->
+<script>
+    var right_5_myChart = echarts.init(document.getElementById('right-5'));
+    var right_5_option=getRight_5Option();
+    right_5_myChart.setOption(right_5_option);
+</script>    
+    
+<!-- right-6  柱形+折线图  引用自定义assets/right-6.js文件 -->
+<script>
+
+    var right_6_myChart = echarts.init(document.getElementById('right-6'));
+    var right_6_option=getRight_6Option();
+    right_6_myChart.setOption(right_6_option);
+    
+</script>
+
+<script>
+        var countUP_options = {
+            useEasing: true, 
+            useGrouping: true, 
+            separator: ',', 
+            decimal: '.', 
+        };
+        var demo = new CountUp('num-main-box', 500000, 1000000, 0, 10, countUP_options);
+        if (!demo.error) {
+            demo.start();
+        } else {
+            console.error(demo.error);
+        }
+    </script>
