@@ -19,7 +19,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">类型</label>
             <div class="layui-input-inline">
-                <select name="t_type">
+                <select name="t_type" lay-verify="required">
                     <option value="">请选择</option>
                     {% for line in type_list_json %}
                     <option value="{{ line.type_name }}">{{ line.type_name }}</option>
@@ -47,7 +47,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">重要程度</label>
             <div class="layui-input-inline">
-                <select name="t_zycd" id="t_zycd_id">
+                <select name="t_zycd" id="t_zycd_id" lay-verify="required">
                     <option value="">请选择</option>
                     {% for line in zycd_list_json %}
                     <option value="{{ line.zycd_name }}">{{ line.zycd_name }}</option>
@@ -58,7 +58,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">紧急程度</label>
             <div class="layui-input-inline">
-                <select name="t_jjcd">
+                <select name="t_jjcd" lay-verify="required">
                     <option value="">请选择</option>
                     {% for line in jjcd_list_json %}
                     <option value="{{ line.jjcd_name }}">{{ line.jjcd_name }}</option>
@@ -110,7 +110,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">当前状态</label>
             <div class="layui-input-inline">
-                <select name="stat">
+                <select name="stat" lay-verify="required">
                     <option value="">请选择</option>
                     {% for line in stat_list_json %}
                     {% if line.stat_name == row_data.stat %}
@@ -136,13 +136,14 @@
             <label class="layui-form-label">提出时间</label>
             <div class="layui-input-inline">
                 <input type="text" name="submit_date" id="submit_date" lay-verify="required" lay-verify="datetime"
+                       disabled
                        placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">完成时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="close_date" id="close_date" lay-verify="datetime"
+                <input type="text" name="close_date" id="close_date" lay-verify="datetime" disabled
                        placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -159,17 +160,21 @@
     -->
 
     <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label">是否需继续跟进</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="genjin" lay-skin="switch" checked lay-text="是|否" value="1">
-                <!--<input type="checkbox" name="switch" lay-skin="switch">-->
+        <div class="layui-col-sm3">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否需继续跟进</label>
+                <div class="layui-inline">
+                    <input type="checkbox" name="genjin" lay-skin="switch" checked lay-text="是|否" value="1">
+                    <!--<input type="checkbox" name="switch" lay-skin="switch">-->
+                </div>
             </div>
         </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">是否得到客户验证</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="yanzheng" lay-skin="switch" lay-text="是|否" value="1">
+        <div class="layui-col-sm3">
+            <div class="layui-inline">
+                <label class="layui-form-label">是否得到客户验证</label>
+                <div class="layui-inline">
+                    <input type="checkbox" name="yanzheng" lay-skin="switch" lay-text="是|否" value="1">
+                </div>
             </div>
         </div>
     </div>
@@ -199,7 +204,7 @@
     }
 </style>
 
-<br>{{row_data}}}
+<!--<br>{{row_data}}}-->
 <!--<br>{{stat_list_json}}}-->
 <!--<br>{{type_list_json}}}-->
 <!--<br>{{zycd_list_json}}}-->

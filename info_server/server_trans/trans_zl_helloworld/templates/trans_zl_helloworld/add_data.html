@@ -12,13 +12,15 @@
         <div class="layui-inline">
             <label class="layui-form-label">运营事项</label>
             <div class="layui-input-inline">
-                <input type="text" name="title" required lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                <input type="text" name="title" required lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">影响合作行</label>
             <div class="layui-input-inline">
-                <input type="text" name="banknames" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                <input type="text" name="banknames" required lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
 
@@ -28,13 +30,15 @@
         <div class="layui-inline">
             <label class="layui-form-label">上报原因</label>
             <div class="layui-input-inline">
-                <input type="text" name="reason" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                <input type="text" name="reason" lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">处理人</label>
             <div class="layui-input-inline">
-                <input type="text" name="deal_person" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                <input type="text" name="deal_person" lay-verify="required" placeholder="" autocomplete="off"
+                       class="layui-input">
             </div>
         </div>
     </div>
@@ -58,7 +62,8 @@
         <div class="layui-inline">
             <label class="layui-form-label">期望解决时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="want_date" id="want_date" lay-verify="required" lay-verify="datetime" placeholder="yyyy-MM-dd HH:mm" autocomplete="off"
+                <input type="text" name="want_date" id="want_date" lay-verify="datetime"
+                       placeholder="yyyy-MM-dd HH:mm" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
@@ -66,7 +71,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">当前状态</label>
             <div class="layui-input-inline">
-                <select name="stat">
+                <select name="stat" lay-verify="required">
                     <option value="">请选择</option>
                     {% for line in stat_list_json %}
                     <option value="{{ line.stat_name }}">{{ line.stat_name }}</option>
@@ -130,7 +135,7 @@
             elem: '#want_date'
             , type: 'datetime'
             , format: 'yyyy-MM-dd HH:mm' //可任意组合 yyyy年MM月dd日 HH时mm分ss秒===2017年08月18日 20时08分08秒，'yyyy/mm/dd'
-            , value: '2020-01-01 18:00' //必须遵循format参数设定的格式String，默认值：new Date()
+            // , value: '2020-01-01 18:00' //必须遵循format参数设定的格式String，默认值：new Date()
         });
 
         //赋默认值
