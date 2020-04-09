@@ -148,6 +148,7 @@ def showdata2(request):
             , "close_date": var.close_date
             , "genjin": var.genjin
             , "yanzheng": var.yanzheng
+            , "beizhu": var.beizhu
         }
         list_data.append(dict_data)
         n += 1
@@ -177,6 +178,8 @@ def add_submit(request):
         , support_org=input_data.get('support_org')
         , t_stat=yything_stat.objects.get(stat_name=input_data.get('stat'))
         , diffcult=input_data.get('diffcult')
+        , t_team=input_data.get('t_team')
+        , beizhu=input_data.get('beizhu')
         , submit_person=str(user)
         # , want_date=input_data.get('want_date')
         # , want_date='2020-03-20 18:00:00'
@@ -187,6 +190,8 @@ def add_submit(request):
         y.want_date = input_data.get('want_date')
 
     try:
+        log("ready to save")
+        print(y)
         y.save()
         code = 0
         msg = '上报成功！'
@@ -266,9 +271,9 @@ def update_data(request, thing_id):
         want_date_str = rs.want_date.strftime("%Y-%m-%d %H:%M")
     log("want_date_str:" + want_date_str)
     submit_date_str = ""
-    if rs.want_date is not None:
+    if rs.submit_date is not None:
         submit_date_str = rs.submit_date.strftime("%Y-%m-%d %H:%M")
-    log("submit_date:" + submit_date_str)
+    log("submit_date_str:" + submit_date_str)
     close_date_str = ""
     if rs.close_date is not None:
         close_date_str = rs.close_date.strftime("%Y-%m-%d %H:%M")
@@ -356,7 +361,7 @@ def query_data(request, thing_id):
         want_date_str = rs.want_date.strftime("%Y-%m-%d %H:%M")
     log("want_date_str:" + want_date_str)
     submit_date_str = ""
-    if rs.want_date is not None:
+    if rs.submit_date is not None:
         submit_date_str = rs.submit_date.strftime("%Y-%m-%d %H:%M")
     log("submit_date:" + submit_date_str)
     close_date_str = ""

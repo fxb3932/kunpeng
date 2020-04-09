@@ -94,14 +94,14 @@
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">协助部门（若有）</label>
+            <label class="layui-form-label">协助部门</label>
             <div class="layui-input-inline">
                 <input type="text" name="support_org" placeholder="" autocomplete="off" class="layui-input"
                        value={{ row_data.support_org }}>
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">困难（若有）</label>
+            <label class="layui-form-label">困难</label>
             <div class="layui-input-inline">
                 <input type="text" name="difficult" placeholder="" autocomplete="off" class="layui-input"
                        value={{ row_data.difficult }}>
@@ -135,8 +135,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">提出时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="submit_date" id="submit_date" lay-verify="required" lay-verify="datetime"
-                       disabled
+                <input type="text" name="submit_date" id="submit_date" lay-verify="datetime" disabled
                        placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -238,6 +237,7 @@
             , "stat": "{{ row_data.stat }}" // "name": "value"
             , "diffcult": "{{ row_data.diffcult }}" // "name": "value"
             , "submit_date": "{{ row_data.submit_date }}" // "name": "value"
+            , "want_date": "{{ row_data.want_date }}" // "name": "value"
             , "close_date": "{{ row_data.close_date }}" // "name": "value"
             , "beizhu": "{{ row_data.beizhu }}" // "name": "value"
             , "t_team": "{{ row_data.t_team }}" // "name": "value"
@@ -249,7 +249,7 @@
             // , "want_date": "{{ row_data.want_date }}" // "name": "value"
             // , "want_date": "{{ row_data.want_date }}" // "name": "value"
         });
-        console.log("data.field.yanzheng : " + "{{ row_data.genjin }}")
+        console.log("data.field.submit_date : " + "{{ row_data.submit_date }}")
         console.log("data.field.genjin : " + "{{ row_data.yanzheng }}")
         form.render();
         var index = layedit.build('fwb_text'); //建立编辑器
