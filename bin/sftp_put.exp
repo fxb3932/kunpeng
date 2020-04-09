@@ -1,0 +1,27 @@
+#!/usr/bin/expect
+
+set ip [lindex $argv 0]
+set user [lindex $argv 1]
+set passwd [lindex $argv 2]
+set localfile [lindex $argv 3]
+set remotedir [lindex $argv 4]
+set filedir [lindex $argv 5]
+set port [lindex $argv 6]
+
+spawn sftp -oPort=$port $user@$ip
+set timeout  30
+
+expect {
+    "*\[Aa\]\[Ss\]\[Ss\]\[Ww\]\[Oo\]\[Rr\]\[Dd\]:" { sleep 1;send "$passwd\r"}
+}
+expect {
+    "sftp>" {send "mkdir $filedir\r"}
+}
+expect {
+    "sftp>" {send "put $localfile $remotedir\r"}
+}
+expect {
+    "sftp>" {send "exit"}
+}
+
+spawn echo \r

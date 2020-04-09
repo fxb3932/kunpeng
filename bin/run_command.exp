@@ -1,0 +1,40 @@
+#!/usr/bin/expect
+
+set ip [lindex $argv 0]
+set user [lindex $argv 1]
+set passwd [lindex $argv 2]
+set command [lindex $argv 3]
+
+#spawn telnet $ip
+spawn ssh $user@$ip
+set timeout 30
+
+expect {
+	"yes/no" { send "yes\r";exp_continue }
+	"*\[Aa\]\[Ss\]\[Ss\]\[Ww\]\[Oo\]\[Rr\]\[Dd\]:" { sleep 1;send "$passwd\r" }
+	"*$*"  {send "LANG=en_US.UTF-8\r"}
+	"*>*"  {send "LANG=en_US.UTF-8\r"}
+	"*#*"  {send "LANG=en_US.UTF-8\r"}
+	"*]*"  {send "LANG=en_US.UTF-8\r"}
+}
+
+expect {
+	"*$*"  {send "LANG=en_US.UTF-8\r"}
+	"*>*"  {send "LANG=en_US.UTF-8\r"}
+	"*#*"  {send "LANG=en_US.UTF-8\r"}
+	"*]*"  {send "LANG=en_US.UTF-8\r"}
+}
+
+expect {
+	"*$*"  {send "$command\r"}
+	"*>*"  {send "$command\r"}
+	"*#*"  {send "$command\r"}
+	"*]*"  {send "$command\r"}
+}
+expect {
+	"*$*"  {send "exit\r"}
+	"*>*"  {send "exit\r"}
+	"*#*"  {send "exit\r"}
+	"*]*"  {send "exit\r"}
+}
+spawn echo \r

@@ -1,0 +1,22 @@
+#!/usr/bin/expect
+
+set ip [lindex $argv 0]
+set user [lindex $argv 1]
+set passwd [lindex $argv 2]
+set localfile [lindex $argv 3]
+set remotedir [lindex $argv 4]
+
+#spawn telnet $ip
+spawn scp $localfile $user@$ip:$remotedir
+set timeout  30
+
+expect {
+        "yes/no" { send "yes\r";exp_continue }
+        "*\[Aa\]\[Ss\]\[Ss\]\[Ww\]\[Oo\]\[Rr\]\[Dd\]:" { sleep 1;send "$passwd\r" }
+}
+
+expect {
+	"*assword:" {send "$passwd\r"}
+}
+
+spawn echo \r
