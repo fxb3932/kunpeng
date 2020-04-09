@@ -9,6 +9,7 @@ urlpatterns = [
     path('abcd/show', views.showdata1, name='showdata1'),
     path('abcd/show2', views.showdata2, name='showdata2'),
     path('abcd/<int:thing_id>/update', views.update_data, name='update_data'),
+    path('abcd/<int:thing_id>/delete', views.delete_data, name='delete_data'),
     path('abcd/<int:thing_id>/query', views.query_data, name='query_data'),
     path('abcd/<int:thing_id>/update_submit', views.update_submit, name='update_submit')
     # path('fxb_test/', views.fxb_test, name='fxb_test'),

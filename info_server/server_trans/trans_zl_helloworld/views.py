@@ -21,7 +21,12 @@ def getListJson():
     type_list_json.clear()
     zycd_list_json.clear()
     jjcd_list_json.clear()
-    stat_list = yything_stat.objects.all()
+    ys = yything_stat(
+        stat_id=1
+        , stat_name="全部"
+    )
+    # stat_list = yything_stat.objects.filter(stat_id__gt=1)
+    stat_list = yything_stat.objects.exclude(stat_id=1)
     type_list = enum_type.objects.all()
     zycd_list = enum_zycd.objects.all()
     jjcd_list = enum_jjcd.objects.all()
@@ -57,7 +62,14 @@ def showdata1(request):
     log('start showdata')
     getListJson()
     # s_date = time.strftime('%Y-%m-%d', time.localtime())
-
+    stat_list_json.clear()
+    stat_list = yything_stat.objects.all()
+    for var in stat_list:
+        dict_data = {
+            "stat_id": var.stat_id
+            , "stat_name": var.stat_name
+        }
+        stat_list_json.append(dict_data)
     req = {
         'title': 'abcd'
         # , 'date': s_date
@@ -94,19 +106,31 @@ def showdata2(request):
     response = ""
     rs = []
     if query_stat == "全部":
-        rs = yything.objects.all()
+        rs = yything.objects.all().order_by("-submit_date")
     else:
         ys = yything_stat.objects.filter(stat_name=query_stat).first()
-        rs = yything.objects.filter(t_stat=ys.stat_id)
+        rs = yything.objects.filter(t_stat=ys.stat_id).order_by("-submit_date")
 
     n = 0
     for var in rs:
         # ys = yything_stat.objects.filter(id=str(var.t_stat))
         # print(ys.stat_name)
         try:
-            stat_name = var.t_stat.stat_name
+            stat_str = var.t_stat.stat_name
         except:
-            stat_name = ''
+            stat_str = ''
+        try:
+            type_str = var.t_type.type_name
+        except:
+            type_str = ''
+        try:
+            zycd_str = var.t_zycd.zycd_name
+        except:
+            zycd_str = ''
+        try:
+            jjcd_str = var.t_jjcd.jjcd_name
+        except:
+            jjcd_str = ''
         dict_data = {
             "thing_id": var.id
             , "title": var.title
@@ -114,7 +138,10 @@ def showdata2(request):
             , "banknames": var.banknames
             , "deal_person": var.deal_person
             , "support_org": var.support_org
-            , "stat": stat_name
+            , "t_stat": stat_str
+            , "t_type": type_str
+            , "t_zycd": zycd_str
+            , "t_jjcd": jjcd_str
             , "diffcult": var.diffcult
             , "want_date": var.want_date
             , "submit_date": var.submit_date
@@ -150,12 +177,14 @@ def add_submit(request):
         , support_org=input_data.get('support_org')
         , t_stat=yything_stat.objects.get(stat_name=input_data.get('stat'))
         , diffcult=input_data.get('diffcult')
-        , submit_person=input_data.get('user')
-        , want_date=input_data.get('want_date')
+        , submit_person=str(user)
+        # , want_date=input_data.get('want_date')
         # , want_date='2020-03-20 18:00:00'
         , submit_date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         # , close_date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     )
+    if input_data.get('want_date') != '':
+        y.want_date = input_data.get('want_date')
 
     try:
         y.save()
@@ -192,6 +221,37 @@ def add_data(request):
 
 
 @csrf_exempt
+def delete_data(request, thing_id):
+    log('start delete_data')
+    user = request.user
+    log(user)
+
+    print('thing_id = [' + str(thing_id) + ']')
+    rs = yything.objects.get(id=thing_id)
+
+    auth_person = []
+    auth_person.append("zhangyongwei")
+    auth_person.append("fanbowen")
+    auth_person.append(rs.submit_person)
+    auth_person.append(rs.deal_person)
+    print(auth_person)
+    if str(user) != 'zhangyongwei' and str(user) != rs.submit_person and str(user) != rs.deal_person:
+        # if auth_person.__contains__(str(user)):
+        resp = {
+            "code": "0"
+            , "msg": "仅生产调度人员、提交人、处理人可删除！"
+        }
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
+    rs.delete()
+    resp = {
+        "code": "0"
+        , "msg": "删除成功！"
+    }
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+@csrf_exempt
 def update_data(request, thing_id):
     log('start update_data')
     print('thing_id = [' + str(thing_id) + ']')
@@ -201,18 +261,22 @@ def update_data(request, thing_id):
 
     rs = yything.objects.get(id=thing_id)
     print(rs)
-    want_date_str = "1900-01-01 00:00"
+    want_date_str = ""
     if rs.want_date is not None:
         want_date_str = rs.want_date.strftime("%Y-%m-%d %H:%M")
     log("want_date_str:" + want_date_str)
-    submit_date_str = "1900-01-01 00:00"
+    submit_date_str = ""
     if rs.want_date is not None:
         submit_date_str = rs.submit_date.strftime("%Y-%m-%d %H:%M")
     log("submit_date:" + submit_date_str)
-    close_date_str = "1900-01-01 00:00"
+    close_date_str = ""
     if rs.close_date is not None:
         close_date_str = rs.close_date.strftime("%Y-%m-%d %H:%M")
     log("close_date:" + close_date_str)
+    beizhu_str = ""
+    if rs.beizhu is not None:
+        beizhu_str = rs.beizhu.replace("\n", "\\n")
+    log("beizhu_str:" + beizhu_str)
 
     stat_name = ''
     type_name = ''
@@ -238,12 +302,6 @@ def update_data(request, thing_id):
         jjcd_name = rs.t_jjcd.jjcd_name
     except:
         jjcd_name = ''
-
-    beizhu_str = '';
-    log("beizhu: " + rs.beizhu)
-    if rs.beizhu is None:
-        beizhu_str = ''
-    log("beizhu_str: " + beizhu_str)
 
     row_data = []
     dict_data = {
@@ -293,10 +351,18 @@ def query_data(request, thing_id):
 
     rs = yything.objects.get(id=thing_id)
     print(rs)
-    want_date_str = "1900-01-01 00:00"
+    want_date_str = ""
     if rs.want_date is not None:
         want_date_str = rs.want_date.strftime("%Y-%m-%d %H:%M")
-    log("want_date_str:" + str(rs.want_date))
+    log("want_date_str:" + want_date_str)
+    submit_date_str = ""
+    if rs.want_date is not None:
+        submit_date_str = rs.submit_date.strftime("%Y-%m-%d %H:%M")
+    log("submit_date:" + submit_date_str)
+    close_date_str = ""
+    if rs.close_date is not None:
+        close_date_str = rs.close_date.strftime("%Y-%m-%d %H:%M")
+    log("close_date:" + close_date_str)
 
     stat_name = ''
     type_name = ''
@@ -323,6 +389,10 @@ def query_data(request, thing_id):
     except:
         jjcd_name = ''
 
+    bz_str = ''
+    if rs.beizhu is not None:
+        bz_str = rs.beizhu.replace("\n", "\\n")
+
     row_data = []
     dict_data = {
         "title": rs.title
@@ -335,9 +405,9 @@ def query_data(request, thing_id):
         , "stat": stat_name
         , "diffcult": rs.diffcult
         , "want_date": want_date_str
-        , "submit_date": rs.submit_date
-        , "close_date": rs.close_date
-        , "beizhu": rs.beizhu
+        , "submit_date": submit_date_str
+        , "close_date": close_date_str
+        , "beizhu": bz_str
         , "t_team": rs.t_team
         , "t_type": type_name
         , "t_zycd": zycd_name
@@ -357,6 +427,7 @@ def query_data(request, thing_id):
         , 'type_list_json': type_list_json
         , 'zycd_list_json': zycd_list_json
         , 'jjcd_list_json': jjcd_list_json
+        , 'date_now': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     }
     return render(request, 'trans_zl_helloworld/query_data.html', resp)
 
@@ -368,11 +439,7 @@ def update_submit(request, thing_id):
     log(user)
     input_data = json.loads(request.POST.get('input_data'))
     log("input_data" + str(input_data))
-    log("input_data.stat : " + str(input_data.get('stat')))
 
-    # thing_id = input_data.get('id')
-    # log('thing_id : ' + thing_id)
-    print(thing_id)
     yything_stat.objects.filter(stat_name=input_data.get('stat'))
 
     rowdata = yything.objects.get(id=thing_id)
@@ -384,17 +451,26 @@ def update_submit(request, thing_id):
     rowdata.deal_person = input_data.get('deal_person')
     rowdata.t_team = input_data.get('t_team')
     rowdata.support_org = input_data.get('support_org')
+    rowdata.beizhu = input_data.get('beizhu')
     rowdata.t_stat = yything_stat.objects.get(stat_name=input_data.get('stat'))
     rowdata.t_type = enum_type.objects.get(type_name=input_data.get('t_type'))
     rowdata.t_zycd = enum_zycd.objects.get(zycd_name=input_data.get('t_zycd'))
     rowdata.t_jjcd = enum_jjcd.objects.get(jjcd_name=input_data.get('t_jjcd'))
     rowdata.diffcult = input_data.get('difficult')
-    rowdata.want_date = input_data.get('want_date')
-    rowdata.submit_date = input_data.get('submit_date')
-    rowdata.close_date = input_data.get('close_date')
-    rowdata.genjin = input_data.get('genjin')
-    rowdata.yanzheng = input_data.get('yanzheng')
-    rowdata.beizhu = input_data.get('beizhu')
+    if input_data.get('want_date') != '':
+        rowdata.want_date = input_data.get('want_date')
+    # if input_data.get('submit_date') != '':
+    #     rowdata.submit_date = input_data.get('submit_date')
+    if input_data.get('stat') == '已完成':
+        rowdata.close_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    if input_data.get('yanzheng') is not None:
+        rowdata.yanzheng = input_data.get('yanzheng')
+    else:
+        rowdata.yanzheng = ''
+    if input_data.get('genjin') is not None:
+        rowdata.genjin = input_data.get('genjin')
+    else:
+        rowdata.genjin = ''
 
     rowdata.save()
     resp = {

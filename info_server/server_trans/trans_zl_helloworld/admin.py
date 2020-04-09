@@ -14,4 +14,6 @@ class yything(admin.ModelAdmin):
     )
     # fields = ('rjxf_id', 'rjxf_type') @
 admin.site.register(models.yything, yything)
-admin.site.register(models.yything_stat)
+admin.site.register(models.enum_type)
+admin.site.register(models.enum_zycd)
+admin.site.register(models.enum_jjcd)
