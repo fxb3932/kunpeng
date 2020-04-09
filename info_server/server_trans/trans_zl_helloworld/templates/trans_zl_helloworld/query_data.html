@@ -237,7 +237,7 @@
             // , "want_date": "{{ row_data.want_date }}" // "name": "value"
         });
         $("#bz").html(" {{row_data.beizhu}}".replace("\n", "<br/>"));
-        if ("{{ row_data.close_date }}" != "" && "{{ date_now }}" > "{{ row_data.want_date }}") {
+        if ("{{ row_data.stat }}" != "已完成" && "{{ date_now }}" > "{{ row_data.want_date }}") {
             $("#qwsj").css({
                 'color': 'red',
             });
@@ -245,34 +245,6 @@
         var tl = "{{type_list_json}}";
         console.log(tl);
         console.log("{{row_data.t_type}}");
-        // if ("{{ row_data.t_type }}" == "事件") {
-        //     $("#lx").css({
-        //         // 'color': 'red',
-        //         // 'background-color': '#FFB5B5'
-        //         'background-color': '#FFB5B5'
-        //     });
-        // }
-        // else if ("{{ row_data.t_type }}" == "软件更新") {
-        //     $("#lx").css({
-        //         'background-color': '#DEFFAC'
-        //     });
-        // } else if ("{{ row_data.t_type }}" == "投诉") {
-        //     $("#lx").css({
-        //         'background-color': '#FFAD86'
-        //     });
-        // } else if ("{{ row_data.t_type }}" == "需求") {
-        //     $("#lx").css({
-        //         'background-color': '#C7C7E2'
-        //     });
-        // } else if ("{{ row_data.t_type }}" == "一般变更") {
-        //     $("#lx").css({
-        //         'background-color': '#CDCD9A'
-        //     });
-        // } else if ("{{ row_data.t_type }}" == "重大变更") {
-        //     $("#lx").css({
-        //         'background-color': '#ff7575'
-        //     });
-        // }
     });
 </script>
 {% endblock %}
