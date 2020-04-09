@@ -16,10 +16,10 @@ class yything(models.Model):
     yanzheng = models.CharField(max_length=16, blank=True, null=False)  # 是否得到客户验证
 
     # 问题制作时间、下发完成时间、操作人
-    want_date = models.DateTimeField(null=True, blank=False)  # 期望完成时间
+    want_date = models.DateTimeField(null=True, blank=True)  # 期望完成时间
     submit_person = models.CharField(max_length=64, blank=True, null=False)  # 报告人
-    submit_date = models.DateTimeField(null=False, blank=True)  # 提出时间
-    close_date = models.DateTimeField(null=False, blank=True)  # 实际完成时间
+    submit_date = models.DateTimeField(null=True, blank=True)  # 提出时间
+    close_date = models.DateTimeField(null=True, blank=True)  # 实际完成时间
     t_stat = models.ForeignKey("yything_stat", on_delete=models.PROTECT, blank=True, null=True)  # 状态
     t_type = models.ForeignKey("enum_type", on_delete=models.PROTECT, blank=True, null=True)  # 类型
     t_zycd = models.ForeignKey("enum_zycd", on_delete=models.PROTECT, blank=True, null=True)  # 重要程度

@@ -86,11 +86,11 @@
 
     <div class="layui-row">
         <div class="layui-col-sm3">
-            <div class="grid-demo grid-demo-bg1">
+            <div class="grid-demo grid-demo-bg1" id="lx0">
                 <fieldset class="layui-elem-field">
                     <legend>类型</legend>
-                    <div class="layui-field-box">
-                        {{row_data.t_type}}
+                    <div class="layui-field-box" id="lx">
+                        <span id="lx2">{{row_data.t_type}}</span>
                     </div>
                 </fieldset>
             </div>
@@ -142,7 +142,7 @@
             <div class="grid-demo">
                 <fieldset class="layui-elem-field">
                     <legend>期望解决时间</legend>
-                    <div class="layui-field-box">
+                    <div class="layui-field-box" id="qwsj">
                         {{row_data.want_date}}
                     </div>
                 </fieldset>
@@ -152,7 +152,7 @@
             <div class="grid-demo grid-demo-bg1">
                 <fieldset class="layui-elem-field">
                     <legend>完成时间</legend>
-                    <div class="layui-field-box">
+                    <div class="layui-field-box" id="wcsj">
                         {{row_data.close_date}}
                     </div>
                 </fieldset>
@@ -192,13 +192,13 @@
 
     <fieldset class="layui-elem-field">
         <legend>备注</legend>
-        <div class="layui-field-box">
+        <div class="layui-field-box" id="bz">
             {{row_data.beizhu}}
         </div>
     </fieldset>
 
 </form>
-
+<!--<br/> {{row_data.beizhu}}-->
 <script>
     layui.config({
         base: '/static/' //静态资源所在路径
@@ -236,7 +236,43 @@
             // , "want_date": "{{ row_data.want_date }}" // "name": "value"
             // , "want_date": "{{ row_data.want_date }}" // "name": "value"
         });
-
+        $("#bz").html(" {{row_data.beizhu}}".replace("\n", "<br/>"));
+        if ("{{ row_data.close_date }}" != "" && "{{ date_now }}" > "{{ row_data.want_date }}") {
+            $("#qwsj").css({
+                'color': 'red',
+            });
+        }
+        var tl = "{{type_list_json}}";
+        console.log(tl);
+        console.log("{{row_data.t_type}}");
+        // if ("{{ row_data.t_type }}" == "事件") {
+        //     $("#lx").css({
+        //         // 'color': 'red',
+        //         // 'background-color': '#FFB5B5'
+        //         'background-color': '#FFB5B5'
+        //     });
+        // }
+        // else if ("{{ row_data.t_type }}" == "软件更新") {
+        //     $("#lx").css({
+        //         'background-color': '#DEFFAC'
+        //     });
+        // } else if ("{{ row_data.t_type }}" == "投诉") {
+        //     $("#lx").css({
+        //         'background-color': '#FFAD86'
+        //     });
+        // } else if ("{{ row_data.t_type }}" == "需求") {
+        //     $("#lx").css({
+        //         'background-color': '#C7C7E2'
+        //     });
+        // } else if ("{{ row_data.t_type }}" == "一般变更") {
+        //     $("#lx").css({
+        //         'background-color': '#CDCD9A'
+        //     });
+        // } else if ("{{ row_data.t_type }}" == "重大变更") {
+        //     $("#lx").css({
+        //         'background-color': '#ff7575'
+        //     });
+        // }
     });
 </script>
 {% endblock %}
