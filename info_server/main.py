@@ -139,7 +139,7 @@ def auth(data):
         msg = '该功能需要在生产终端上才可以访问哟：）'
         print(user.is_authenticated)
     elif data.get('net_sc') == True and data.get('request').META.get('REMOTE_ADDR')[0:9] == '163.11.1.':
-        msg = '该功能需要在生产终端上才可以访问哟：）'
+        msg = '该功能禁止在生产终端上使用：）'
         print(user.is_authenticated)
     elif login == True and user.is_authenticated != True:
         msg = '该功能需要登陆才能访问：）'
@@ -150,7 +150,10 @@ def auth(data):
         code = True
         msg = '权限检查通过'
 
+    resp_msg = {'code': code, 'msg': msg}
+    print(resp_msg)
 
-    return {'code': code, 'msg': msg}
+
+    return resp_msg
 
 

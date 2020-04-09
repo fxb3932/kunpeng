@@ -133,6 +133,20 @@ def new_text_upload(request):
 
 @csrf_exempt
 def upload_file(request):
+
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net_sc': True
+        , 'login': True
+        , 'debug': True
+        , 'perm': ''
+    }
+    resp_auth = main.auth(auth_data)
+    if resp_auth.get('code') == False:
+        resp = resp_auth
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
     file_pwd = os.getcwd() + '/static/app/search_problem/file/'
     file_obj = request.FILES.get('file', None)
     s_date = time.strftime('%Y-%m-%d-%H:%M:%S', time.localtime())
