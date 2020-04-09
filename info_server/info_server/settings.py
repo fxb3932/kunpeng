@@ -32,7 +32,7 @@ X_FRAME_OPTIONS = 'ALLOWALL'
 
 # Session的cookie失效日期（秒）（默认）
 SESSION_COOKIE_AGE = 43200
-SESSION_SAVE_EVERY_REQUEST = True
+# SESSION_SAVE_EVERY_REQUEST = True
 
 
 
@@ -169,5 +169,6 @@ USE_TZ = False
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "/home/insp_ap/kunpeng/info_server/static"),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "/var/www")
