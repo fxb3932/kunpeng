@@ -1,0 +1,13 @@
+#!/usr/bin/expect
+
+set ip [lindex $argv 0]
+set user [lindex $argv 1]
+set passwd [lindex $argv 2]
+set localfile [lindex $argv 3]
+set remotedir [lindex $argv 4]
+
+#spawn telnet $ip
+spawn scp -r $localfile $user@$ip:$remotedir
+set timeout  30
+
+spawn echo \r

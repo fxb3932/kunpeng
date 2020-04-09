@@ -1,0 +1,18 @@
+#!/usr/bin/expect
+
+set passwd Cibwh1685/
+
+#spawn telnet $ip
+spawn su - oracle
+set timeout 600
+
+expect {
+        "√‹¬Î" { send "$passwd\r" }
+}
+
+expect {
+        "oracle" { send "chmod -R 777 /oracle/oradata/sjtq\r"}
+}
+
+spawn echo \r
+
