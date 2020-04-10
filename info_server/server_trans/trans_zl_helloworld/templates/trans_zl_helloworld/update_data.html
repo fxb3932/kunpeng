@@ -30,8 +30,14 @@
         <div class="layui-inline">
             <label class="layui-form-label">影响合作行</label>
             <div class="layui-input-inline">
-                <input type="text" name="banknames" required lay-verify="required" placeholder="" autocomplete="off"
-                       class="layui-input" value={{ row_data.banknames }}>
+                <!--<input type="text" name="banknames" required lay-verify="required" placeholder="" autocomplete="off"-->
+                <!--class="layui-input" value={{ row_data.banknames }}>-->
+                <select name="banknames" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in bank_list_json %}
+                    <option value="{{ line.bank_name }}">{{ line.bank_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
     </div>
@@ -79,29 +85,47 @@
         <div class="layui-inline">
             <label class="layui-form-label">处理人</label>
             <div class="layui-input-inline">
-                <input type="text" name="deal_person" lay-verify="required" placeholder="" autocomplete="off"
-                       class="layui-input">
+                <!--<input type="text" name="deal_person" lay-verify="required" placeholder="" autocomplete="off"-->
+                <!--class="layui-input">-->
+                <select name="deal_person" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in person_list_json %}
+                    <option value="{{ line.person_name }}">{{ line.person_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label">处理团队</label>
             <div class="layui-input-inline">
-                <input type="text" name="t_team" placeholder="" autocomplete="off"
-                       class="layui-input">
+                <!--<input type="text" name="t_team" placeholder="" autocomplete="off"-->
+                <!--class="layui-input">-->
+                <select name="t_team" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in team_list_json %}
+                    <option value="{{ line.team_name }}">{{ line.team_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
     </div>
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">协助部门（若有）</label>
+            <label class="layui-form-label">协助部门</label>
             <div class="layui-input-inline">
-                <input type="text" name="support_org" placeholder="" autocomplete="off" class="layui-input"
-                       value={{ row_data.support_org }}>
+                <!--<input type="text" name="support_org" placeholder="" autocomplete="off" class="layui-input"-->
+                <!--value={{ row_data.support_org }}>-->
+                <select name="support_org" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in department_list_json %}
+                    <option value="{{ line.department_name }}">{{ line.department_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">困难（若有）</label>
+            <label class="layui-form-label">困难</label>
             <div class="layui-input-inline">
                 <input type="text" name="difficult" placeholder="" autocomplete="off" class="layui-input"
                        value={{ row_data.difficult }}>
@@ -135,8 +159,7 @@
         <div class="layui-inline">
             <label class="layui-form-label">提出时间</label>
             <div class="layui-input-inline">
-                <input type="text" name="submit_date" id="submit_date" lay-verify="required" lay-verify="datetime"
-                       disabled
+                <input type="text" name="submit_date" id="submit_date" lay-verify="datetime" disabled
                        placeholder="yyyy-MM-dd HH:mm" autocomplete="off" class="layui-input">
             </div>
         </div>
@@ -238,6 +261,7 @@
             , "stat": "{{ row_data.stat }}" // "name": "value"
             , "diffcult": "{{ row_data.diffcult }}" // "name": "value"
             , "submit_date": "{{ row_data.submit_date }}" // "name": "value"
+            , "want_date": "{{ row_data.want_date }}" // "name": "value"
             , "close_date": "{{ row_data.close_date }}" // "name": "value"
             , "beizhu": "{{ row_data.beizhu }}" // "name": "value"
             , "t_team": "{{ row_data.t_team }}" // "name": "value"
@@ -246,10 +270,8 @@
             , "t_jjcd": "{{ row_data.t_jjcd }}" // "name": "value"
             , "genjin": "{{ row_data.genjin }}" // "name": "value"
             , "yanzheng": "{{ row_data.yanzheng }}" // "name": "value"
-            // , "want_date": "{{ row_data.want_date }}" // "name": "value"
-            // , "want_date": "{{ row_data.want_date }}" // "name": "value"
         });
-        console.log("data.field.yanzheng : " + "{{ row_data.genjin }}")
+        console.log("data.field.submit_date : " + "{{ row_data.submit_date }}")
         console.log("data.field.genjin : " + "{{ row_data.yanzheng }}")
         form.render();
         var index = layedit.build('fwb_text'); //建立编辑器

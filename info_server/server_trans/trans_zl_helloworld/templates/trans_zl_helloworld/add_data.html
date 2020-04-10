@@ -10,34 +10,29 @@
 <form class="layui-form" action="" lay-filter="example">
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">运营事项</label>
+            <label class="layui-form-label">运营事项*</label>
             <div class="layui-input-inline">
                 <input type="text" name="title" required lay-verify="required" placeholder="" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">影响合作行</label>
+            <label class="layui-form-label">影响合作行*</label>
             <div class="layui-input-inline">
-                <input type="text" name="banknames" required lay-verify="required" placeholder="" autocomplete="off"
-                       class="layui-input">
+                <!--<input type="text" name="banknames" required lay-verify="required" placeholder="" autocomplete="off"-->
+                       <!--class="layui-input">-->
+                <select name="banknames" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in bank_list_json %}
+                    <option value="{{ line.bank_name }}">{{ line.bank_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
-
-    </div>
-
-    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">上报原因</label>
             <div class="layui-input-inline">
-                <input type="text" name="reason" lay-verify="required" placeholder="" autocomplete="off"
-                       class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">处理人</label>
-            <div class="layui-input-inline">
-                <input type="text" name="deal_person" lay-verify="required" placeholder="" autocomplete="off"
+                <input type="text" name="reason" placeholder="" autocomplete="off"
                        class="layui-input">
             </div>
         </div>
@@ -45,20 +40,52 @@
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">协助部门（若有）</label>
+            <label class="layui-form-label">处理人*</label>
             <div class="layui-input-inline">
-                <input type="text" name="support_org" placeholder="" autocomplete="off" class="layui-input">
+                <!--<input type="text" name="deal_person" lay-verify="required" placeholder="" autocomplete="off"-->
+                <!--class="layui-input">-->
+                <select name="deal_person" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in person_list_json %}
+                    <option value="{{ line.person_name }}">{{ line.person_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">困难（若有）</label>
+            <label class="layui-form-label">处理团队*</label>
+            <div class="layui-input-inline">
+                <!--<input type="text" name="t_team" placeholder="" lay-verify="required" autocomplete="off"-->
+                <!--class="layui-input">-->
+                <select name="t_team" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in team_list_json %}
+                    <option value="{{ line.team_name }}">{{ line.team_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">协助部门</label>
+            <div class="layui-input-inline">
+                <!--<input type="text" name="support_org" placeholder="" autocomplete="off" class="layui-input">-->
+                <select name="support_org" lay-search="" lay-filter="select_filter">
+                    <option value="">直接选择或搜索选择</option>
+                    {% for line in department_list_json %}
+                    <option value="{{ line.department_name }}">{{ line.department_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">困难</label>
             <div class="layui-input-inline">
                 <input type="text" name="diffcult" placeholder="" autocomplete="off" class="layui-input">
             </div>
         </div>
-    </div>
-
-    <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label">期望解决时间</label>
             <div class="layui-input-inline">
@@ -67,9 +94,8 @@
                        class="layui-input">
             </div>
         </div>
-
         <div class="layui-inline">
-            <label class="layui-form-label">当前状态</label>
+            <label class="layui-form-label">当前状态*</label>
             <div class="layui-input-inline">
                 <select name="stat" lay-verify="required">
                     <option value="">请选择</option>
@@ -85,10 +111,10 @@
         </div>
     </div>
 
-    <div class="layui-form-item" hidden="true">
-        <label class="layui-form-label">详细信息</label>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注</label>
         <div class="layui-input-block">
-            <textarea id="fwb_text" style="display: none;"></textarea>
+            <textarea name="beizhu" placeholder="请输入内容" class="layui-textarea"></textarea>
         </div>
     </div>
 
@@ -160,7 +186,7 @@
                     console.log(data);
 
                     layer.msg(data.msg, {
-                        time: 60000, //20s后自动关闭
+                        time: 5000, //20s后自动关闭
                         btn: ['知道了']
                     });
 

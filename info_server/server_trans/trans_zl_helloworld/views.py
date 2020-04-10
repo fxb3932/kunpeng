@@ -1,19 +1,24 @@
-from cmdb.models import config
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt  # 可post调用url
-import json
 import time
-from .models import *
-from .commonutil import *
 
 # Create your views here.
 import main
+from cmdb.models import i_bank
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt  # 可post调用url
+
+from .commonutil import *
+from .models import *
 
 stat_list_json = []
 type_list_json = []
 zycd_list_json = []
 jjcd_list_json = []
+team_list_json = []
+department_list_json = []
+person_list_json = []
+bank_list_json = []
 
 
 def getListJson():
@@ -21,6 +26,10 @@ def getListJson():
     type_list_json.clear()
     zycd_list_json.clear()
     jjcd_list_json.clear()
+    team_list_json.clear()
+    department_list_json.clear()
+    person_list_json.clear()
+    bank_list_json.clear()
     ys = yything_stat(
         stat_id=1
         , stat_name="全部"
@@ -30,6 +39,10 @@ def getListJson():
     type_list = enum_type.objects.all()
     zycd_list = enum_zycd.objects.all()
     jjcd_list = enum_jjcd.objects.all()
+    team_list = enum_team.objects.all()
+    department_list = enum_department.objects.all()
+    person_list = User.objects.all()
+    bank_list = i_bank.objects.all()
 
     for var in stat_list:
         dict_data = {
@@ -55,6 +68,27 @@ def getListJson():
             "jjcd_name": var.jjcd_name
         }
         jjcd_list_json.append(dict_data)
+    for var in team_list:
+        dict_data = {
+            "team_name": var.team_name
+        }
+        team_list_json.append(dict_data)
+    for var in department_list:
+        dict_data = {
+            "department_name": var.department_name
+        }
+        department_list_json.append(dict_data)
+    for var in person_list:
+        dict_data = {
+            "person_name": var.first_name
+        }
+        person_list_json.append(dict_data)
+    bank_list_json.append({"bank_name": "多家行"})
+    for var in bank_list:
+        dict_data = {
+            "bank_name": var.name_ch
+        }
+        bank_list_json.append(dict_data)
 
 
 @csrf_exempt
@@ -77,6 +111,8 @@ def showdata1(request):
         , 'type_list_json': type_list_json
         , 'zycd_list_json': zycd_list_json
         , 'jjcd_list_json': jjcd_list_json
+        , 'team_list_json': team_list_json
+        , 'department_list_json': department_list_json
     }
     return render(request, 'trans_zl_helloworld/show_data.html', req)
 
@@ -148,15 +184,17 @@ def showdata2(request):
             , "close_date": var.close_date
             , "genjin": var.genjin
             , "yanzheng": var.yanzheng
+            , "beizhu": var.beizhu
         }
         list_data.append(dict_data)
         n += 1
 
     resp = {
-        "code": 0,
-        "msg": "success",
-        "count": n,
-        "data": list_data
+        "code": 0
+        , "msg": "success"
+        , "count": n
+        , "data": list_data
+        , 'date_now': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     }
 
     return HttpResponse(json.dumps(resp, cls=DateEncoder), content_type="application/json")
@@ -177,6 +215,8 @@ def add_submit(request):
         , support_org=input_data.get('support_org')
         , t_stat=yything_stat.objects.get(stat_name=input_data.get('stat'))
         , diffcult=input_data.get('diffcult')
+        , t_team=input_data.get('t_team')
+        , beizhu=input_data.get('beizhu')
         , submit_person=str(user)
         # , want_date=input_data.get('want_date')
         # , want_date='2020-03-20 18:00:00'
@@ -187,6 +227,8 @@ def add_submit(request):
         y.want_date = input_data.get('want_date')
 
     try:
+        log("ready to save")
+        print(y)
         y.save()
         code = 0
         msg = '上报成功！'
@@ -216,6 +258,10 @@ def add_data(request):
         'title': 'abcd'
         , 'date': s_date
         , 'stat_list_json': stat_list_json
+        , 'team_list_json': team_list_json
+        , 'department_list_json': department_list_json
+        , 'person_list_json': person_list_json
+        , 'bank_list_json': bank_list_json
     }
     return render(request, 'trans_zl_helloworld/add_data.html', req)
 
@@ -266,9 +312,9 @@ def update_data(request, thing_id):
         want_date_str = rs.want_date.strftime("%Y-%m-%d %H:%M")
     log("want_date_str:" + want_date_str)
     submit_date_str = ""
-    if rs.want_date is not None:
+    if rs.submit_date is not None:
         submit_date_str = rs.submit_date.strftime("%Y-%m-%d %H:%M")
-    log("submit_date:" + submit_date_str)
+    log("submit_date_str:" + submit_date_str)
     close_date_str = ""
     if rs.close_date is not None:
         close_date_str = rs.close_date.strftime("%Y-%m-%d %H:%M")
@@ -337,6 +383,10 @@ def update_data(request, thing_id):
         , 'type_list_json': type_list_json
         , 'zycd_list_json': zycd_list_json
         , 'jjcd_list_json': jjcd_list_json
+        , 'team_list_json': team_list_json
+        , 'department_list_json': department_list_json
+        , 'person_list_json': person_list_json
+        , 'bank_list_json': bank_list_json
     }
     return render(request, 'trans_zl_helloworld/update_data.html', resp)
 
@@ -356,7 +406,7 @@ def query_data(request, thing_id):
         want_date_str = rs.want_date.strftime("%Y-%m-%d %H:%M")
     log("want_date_str:" + want_date_str)
     submit_date_str = ""
-    if rs.want_date is not None:
+    if rs.submit_date is not None:
         submit_date_str = rs.submit_date.strftime("%Y-%m-%d %H:%M")
     log("submit_date:" + submit_date_str)
     close_date_str = ""
@@ -427,6 +477,8 @@ def query_data(request, thing_id):
         , 'type_list_json': type_list_json
         , 'zycd_list_json': zycd_list_json
         , 'jjcd_list_json': jjcd_list_json
+        , 'team_list_json': team_list_json
+        , 'department_list_json': department_list_json
         , 'date_now': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     }
     return render(request, 'trans_zl_helloworld/query_data.html', resp)

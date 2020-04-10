@@ -44,7 +44,7 @@
     {{#  } else if(data == '有困难'){ }}
     <span style="background-color: #FF8000">{{ data }}</span>
     {{#  } else { }}
-    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }}</span>
+    <span style="background-color: #CCFF80;color: #f5ebf5;">{{ data }}</span>
     {{#  } }}
 </script>
 <script type="text/html" id="type">
@@ -60,14 +60,14 @@
     {{#  } else if(data == '重大变更' ){ }}
     <span style="background-color: #9999CC">{{ data }}</span>
     {{#  } else if(data == '投诉'  ){ }}
-    <span style="background-color: #AD5A5A">{{ data }}</span>
+    <span style="background-color: #AD5A5A;color: #f5ebf5;">{{ data }}</span>
     {{#  } else { }}
-    <span style="background-color: #f51346;color: #f5ebf5;">{{ data }}</span>
+    <span style="background-color: #CCFF80;color: #f5ebf5;">{{ data }}</span>
     {{#  } }}
 </script>
 <script type="text/html" id="zycd">
     {{# var data = d.t_zycd; }}
-    {{# if(data == '高度'){ console.log(data) }}
+    {{# if(data == '高度'){  }}
     <span style="background-color: #FFD306;">{{ data }}</span>
     {{#  } else if(data == '中等'  ){ }}
     <span style="background-color: #FFFFB9">{{ data }}</span>
@@ -77,7 +77,7 @@
 </script>
 <script type="text/html" id="jjcd">
     {{# var data = d.t_jjcd; }}
-    {{# if(data == '高度'){ console.log(data) }}
+    {{# if(data == '高度'){  }}
     <span style="background-color: #FFD306;">{{ data }}</span>
     {{#  } else if(data == '中等'){ }}
     <span style="background-color: #FFFFB9">{{ data }}</span>
@@ -85,10 +85,26 @@
     <span style="background-color: #FFFFDF;">{{ data }}</span>
     {{#  } }}
 </script>
+<script type="text/html" id="genjin">
+    {{# var data = d.genjin; }}
+    {{# if(data == '1'){  }}
+    <input type="checkbox" lay-skin="switch" checked disabled lay-text="是|否" value="{{ data }}">
+    {{#  } else { }}
+    <input type="checkbox" lay-skin="switch" disabled lay-text="是|否" value="{{ data }}">
+    {{#  } }}
+</script>
+<script type="text/html" id="yanzheng">
+    {{# var data = d.yanzheng; }}
+    {{# if(data == '1'){ }}
+    <input type="checkbox" lay-skin="switch" checked disabled lay-text="是|否" value="{{ data }}">
+    {{#  } else { }}
+    <input type="checkbox" lay-skin="switch" disabled lay-text="是|否" value="{{ data }}">
+    {{#  } }}
+</script>
 <script type="text/html" id="rowoper">
     <a class="layui-btn layui-btn-xs" lay-event="query">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="delete">删除</a>
-    {{# var data = d.stat ; }}
+    {{# var data = d.t_stat ; }}
     {{# if(data == '已完成'){ console.log(data) }}
     <!--<a class="layui-btn layui-btn-xs"></a>-->
     {{#  } else { }}
@@ -133,15 +149,17 @@
             , {field: 't_team', title: '处理团队', width: 100, sort: true,}
             , {field: 'support_org', title: '协助部门', width: 120, sort: true,}
             , {field: 't_stat', title: '当前状态', width: 120, sort: true, templet: '#stat'}
-            , {field: 't_type', title: '类型', width: 120, sort: true, templet: '#type'}
-            , {field: 't_zycd', title: '重要程度', width: 120, sort: true, templet: '#zycd'}
-            , {field: 't_jjcd', title: '紧急程度', width: 120, sort: true, templet: '#jjcd'}
+            , {field: 't_type', title: '类型', width: 90, sort: true, templet: '#type'}
+            , {field: 't_zycd', title: '重要程度', width: 80, sort: true, templet: '#zycd'}
+            , {field: 't_jjcd', title: '紧急程度', width: 80, sort: true, templet: '#jjcd'}
             , {field: 'diffcult', title: '困难', width: 180, sort: true,}
             , {field: 'beizhu', title: '备注', width: 180, sort: true,}
-            , {field: 'submit_date', title: '提交时间', width: 200, sort: true}
-            , {field: 'want_date', title: '期望解决时间', width: 200, sort: true,}
-            , {field: 'close_date', title: '完成时间', width: 200, sort: true,}
-            , {fixed: 'right', title: '操作', width: 210, toolbar: '#rowoper',}
+            , {field: 'submit_date', title: '提交时间', width: 170, sort: true}
+            , {field: 'want_date', title: '期望解决时间', width: 170, sort: true}
+            , {field: 'close_date', title: '完成时间', width: 170, sort: true,}
+            , {field: 'genjin', title: '需跟进', width: 100, sort: true, templet: '#genjin'}
+            , {field: 'yanzheng', title: '需验证', width: 100, sort: true, templet: '#yanzheng'}
+            , {fixed: 'right', title: '操作', width: 200, toolbar: '#rowoper',}
         ];
 
         showsomething();
@@ -169,10 +187,11 @@
             );
         }
 
+        var dn;
         //监听提交
         form.on('submit(transSearch)', function (data) {
 //            layer.msg(JSON.stringify(data.field));
-            console.log(JSON.stringify(data.field));
+            console.log("request param ： " + JSON.stringify(data.field));
             obj_data = data.field;
             var index = layer.load(0);
             $.post("show2",
@@ -181,6 +200,8 @@
                     console.log("Data: " + data + "\nStatus: " + status);
                     console.log(data);
                     exportData = data;
+                    dn = data.data_now;
+                    console.log(data.data_now);
                     table.render({
                         elem: '#demo'
                         // , height: 2500
@@ -237,7 +258,7 @@
                     {"date": "", "stat": ""},
                     function (data, status) {
                         layer.msg(data.msg, {
-                            time: 60000, //20s后自动关闭
+                            time: 5000, //20s后自动关闭
                             btn: ['知道了']
                         });
                         showsomething();

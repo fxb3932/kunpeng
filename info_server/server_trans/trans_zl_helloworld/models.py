@@ -53,3 +53,17 @@ class enum_jjcd(models.Model):
 
     def __str__(self):
         return "jjcd_name : %s" % (self.jjcd_name)
+
+
+class enum_team(models.Model):
+    team_name = models.CharField(max_length=64, blank=True, null=True)
+
+    def __str__(self):
+        return "team_name : %s" % (self.team_name)
+
+
+class enum_department(models.Model):
+    department_name = models.CharField(max_length=64, blank=True, null=True)
+
+    def __str__(self):
+        return "department_name : %s" % (self.department_name)
