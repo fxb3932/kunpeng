@@ -251,6 +251,8 @@ def rjxf_tab_txt(txt):
     txt = txt.replace('\n', '<br>')
     txt = txt.replace("\\", '')
     txt = txt.replace("\t", '')
+    txt = txt.replace("\r", '')
+
 
     arr_tmp_txt = []
     for line in txt.split('<br>'):
