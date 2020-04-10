@@ -252,7 +252,8 @@ def rjxf_tab_txt(txt):
     txt = txt.replace("\\", '')
     txt = txt.replace("\t", '')
     txt = txt.replace("\r", '')
-
+    txt = txt.replace("\002", '')
+    txt = txt.replace('~', '')
 
     arr_tmp_txt = []
     for line in txt.split('<br>'):
@@ -1183,7 +1184,7 @@ class forThread(threading.Thread):
                 print(cmd)
                 resp = shell.getKey(cmd, self.event.get('line').get('ip'), self.event.get('line').get('port'))
                 try:
-                    resp_msg = resp[1].decode('gbk')
+                    resp_msg = resp[1].decode('gbk', "replace")
                 except:
                     resp_msg = str(resp[1])
                 print(resp_msg)
