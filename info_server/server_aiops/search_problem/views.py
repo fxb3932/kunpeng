@@ -436,20 +436,22 @@ def show_submit(request, info_id):
     print(fwb_data)
 
     print('type = [' + request.POST.get('type') + ']')
-
     r = info.objects.get(id=info_id)
     r.title = input_data.get('title')
+    problem_answer = BeautifulSoup(fwb_data, 'html.parser')
+    problem_answer_txt = problem_answer.get_text()
     r.problem_answer = fwb_data
-    if request.POST.get('type') == 'new':
-        r.answer_oper = request.user.first_name
-        r.answer_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    r.problem_answer_txt = problem_answer_txt
+    if len(problem_answer_txt) > 1:
+        r.t_stat = info_stat.objects.get(stat_id=1)
+        if request.POST.get('type') == 'new':
+            r.answer_oper = request.user.first_name
+            r.answer_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    else:
+        r.t_stat = info_stat.objects.get(stat_id=0)
     r.update_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    r.t_stat = info_stat.objects.get(stat_id=1)
     r.t_channel = info_channel.objects.get(code=input_data.get('channel'))
     r.t_type = info_type.objects.get(code=input_data.get('info_type'))
-
-    problem_answer = BeautifulSoup(fwb_data, 'html.parser')
-    r.problem_answer_txt = problem_answer.get_text()
     r.info_check_update = 0
 
     if input_data.get('info_check_flag') == 'on':

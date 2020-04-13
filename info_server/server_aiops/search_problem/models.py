@@ -16,7 +16,7 @@ class info(models.Model):
     bank_oper = models.CharField(max_length=32, null=True, blank=True)
     problem_source = models.CharField(max_length=32, null=True, blank=True)
 
-    #问题制作时间、下发完成时间、操作人
+    # 问题制作时间、下发完成时间、操作人
     input_date = models.DateTimeField(null=True, blank=True)
     answer_date = models.DateTimeField(null=True, blank=True)
     update_date = models.DateTimeField(null=True, blank=True)
@@ -55,7 +55,6 @@ class info(models.Model):
     # 评论
     comments_update_date = models.DateTimeField(null=True, blank=True)
     t_comments = models.ManyToManyField("info_comments", blank=True)
-
 
 
 class info_stat(models.Model):
