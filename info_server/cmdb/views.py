@@ -15,6 +15,7 @@ list_req = [
     , {'bank_id': 'east_server', 'bank_name': 'EAST', 'config_file': 'config.ini'}
     , {'bank_id': 'topfe_server', 'bank_name': '金卡前置', 'config_file': 'config.ini'}
     , {'bank_id': 'topfev3_server', 'bank_name': 'V3金卡前置', 'config_file': 'config.ini'}
+    , {'bank_id': 'cams_server', 'bank_name': 'V2集中账户', 'config_file': 'config.ini'}
 ]
 def index(request):
     print('start cmdb index')
