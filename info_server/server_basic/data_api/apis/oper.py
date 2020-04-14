@@ -43,7 +43,13 @@ def oper(request):
                 # , 'name': line_group.name
             })
 
-        list_user_info = user_info.objects.get(first_name=line.first_name)
+        # list_user_info = user_info.objects.get(first_name=line.first_name)
+        try:
+            list_user_info = user_info.objects.get(first_name=line.first_name)
+            bc_qq_code = list_user_info.qq_no
+        except:
+            bc_qq_code = ''
+
         try: bc_group_code = list_user_info.group.code
         except: bc_group_code = ''
         try: bc_group_name = list_user_info.group.name
@@ -53,7 +59,7 @@ def oper(request):
             , 'username': line.username
             , 'first_name': line.first_name
 
-            , 'bc_qq_no': list_user_info.qq_no
+            , 'bc_qq_no': bc_qq_code
             , 'bc_group_code': bc_group_code
             , 'bc_group_name': bc_group_name
 
