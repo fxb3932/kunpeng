@@ -156,4 +156,27 @@ def auth(data):
 
     return resp_msg
 
+import pymysql
+def connect_mysql(sql):
+    print('连接 mysql 数据库')
+    conn = pymysql.connect(
+        host="163.1.6.40"
+        , user="root", password="Cibwh1685/",
+        database="insp_ap",
+        charset="utf8")
 
+    cursor = conn.cursor()
+
+    print('mysql 执行SQL：')
+    print(sql)
+
+    cursor.execute(sql)
+
+    data = cursor.fetchall()
+
+    conn.close()
+
+    print('mysql 返回结果：')
+    for line in data:
+        print(line)
+    return data

@@ -55,8 +55,13 @@ admin.site.register(models.info_comments, info_comments)
 
 class action(admin.ModelAdmin):
     list_display = ('type', 'text', 'oper', 'date')  # list
+    search_fields = (
+        'text',
+        'oper',
+        'date',
+    )
 admin.site.register(models.action, action)
 
 class action_type(admin.ModelAdmin):
-    list_display = ('id', 'code', 'name')  # list
+    list_display = ('id', 'code', 'name', 'score')  # list
 admin.site.register(models.action_type, action_type)

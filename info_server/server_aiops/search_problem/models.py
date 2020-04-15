@@ -97,5 +97,6 @@ class action(models.Model):
 class action_type(models.Model):
     code = models.IntegerField()
     name = models.CharField(max_length=64)
+    score = models.IntegerField(default=0)
     def __str__(self):
         return "%s_%s" % (self.code, self.name)
