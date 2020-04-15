@@ -29,6 +29,9 @@ urlpatterns.append(path('search_problem/', search_problem.search_problem, name='
 from .apis import search_problem_count
 urlpatterns.append(path('search_problem_count/', search_problem_count.search_problem_count, name='search_problem_count'))
 
+from .apis import search_problem_score
+urlpatterns.append(path('search_problem_score/', search_problem_score.search_problem_score, name='search_problem_score'))
+
 from .apis import search_problem_count_v2
 urlpatterns.append(path('search_problem_count_v2/', search_problem_count_v2.search_problem_count_v2, name='search_problem_count_v2'))
 
