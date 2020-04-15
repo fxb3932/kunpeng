@@ -164,7 +164,7 @@ def search_problem(request):
 
         t_type = {}
         for line_sub in comm_i_info_type:
-            if line_sub.get('id') == line.t_channel_id:
+            if line_sub.get('id') == line.t_type_id:
                 t_type = {
                     "code": line_sub.get('code')
                     , "name": line_sub.get('name')
