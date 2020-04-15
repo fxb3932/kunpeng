@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class yything(models.Model):
     title = models.CharField(max_length=2048, blank=True, null=False, default='')
-    reason = models.CharField(max_length=2048, blank=True, null=True)
+    reason = models.CharField(max_length=2048, blank=True, null=False)
     banknames = models.CharField(max_length=128, blank=True, null=False)
     deal_person = models.CharField(max_length=64, blank=True, null=False)
     support_org = models.CharField(max_length=64, blank=True, null=False, default='')
