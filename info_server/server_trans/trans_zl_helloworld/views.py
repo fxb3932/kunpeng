@@ -19,6 +19,10 @@ team_list_json = []
 department_list_json = []
 person_list_json = []
 bank_list_json = []
+stat_dict = {}
+type_dict = {}
+zycd_dict = {}
+jjcd_dict = {}
 
 
 def getListJson():
@@ -49,24 +53,29 @@ def getListJson():
             "stat_id": var.stat_id
             , "stat_name": var.stat_name
         }
+        stat_dict.setdefault(var.stat_id, var.stat_name)
         stat_list_json.append(dict_data)
 
+    print(stat_dict)
     for var in type_list:
         dict_data = {
             "type_name": var.type_name
         }
+        type_dict.setdefault(var.__dict__['id'], var.type_name)
         type_list_json.append(dict_data)
 
     for var in zycd_list:
         dict_data = {
             "zycd_name": var.zycd_name
         }
+        zycd_dict.setdefault(var.__dict__['id'], var.zycd_name)
         zycd_list_json.append(dict_data)
 
     for var in jjcd_list:
         dict_data = {
             "jjcd_name": var.jjcd_name
         }
+        jjcd_dict.setdefault(var.__dict__['id'], var.jjcd_name)
         jjcd_list_json.append(dict_data)
     for var in team_list:
         dict_data = {
@@ -94,6 +103,7 @@ def getListJson():
 @csrf_exempt
 def showdata1(request):
     log('start showdata')
+
     getListJson()
     # s_date = time.strftime('%Y-%m-%d', time.localtime())
     stat_list_json.clear()
@@ -134,13 +144,14 @@ def showdata2(request):
 
     query_date = request.POST.get('date')
     query_stat = request.POST.get('stat')
-    cur_date = time.strftime('%Y-%m-%d', time.localtime())
+    cur_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    log("cur_date（before query） : " + cur_date)
     log("query_date :" + query_date)
     log("query_stat : " + query_stat)
-    log("cur_date : " + cur_date)
     list_data = []
     response = ""
     rs = []
+    t1 = time.time()
     if query_stat == "全部":
         rs = yything.objects.all().order_by("-submit_date")
     else:
@@ -152,19 +163,23 @@ def showdata2(request):
         # ys = yything_stat.objects.filter(id=str(var.t_stat))
         # print(ys.stat_name)
         try:
-            stat_str = var.t_stat.stat_name
+            # stat_str = var.t_stat.stat_name
+            stat_str = stat_dict.get(var.__dict__['t_stat_id'])
         except:
             stat_str = ''
         try:
-            type_str = var.t_type.type_name
+            # type_str = var.t_type.type_name
+            type_str = type_dict.get(var.__dict__['t_type_id'])
         except:
             type_str = ''
         try:
-            zycd_str = var.t_zycd.zycd_name
+            # zycd_str = var.t_zycd.zycd_name
+            zycd_str = zycd_dict.get(var.__dict__['t_zycd_id'])
         except:
             zycd_str = ''
         try:
-            jjcd_str = var.t_jjcd.jjcd_name
+            # jjcd_str = var.t_jjcd.jjcd_name
+            jjcd_str = jjcd_dict.get(var.__dict__['t_jjcd_id'])
         except:
             jjcd_str = ''
         dict_data = {
@@ -196,6 +211,11 @@ def showdata2(request):
         , "data": list_data
         , 'date_now': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     }
+    # cur_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    # log("cur_date（after query） : " + cur_date)
+    # t2 = time.time()
+    # t = (t2 - t1) * 1000
+    # print('query time ：' + str(t))
 
     return HttpResponse(json.dumps(resp, cls=DateEncoder), content_type="application/json")
 
