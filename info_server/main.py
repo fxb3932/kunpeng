@@ -179,8 +179,8 @@ def connect_mysql(sql):
 
     cursor = conn.cursor()
 
-    print('mysql 执行SQL：')
-    print(sql)
+    # print('mysql 执行SQL：')
+    # print(sql)
 
     cursor.execute(sql)
 
@@ -188,7 +188,7 @@ def connect_mysql(sql):
 
     conn.close()
 
-    print('mysql 返回结果：')
-    for line in data:
-        print(line)
+    # print('mysql 返回结果：')
+    # for line in data:
+    #     print(line)
     return data

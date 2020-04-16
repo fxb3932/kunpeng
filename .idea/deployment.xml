@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="fxb@163.6.255.131:22">
+  <component name="PublishConfigData" autoUpload="Always" serverName="insp_ap@163.1.6.40:19091">
     <serverData>
       <paths name="fxb@163.6.255.131:22">
         <serverdata>
           <mappings>
             <mapping deploy="/home/fxb/kunpeng" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="insp_ap@163.1.6.40:19091">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/insp_ap/devops/fxb" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>

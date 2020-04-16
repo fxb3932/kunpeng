@@ -344,15 +344,6 @@ def show(request, info_id):
     print('index show')
     print('info_id = [' + str(info_id) + ']')
 
-    # 操作记录
-    a = action(
-        type = action_type.objects.get(code=2)
-        , text = str(info_id)
-        , oper = request.user.first_name
-        , date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    )
-    a.save()
-
     # 计数
     r = info.objects.get(id=info_id)
     r.count_chick += 1
@@ -405,6 +396,36 @@ def show(request, info_id):
     for line in user_data.get('group_data'):
         if line.get('name') == '知识库管理员':
             app_auth = 1
+
+    if data.get('info_check_flag') == 1:
+        # 操作记录 认证解答被查看
+        b = action(
+            type=action_type.objects.get(code=8)
+            , text=str(info_id)
+            , oper=data.get('answer_oper')
+            , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        )
+        b.save()
+
+        # 操作记录 认证录入被查看
+        c = action(
+            type=action_type.objects.get(code=9)
+            , text=str(info_id)
+            , oper=data.get('input_oper')
+            , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        )
+        c.save()
+
+    # 操作记录
+    a = action(
+        type = action_type.objects.get(code=2)
+        , text = str(info_id)
+        , oper = request.user.first_name
+        , date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    )
+    a.save()
+
+
 
 
     resp = {

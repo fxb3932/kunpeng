@@ -78,7 +78,6 @@ def search_problem_score(request):
 
     resp = {
         'code': 0
-        , 'list_action': list_action
         , 'data': data
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
