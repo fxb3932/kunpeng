@@ -139,8 +139,11 @@ def auth(data):
     # if data.get('request').path == '/rjxf_server/show/' : net = False
 
     list_user_group = []
-    for line_group in Group.objects.filter(user=user):
-        list_user_group.append(line_group.name)
+    try:
+        for line_group in Group.objects.filter(user=user):
+            list_user_group.append(line_group.name)
+    except:
+        list_user_group = []
 
     if net == True and data.get('request').META.get('REMOTE_ADDR')[0:9] != '163.11.1.':
         msg = '该功能需要在生产终端上才可以访问哟：）'
