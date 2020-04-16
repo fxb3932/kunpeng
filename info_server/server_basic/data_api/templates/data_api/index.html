@@ -29,9 +29,10 @@
             table.render({
                 elem: '#table_api_menu'
                 , url: 'api_menu/'
+                , initSort: {field:'text', type:'asc'}
                 , cols: [[ //标题栏
                     {field: 'id', title: 'ID', width: 80, sort: true}
-                    , {field: 'text', title: '说明', width: '30%'}
+                    , {field: 'text', title: '说明', width: '30%', sort: true}
                     , {field: 'url', title: 'URL', width: '30%'}
                     , {field: 'par', title: '参数', width: '25%', edit: 'text'}
                     , {field: 'dev_oper', title: '开发者', width: '10%', edit: 'text'}

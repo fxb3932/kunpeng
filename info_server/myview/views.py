@@ -38,12 +38,13 @@ def index(request):
 
 
 
-    if user.is_authenticated == True:
-        user_id = str(user)
+    if user_data.get('is_authenticated') == True:
+        user_id = user_data.get('first_name')
     else:
         user_id = '未登陆'
     req = {
         "user_id": user_id
+        , "score": user_data.get('score')
     }
 
     for line in user_data.get('group_data'):

@@ -81,6 +81,9 @@
                             </dl>
                         {% endif %}
                     </li>
+                    <li class="layui-nav-item">
+                        <p style="color:#E53333;">积分：{{ score }}</p>
+                    </li>
 
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
                         <a href="javascript:;" layadmin-event="about"><i
@@ -214,8 +217,6 @@
                                 </dd>
                             </dl>
                         </li>
-
-
 
 
                         <li data-name="structure" class="layui-nav-item">
@@ -450,7 +451,8 @@
 
             /*
             form.val('example', {
-                "acct_type": "{{ rjxf_stat}}"
+                "acct_type": "
+            {{ rjxf_stat}}"
             });
             */
 
