@@ -497,7 +497,8 @@ def show_update(request, info_id):
         , 'net': False
         , 'login': True
         , 'debug': False
-        , 'perm': 'search_problem.add_info'
+        , 'perm': ''
+        , 'perm_group': '知识库管理员'
     }
     resp_auth = main.auth(auth_data)
     print('user : ' + request.user.first_name)

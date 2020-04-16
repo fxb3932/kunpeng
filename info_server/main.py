@@ -105,6 +105,8 @@ def auth_net(request):
 #         print('权限检查通过')
 #         return True, '权限检查通过'
 
+from django.contrib.auth.models import Group
+
 # 权限检查
 # auth_data = {
 #     'request': request
@@ -113,6 +115,7 @@ def auth_net(request):
 #     , 'login': False      # 为 True 则限制必则登陆
 #     , 'debug': False
 #     , 'perm': 'rjxf_make' # 权限检查
+#     , 'perm_group': '知识库管理员'
 # }
 # resp_auth = main.auth(auth_data)
 # if resp_auth.get('code') == False:
@@ -135,6 +138,10 @@ def auth(data):
     if data.get('debug') == True : net = False
     # if data.get('request').path == '/rjxf_server/show/' : net = False
 
+    list_user_group = []
+    for line_group in Group.objects.filter(user=user):
+        list_user_group.append(line_group.name)
+
     if net == True and data.get('request').META.get('REMOTE_ADDR')[0:9] != '163.11.1.':
         msg = '该功能需要在生产终端上才可以访问哟：）'
         print(user.is_authenticated)
@@ -145,6 +152,8 @@ def auth(data):
         msg = '该功能需要登陆才能访问：）'
     elif data.get('perm') != '' and user.has_perm(data.get('perm')) != True:
         msg = '您没有使用该功能的权限：）'
+    elif data.get('perm_group') not in ['', None] and data.get('perm_group') not in list_user_group:
+        msg = '您无[' + data.get('perm_group') + ']该功能的权限：）'
     else:
         print('权限检查通过')
         code = True
