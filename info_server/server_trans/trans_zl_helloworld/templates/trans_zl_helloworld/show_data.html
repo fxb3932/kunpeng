@@ -249,8 +249,8 @@
                 url = "/trans_zl_helloworld/abcd/" + obj.data.thing_id + "/update";
                 console.log("url:" + url);
                 title = obj.data.title;
-                window.location.href = url;
-                // parent.layui.index.openTabsPage(url, title);
+                // window.location.href = url;
+                parent.layui.index.openTabsPage(url, title);
             }
             if (obj.event == "delete") {
                 console.log('console delete');
@@ -272,8 +272,8 @@
                 url = "/trans_zl_helloworld/abcd/" + obj.data.thing_id + "/query";
                 console.log("url:" + url);
                 title = obj.data.title;
-                window.location.href = url;
-                // parent.layui.index.openTabsPage(url, title);
+                // window.location.href = url;
+                parent.layui.index.openTabsPage(url, title);
             }
         });
 
