@@ -17,15 +17,20 @@ def search_problem_score(request):
         and b.code not in(3,4)
         group by a.oper, a.type_id, b.code, b.name
         union
-        select a.input_oper, 0, b.code, '录入', count(*), sum(b.score)
+        select a.input_oper, 0, b.code, b.name, count(*), sum(b.score)
         from search_problem_info a, search_problem_action_type b
         where b.code = 3
-        group by a.input_oper
+        group by a.input_oper, b.name
         union
-        select a.answer_oper, 0, b.code, '解答', count(*), sum(b.score)
+        select a.answer_oper, 0, b.code, b.name, count(*), sum(b.score)
         from search_problem_info a, search_problem_action_type b
         where b.code = 4
-        group by a.answer_oper ;
+        group by a.answer_oper, b.name
+        union
+        select a.update_oper, 0, b.code, b.name, count(*), sum(b.score)
+        from search_problem_info_comments a, search_problem_action_type b
+        where b.code = 5
+        group by a.update_oper, b.name ;
     """
     action_data = connect_mysql(sql)
 
