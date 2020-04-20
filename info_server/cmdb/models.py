@@ -241,6 +241,7 @@ class user_info(models.Model):
     first_name = models.CharField(max_length=128, unique=True)
     qq_no = models.CharField(max_length=128, blank=True,null=True)
     group = models.ForeignKey("i_user_group", on_delete=models.PROTECT, blank=True,null=True)
+    score = models.IntegerField(default=0)
 
 class i_user_group(models.Model):
     code = models.CharField(max_length=128, unique=True)
@@ -248,6 +249,33 @@ class i_user_group(models.Model):
 
     def __str__(self):
         return "%s_%s" % (self.code, self.name)
+
+# 用户操作表
+class action(models.Model):
+    app_type = models.ForeignKey("action_app_type", on_delete=models.CASCADE)
+    action_type = models.ForeignKey("action_type", on_delete=models.CASCADE)
+    info_id = models.IntegerField(default=0)
+    text = models.CharField(max_length=256)
+    oper = models.CharField(max_length=32)
+    date = models.DateTimeField()
+    score = models.IntegerField(default=0)
+
+class action_app_type(models.Model):
+    code = models.CharField(max_length=32)
+    name = models.CharField(max_length=64)
+    def __str__(self):
+        return "%s_%s" % (self.code, self.name)
+
+# 操作类型 -- 查询、更新、追加
+class action_type(models.Model):
+    code = models.CharField(max_length=32)
+    name = models.CharField(max_length=64)
+    # 操作分值
+    score = models.IntegerField(default=0)
+    def __str__(self):
+        return "%s_%s" % (self.code, self.name)
+
+
 
 
 

@@ -256,6 +256,20 @@ def new_submit(request):
             , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         )
         a.save()
+
+        # 积分计算
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "input"
+            , 'info_id': r.id
+        })
+        if stat == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer"
+                , 'info_id': r.id
+                , 'oper': r.answer_oper
+            })
     except Exception as msg_info:
         code = -1
         print(repr(msg_info))
@@ -331,6 +345,13 @@ def search(request):
     t2 = time.time()
     t3 = (t2 - t1) * 1000
 
+    # 积分计算
+    main.action_log(request, {
+        "app_type": "search_problem"
+        , 'action_type': "search"
+        , 'text': problem_id
+    })
+
     req = {
         'title': 'search'
         , 'data': data
@@ -397,25 +418,6 @@ def show(request, info_id):
         if line.get('name') == '知识库管理员':
             app_auth = 1
 
-    if data.get('info_check_flag') == 1:
-        # 操作记录 认证解答被查看
-        b = action(
-            type=action_type.objects.get(code=8)
-            , text=str(info_id)
-            , oper=data.get('answer_oper')
-            , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        )
-        b.save()
-
-        # 操作记录 认证录入被查看
-        c = action(
-            type=action_type.objects.get(code=9)
-            , text=str(info_id)
-            , oper=data.get('input_oper')
-            , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        )
-        c.save()
-
     # 操作记录
     a = action(
         type = action_type.objects.get(code=2)
@@ -424,6 +426,28 @@ def show(request, info_id):
         , date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     )
     a.save()
+
+    # 积分计算 查看他人知识卡片
+    main.action_log(request, {
+        "app_type": "search_problem"
+        , 'action_type': "show"
+        , 'info_id': info_id
+    })
+
+    # 认证解答被查看
+    if r.info_check_flag == 1:
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "answer_auth_show"
+            , 'info_id': info_id
+            , 'oper': r.answer_oper
+        })
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "input_auth_show"
+            , 'info_id': info_id
+            , 'oper': r.input_oper
+        })
 
 
 
@@ -458,17 +482,21 @@ def show_submit(request, info_id):
 
     print('type = [' + request.POST.get('type') + ']')
     r = info.objects.get(id=info_id)
+    r_old = info.objects.get(id=info_id)
     r.title = input_data.get('title')
     problem_answer = BeautifulSoup(fwb_data, 'html.parser')
     problem_answer_txt = problem_answer.get_text()
     r.problem_answer = fwb_data
     r.problem_answer_txt = problem_answer_txt
     if len(problem_answer_txt) > 1:
+        # 已解答
         r.t_stat = info_stat.objects.get(stat_id=1)
+        # 初次时
         if request.POST.get('type') == 'new':
             r.answer_oper = request.user.first_name
             r.answer_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     else:
+        # 未解答
         r.t_stat = info_stat.objects.get(stat_id=0)
     r.update_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     r.t_channel = info_channel.objects.get(code=input_data.get('channel'))
@@ -494,6 +522,21 @@ def show_submit(request, info_id):
             , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         )
         a.save()
+
+        # 进行解答时
+        if r_old.t_stat.stat_id == 0 and r.t_stat.stat_id == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer"
+                , 'info_id': r.id
+            })
+        # 进行认证时
+        if r_old.info_check_flag == 0 and r.info_check_flag == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer_auth"
+                , 'info_id': r.id
+            })
     except Exception as msg_info:
         code = -1
         print(repr(msg_info))

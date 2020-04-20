@@ -192,3 +192,39 @@ def connect_mysql(sql):
     # for line in data:
     #     print(line)
     return data
+
+from cmdb.models import action, action_type, action_app_type, user_info
+
+# main.action_log(request, {
+#     "app_type": "search_problem"
+#     , 'action_type': "show"
+#     , 'info_id': info_id
+# })
+def action_log(request, data):
+    print('index main.py action')
+    data = dict(data)
+    print(data)
+
+    data.setdefault('text', '')
+    data.setdefault('info_id', 0)
+    data.setdefault('oper', request.user.first_name)
+
+
+    score = action_type.objects.get(code=data.get('action_type')).score
+    # print("data.get('text') = " + data.get('text'))
+    r = action(
+        app_type=action_app_type.objects.get(code=data.get('app_type'))
+        , action_type=action_type.objects.get(code=data.get('action_type'))
+        , info_id=data.get('info_id')
+        , text=data.get('text')
+        , oper=data.get('oper')
+        , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        , score=score
+    )
+    r.save()
+
+    x = user_info.objects.get(first_name=data.get('oper'))
+    x.score += score
+    x.save()
+
+    return 0
