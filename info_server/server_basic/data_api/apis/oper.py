@@ -55,6 +55,10 @@ def oper(request):
             list_user_info = user_info.objects.get(first_name=line.first_name)
             bc_qq_code = list_user_info.qq_no
         except:
+            r_user_info = user_info(
+                first_name=line.first_name
+            )
+            r_user_info.save()
             bc_qq_code = ''
 
         try: bc_group_code = list_user_info.group.code
