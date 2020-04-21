@@ -11,8 +11,8 @@ django-admin startproject mysite
 
 python manage.py startapp myApp
 
-#生成迁移文件
-python manage.py makemigrations polls
+#生成迁移文件 可带APP名
+python manage.py makemigrations
 
 #查看迁移命令会执行哪些SQL语句
 python manage.py sqlmigrate polls 0001

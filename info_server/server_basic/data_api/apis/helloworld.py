@@ -6,36 +6,28 @@ from django.contrib.auth.models import User
 from cmdb.models import *
 from myview.models import Article
 from django.db.models import Count
+import main
+
+
+
 
 @csrf_exempt
 def helloworld(request):
     print('start index test')
 
-    print(request.POST)
-    print(request.POST.get('comm_s_par2'))
+    # input_data = {
+    #     "app_type": "search_problem"
+    #     , 'action_type': "search"
+    # }
+    # tmp = main.action(request, input_data)
+    # print(tmp)
 
-    # for line in User.objects.all():
-    #     print(line.first_name)
-    #     r = user_info(
-    #         first_name=line.first_name
-    #     )
+    # for line in user_info.objects.all():
+    #     r = user_info.objects.get(id=line.id)
+    #     r.score = 0
     #     r.save()
 
-    trans_all_data = []
-    tmp = list(Article.objects.all()
-               .extra(select={"CreateTime": "date_format(date,'%%m-%%d')"})
-               .values('CreateTime')
-               .annotate(count=Count('date')))
-
-    for line in tmp:
-        print(line)
-
-    # for line in tmp:
-    #     trans_all_data.append({
-    #         "date": line.get('CreateTime')
-    #         , "录入量": line.get('count')
-    #         , "访问量": n
-    #     })
+    # action.objects
 
     resp = {
         'code': 0
