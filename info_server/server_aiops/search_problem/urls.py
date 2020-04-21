@@ -16,6 +16,7 @@ urlpatterns = [
     path('show/<int:info_id>/update/', views.show_update, name='show_update'),
     path('show/<int:info_id>/update/submit/', views.show_submit, name='show_submit'),
     path('show/<int:info_id>/update/submit/ok/', views.submit_ok, name='submit_ok'),
+    path('show/<int:info_id>/update/comments/stat/update/', views.show_update_comments_stat_update, name='show_update'),
 
     path('list/', views.list, name='list'),
     path('list/get_table_data/', views.get_table_data, name='get_table_data'),

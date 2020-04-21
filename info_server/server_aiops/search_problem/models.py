@@ -80,12 +80,19 @@ class info_comments(models.Model):
     name = models.CharField(max_length=2048)
     update_oper = models.CharField(max_length=64)
     update_date = models.DateTimeField()
+    i_stat = models.ForeignKey("info_comments_stat", on_delete=models.CASCADE, blank=True,null=True)
 
     # class Meta:
     #     unique_together = (("name", "update_oper", 'update_date'),)
 
     def __str__(self):
         return "%s_%s" % (self.name, self.update_oper)
+
+class info_comments_stat(models.Model):
+    code = models.IntegerField()
+    name = models.CharField(max_length=64)
+    def __str__(self):
+        return "%s_%s" % (self.code, self.name)
 
 class action(models.Model):
     type = models.ForeignKey("action_type", on_delete=models.CASCADE)

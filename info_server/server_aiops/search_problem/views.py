@@ -377,7 +377,8 @@ def show(request, info_id):
         for line_comments in line.t_comments.all():
             # comments_data.append(model_to_dict(line_comments, exclude=['update_date']))
             comments_data.append({
-                "name": line_comments.name
+                'id': line_comments.id
+                , "name": line_comments.name
                 , "update_oper": line_comments.update_oper
                 , "update_date": line_comments.update_date.strftime("%Y-%m-%d %H:%M:%S")
             })
@@ -551,7 +552,7 @@ def show_submit(request, info_id):
 
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
-
+from .models import info_comments_stat
 def show_update(request, info_id):
     print('index show_update')
 
@@ -588,13 +589,28 @@ def show_update(request, info_id):
     for line in info.objects.filter(id=info_id):
         data = line.__dict__
         for line_comments in line.t_comments.all():
+            try: stat_code = line_comments.i_stat.code
+            except: stat_code = 999
             comments_data.append({
-                "name": line_comments.name
+                "id": line_comments.id
+                , "name": line_comments.name
+                , "stat_code": stat_code
                 , "update_oper": line_comments.update_oper
                 , "update_date": line_comments.update_date.strftime("%Y-%m-%d %H:%M:%S")
             })
 
     comments_data.sort(key=lambda item: item.get('update_date'), reverse=True)
+
+    info_comments_stat_data = []
+    for line in info_comments_stat.objects.all():
+        info_comments_stat_data.append({
+            'id': line.id
+            , 'code': line.code
+            , 'name': line.name
+        })
+
+    info_comments_stat_data.sort(key=lambda item: item.get('code'), reverse=False)
+
 
     resp = {
         "code": 0
@@ -606,6 +622,7 @@ def show_update(request, info_id):
         , "data_channel_id": data_channel_id
         , "data_type_id": data_type_id
         , "comments_data": comments_data
+        , 'info_comments_stat_data': info_comments_stat_data
     }
     return render(request, 'search_problem/show.html', resp)
 
@@ -619,6 +636,19 @@ def submit_ok(request, info_id):
         , "msg": "谢谢您对知识共享的支持，答案提交成功：）"
     }
     return render(request, 'search_problem/submit_ok.html', resp)
+
+@csrf_exempt
+def show_update_comments_stat_update(request, info_id):
+    print('index show_update_comments_stat_update')
+
+    r = info_comments.objects.get(id=request.POST.get('comments_id'))
+    r.i_stat = info_comments_stat.objects.get(code=request.POST.get('comment_stat_code'))
+    r.save()
+
+    resp = {
+        "code": 0
+    }
+    return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
 def list(request):
