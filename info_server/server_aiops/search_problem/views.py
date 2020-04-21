@@ -542,6 +542,13 @@ def show_submit(request, info_id):
                 , 'action_type': "auth"  # 操作员加分
                 , 'info_id': r.id
             })
+        if r_old.info_check_flag == 1 and r.info_check_flag != 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer_auth_close"  # 解答人减分
+                , 'info_id': r.id
+                , 'oper': r.answer_oper
+            })
     except Exception as msg_info:
         code = -1
         print(repr(msg_info))
