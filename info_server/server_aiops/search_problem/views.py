@@ -539,7 +539,13 @@ def show_submit(request, info_id):
         if r_old.info_check_flag == 0 and r.info_check_flag == 1:
             main.action_log(request, {
                 "app_type": "search_problem"
-                , 'action_type': "answer_auth"
+                , 'action_type': "answer_auth"  #解答人加分
+                , 'info_id': r.id
+                , 'oper': r.answer_oper
+            })
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "auth"         #操作员加分
                 , 'info_id': r.id
             })
     except Exception as msg_info:
@@ -671,6 +677,15 @@ def show_update_comments_stat_update(request, info_id):
         main.action_log(request, {
             "app_type": "search_problem"
             , 'action_type': "comments"
+            , 'info_id': info_id
+            , 'text': r.id
+            , 'oper': r.update_oper
+        })
+    if r_old.i_stat.code == 0 and r.i_stat.code != 0:
+        # 积分计算
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "close_comments"
             , 'info_id': info_id
             , 'text': r.id
             , 'oper': r.update_oper
