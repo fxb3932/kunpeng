@@ -42,6 +42,7 @@ class channelAdmin(admin.ModelAdmin):
     )  # list
 
 admin.site.register(models.info_channel, channelAdmin)
+admin.site.register(models.info_close)
 
 class typeAdmin(admin.ModelAdmin):
     list_display = ('code', 'name')  # list

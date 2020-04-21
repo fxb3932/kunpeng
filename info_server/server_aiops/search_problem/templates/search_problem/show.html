@@ -168,7 +168,10 @@
                 </div>
                 <div class="layui-col-md12">
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">更新知识库</button>
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo2">关闭</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo2">关闭页面</button>
+                    <button type="submit" class="layui-btn layui-btn-danger" lay-submit="" lay-filter="close_info">
+                        关闭知识卡片
+                    </button>
                     <hr class="layui-bg-green">
                     {% for line in comments_data %}
                         <em>{{ line.update_oper }} {{ line.update_date }}</em><br>
@@ -283,6 +286,28 @@
             // 关闭
             form.on('submit(demo2)', function (data) {
                 parent.layui.admin.events.closeThisTabs();
+                return false;
+            });
+
+            // 关闭知识卡片
+            form.on('submit(close_info)', function (data) {
+                console.log(data);
+                //询问框
+                layer.confirm('确认将该知识关闭？', {
+                    btn: ['关闭', '取消'] //按钮
+                }, function () {
+                    req_data = {};
+                    $.post("close/",
+                        req_data,
+                        function (data, status) {
+                            console.log("Data: " + data + "\nStatus: " + status);
+                            console.log(data);
+                            layer.msg('关闭成功', {icon: 1});
+                            parent.layui.admin.events.closeThisTabs();
+                        }
+                    );
+
+                });
                 return false;
             });
 

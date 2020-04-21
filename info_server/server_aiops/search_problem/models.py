@@ -45,6 +45,7 @@ class info(models.Model):
     # 1-有新评论标准答案待更新
     info_check_update = models.IntegerField()
 
+    t_close = models.ForeignKey("info_close", on_delete=models.PROTECT, blank=True, null=True)
 
     # 查询次数
     count_search = models.IntegerField(null=True)
@@ -56,6 +57,11 @@ class info(models.Model):
     comments_update_date = models.DateTimeField(null=True, blank=True)
     t_comments = models.ManyToManyField("info_comments", blank=True)
 
+class info_close(models.Model):
+    code = models.IntegerField(null=True)
+    name = models.CharField(max_length=64, blank=True,null=True)
+    def __str__(self):
+        return "%s_%s" % (self.code, self.name)
 
 class info_stat(models.Model):
     stat_id = models.IntegerField(null=True, db_index = True)
