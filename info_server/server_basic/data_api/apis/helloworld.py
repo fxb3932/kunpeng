@@ -9,6 +9,8 @@ from django.db.models import Count
 import main
 
 
+
+
 @csrf_exempt
 def helloworld(request):
     print('start index test')
@@ -19,6 +21,13 @@ def helloworld(request):
     # }
     # tmp = main.action(request, input_data)
     # print(tmp)
+
+    # for line in user_info.objects.all():
+    #     r = user_info.objects.get(id=line.id)
+    #     r.score = 0
+    #     r.save()
+
+    # action.objects
 
     resp = {
         'code': 0
