@@ -732,12 +732,13 @@ def show_update_close(request, info_id):
 
     if r_old_close_code != 999 and r.t_close.code == 999:
         # 积分计算
-        main.action_log(request, {
-            "app_type": "search_problem"
-            , 'action_type': "answer_close"
-            , 'info_id': info_id
-            , 'oper': r.answer_oper
-        })
+        if r.t_stat.stat_id == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer_close"
+                , 'info_id': info_id
+                , 'oper': r.answer_oper
+            })
         main.action_log(request, {
             "app_type": "search_problem"
             , 'action_type': "input_close"
