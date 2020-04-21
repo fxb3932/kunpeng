@@ -668,10 +668,13 @@ def show_update_comments_stat_update(request, info_id):
     r.i_stat = info_comments_stat.objects.get(code=request.POST.get('comment_stat_code'))
     r.save()
 
-    print(r_old.i_stat.code)
+    try:
+        r_old_stat_code = r_old.i_stat.code
+    except:
+        r_old_stat_code = 999
     print(r.i_stat.code)
 
-    if r_old.i_stat.code != 0 and r.i_stat.code == 0:
+    if r_old_stat_code != 0 and r.i_stat.code == 0:
         # 积分计算
         main.action_log(request, {
             "app_type": "search_problem"
@@ -680,7 +683,7 @@ def show_update_comments_stat_update(request, info_id):
             , 'text': r.id
             , 'oper': r.update_oper
         })
-    if r_old.i_stat.code == 0 and r.i_stat.code != 0:
+    if r_old_stat_code == 0 and r.i_stat.code != 0:
         # 积分计算
         main.action_log(request, {
             "app_type": "search_problem"
