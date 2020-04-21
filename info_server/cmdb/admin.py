@@ -78,7 +78,7 @@ class action_app_type(admin.ModelAdmin):
 admin.site.register(models.action_app_type, action_app_type)
 
 class action_type(admin.ModelAdmin):
-    list_display = ('code', 'name', 'score')  # list
+    list_display = ('code', 'name', 'score', 'score_limit_day')  # list
 admin.site.register(models.action_type, action_type)
 
 # class productAdmin(admin.ModelAdmin):

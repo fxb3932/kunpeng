@@ -200,6 +200,8 @@ from cmdb.models import action, action_type, action_app_type, user_info
 #     , 'action_type': "show"
 #     , 'info_id': info_id
 # })
+from django.db.models import Sum
+import datetime
 def action_log(request, data):
     print('index main.py action')
     data = dict(data)
@@ -210,7 +212,20 @@ def action_log(request, data):
     data.setdefault('oper', request.user.first_name)
 
 
-    score = action_type.objects.get(code=data.get('action_type')).score
+    y = action_type.objects.get(code=data.get('action_type'))
+    score = y.score
+
+    # 计算该项今日得分---当日限额
+    date = datetime.datetime.now().date()
+    count_data = action.objects.filter(
+        oper=data.get('oper')
+        , app_type=action_app_type.objects.get(code=data.get('app_type'))
+        , action_type=action_type.objects.get(code=data.get('action_type'))
+        , date__gte=date
+    ).aggregate(Sum('score'))
+    if count_data.get('score__sum') >= y.score_limit_day:
+        score = 0
+
     # print("data.get('text') = " + data.get('text'))
     r = action(
         app_type=action_app_type.objects.get(code=data.get('app_type'))
