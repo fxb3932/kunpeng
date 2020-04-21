@@ -25,7 +25,8 @@ def index(request):
         'title': 'rota_day'
     }
     # print(req)
-    return render(request, 'search_problem/index.html', req)
+    return render(request, 'search_problem/fxb.html', req)
+    # return render(request, 'search_problem/index.html', req)
 
 
 import requests
@@ -376,9 +377,12 @@ def show(request, info_id):
         data_stat_id = line.t_stat.stat_id
         for line_comments in line.t_comments.all():
             # comments_data.append(model_to_dict(line_comments, exclude=['update_date']))
+            try: stat_code = line_comments.i_stat.code
+            except: stat_code = 999
             comments_data.append({
                 'id': line_comments.id
                 , "name": line_comments.name
+                , "stat_code": stat_code
                 , "update_oper": line_comments.update_oper
                 , "update_date": line_comments.update_date.strftime("%Y-%m-%d %H:%M:%S")
             })
@@ -669,6 +673,7 @@ def show_update_comments_stat_update(request, info_id):
             , 'action_type': "comments"
             , 'info_id': info_id
             , 'text': r.id
+            , 'oper': r.update_oper
         })
 
     resp = {
