@@ -641,9 +641,35 @@ def submit_ok(request, info_id):
 def show_update_comments_stat_update(request, info_id):
     print('index show_update_comments_stat_update')
 
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net': False
+        , 'login': True
+        , 'debug': False
+        , 'perm': ''
+        , 'perm_group': '知识库管理员'
+    }
+    resp_auth = main.auth(auth_data)
+    print('user : ' + request.user.first_name)
+    if resp_auth.get('code') == False: return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
+
     r = info_comments.objects.get(id=request.POST.get('comments_id'))
+    r_old = info_comments.objects.get(id=request.POST.get('comments_id'))
     r.i_stat = info_comments_stat.objects.get(code=request.POST.get('comment_stat_code'))
     r.save()
+
+    print(r_old.i_stat.code)
+    print(r.i_stat.code)
+
+    if r_old.i_stat.code != 0 and r.i_stat.code == 0:
+        # 积分计算
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "comments"
+            , 'info_id': info_id
+            , 'text': r.id
+        })
 
     resp = {
         "code": 0
