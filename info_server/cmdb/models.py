@@ -272,6 +272,7 @@ class action_type(models.Model):
     name = models.CharField(max_length=64)
     # 操作分值
     score = models.IntegerField(default=0)
+    score_limit_day = models.IntegerField(default=9999)
     def __str__(self):
         return "%s_%s" % (self.code, self.name)
 
