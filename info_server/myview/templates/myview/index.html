@@ -82,7 +82,7 @@
                         {% endif %}
                     </li>
                     <li class="layui-nav-item">
-                        <p style="color:#E53333;">积分：{{ score }}</p>
+                        <p style="color:#E53333;" id="get_score">积分：0</p>
                     </li>
 
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
@@ -453,9 +453,25 @@
             form.val('example', {
                 "acct_type": "
 
+
+
             {{ rjxf_stat}}"
             });
             */
+
+            function get_score() {
+                // var index = layer.load(1);
+                $.post("get_score/",
+                    {},
+                    function (data, status) {
+                        console.log(data);
+                        $("p#get_score").text(data.score);
+                        // layer.close(index);
+                    }
+                );
+            }
+            get_score();
+            setInterval(get_score, 5000);
 
             //后面就跟你平时使用jQuery一样
             $.get("add_connect", {search_data: "", search_mode: "", search_par3: ""}, function (respData) {
