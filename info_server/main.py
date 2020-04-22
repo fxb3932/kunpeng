@@ -223,8 +223,11 @@ def action_log(request, data):
         , action_type=action_type.objects.get(code=data.get('action_type'))
         , date__gte=date
     ).aggregate(Sum('score'))
-    if count_data.get('score__sum') >= y.score_limit_day:
-        score = 0
+    try:
+        if count_data.get('score__sum') >= y.score_limit_day:
+            score = 0
+    except:
+        print(score)
 
     # print("data.get('text') = " + data.get('text'))
     r = action(
