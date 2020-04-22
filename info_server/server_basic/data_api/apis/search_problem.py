@@ -79,8 +79,9 @@ def search_problem(request):
         search_info_data = search_info_data.filter(info_check_flag=comm_i_info_check_flag)
 
     comm_i_info_check_flag = [
-        {'code': 0, 'name': '未认证'}
+        {'code': 0, 'name': '待处理'}
         , {'code': 1, 'name': '已认证'}
+        , {'code': 2, 'name': '未认证'}
     ]
 
     comm_i_info_check_update = request.POST.get('comm_i_info_check_update')
