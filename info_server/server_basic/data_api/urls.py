@@ -35,6 +35,9 @@ urlpatterns.append(path('search_problem_score/', search_problem_score.search_pro
 from .apis import search_problem_count_v2
 urlpatterns.append(path('search_problem_count_v2/', search_problem_count_v2.search_problem_count_v2, name='search_problem_count_v2'))
 
+from .apis import search_problem_score_count
+urlpatterns.append(path('search_problem/score/count/', search_problem_score_count.search_problem_score_count, name='search_problem_score_count'))
+
 from .apis import search_problem_grafana
 urlpatterns.append(path('search_problem_grafana/', search_problem_grafana.search_problem_grafana, name='search_problem_grafana'))
 urlpatterns.append(path('search_problem_grafana/search/', search_problem_grafana.search, name='search'))
