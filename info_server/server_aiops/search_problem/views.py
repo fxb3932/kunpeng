@@ -505,7 +505,7 @@ def show_submit(request, info_id):
     if input_data.get('info_check_flag') == 'on':
         r.info_check_flag = 1
     else:
-        r.info_check_flag = 0
+        r.info_check_flag = 2
 
     print(r)
 

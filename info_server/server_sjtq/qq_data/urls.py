@@ -10,6 +10,7 @@ urlpatterns = [
     path('myview/show/', views.myview_show, name='myview_show'),
 
     path('search_problem/show/', views.search_problem_show, name='search_problem_show'),
+    path('search_problem/score/', views.search_problem_score, name='search_problem_score'),
 
     # path('fxb_test/', views.fxb_test, name='fxb_test'),
 ]

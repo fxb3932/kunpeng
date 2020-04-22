@@ -322,3 +322,18 @@ def myview_show(request):
 def search_problem_show(request):
     req = {}
     return render(request, 'qq_data/search_problem_show.html', req)
+
+def search_problem_score(request):
+    print('index search_problem_score')
+    start_date = datetime.datetime.now()
+    end_date = datetime.datetime.now()
+    for line in range(7):
+        print(line)
+        print(start_date.strftime("%Y-%m-%d"))
+        start_date -= datetime.timedelta(days=1)
+    req = {
+        'start_date': start_date.strftime("%Y-%m-%d")
+        , 'end_date': end_date.strftime("%Y-%m-%d")
+    }
+    print(req)
+    return render(request, 'qq_data/search_problem_score.html', req)

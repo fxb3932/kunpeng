@@ -3,84 +3,139 @@ from django.views.decorators.csrf import csrf_exempt  # 可post调用url
 import json
 from main import connect_mysql
 
+import requests
+from cmdb.models import action, action_type, action_app_type
+from django.db.models import Max,Avg,F,Q,Min,Count,Sum
+import datetime
 
 @csrf_exempt
-def search_problem_score(request):
-    print('start index search_problem_score')
+def search_problem_score_count(request):
+    print('start index search_problem_score_count')
 
-    # 知识库操作记录表数据 搜索、查看、评论
-    sql = """
-        select a.oper, a.type_id, b.code, b.name, count(*), sum(b.score)
-        from search_problem_action a, search_problem_action_type b 
-        where 1 = 1 
-        and a.type_id = b.id
-        and b.code not in(3,4)
-        group by a.oper, a.type_id, b.code, b.name
-        union
-        select a.input_oper, 0, b.code, b.name, count(*), sum(b.score)
-        from search_problem_info a, search_problem_action_type b
-        where b.code = 3
-        group by a.input_oper, b.name
-        union
-        select a.answer_oper, 0, b.code, b.name, count(*), sum(b.score)
-        from search_problem_info a, search_problem_action_type b
-        where b.code = 4
-        group by a.answer_oper, b.name
-        union
-        select a.update_oper, 0, b.code, b.name, count(*), sum(b.score)
-        from search_problem_info_comments a, search_problem_action_type b
-        where b.code = 5
-        group by a.update_oper, b.name ;
-    """
-    action_data = connect_mysql(sql)
+    # 获取日期列表
+    start_date = datetime.datetime.strptime(request.POST.get('start_date'), "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(request.POST.get('end_date'), "%Y-%m-%d")
+    end_date += datetime.timedelta(days=1)
 
-    list_action = []
-    for line in action_data:
-        list_action.append({
-            "first_name": line[0]
-            , "code": line[2]
-            , "type_name": line[3]
-            , "count": line[4]
-            , "score": int(line[5])
+    print('start_date = ' + str(start_date))
+    print('end_date = ' + str(end_date))
+    # 调用数据中台API
+    res = requests.post(
+        url='http://' + request.META.get('HTTP_HOST') + '/' + 'data_api/oper/'
+        , data={}
+    )
+    resp_oper = json.loads(res.text)
+
+    data1 = {}
+    list_first_name = []
+
+    for line in resp_oper.get('data'):
+        list_first_name.append({
+            'first_name': line.get('first_name')
+            # , 'score': line.get('score')
         })
 
-    m = {}
-    for line in list_action:
-        first_name = line.get('first_name')
 
-        m.setdefault(first_name, {
-            'first_name': first_name
-            , 'data': []
-        })['data'].append({
-            'code': line.get('code')
-            , 'type_name': line.get('type_name')
-            , 'count': line.get('count')
-            , 'score': line.get('score')
+    # {
+    #     name: '解答',
+    #     type: 'bar',
+    #     stack: '总量',
+    #     itemStyle: {normal: {label: {show: true, position: 'insideLeft'}, color: myColor[0]}},
+    # // data: [320, 302, 301, 334, 390, 330, 320]
+    # data: data.oper_all_sum.map(function(item, i)
+    # {
+    # return item.answer_sum;
+    # })
+    # },
+    count_data = action.objects.filter(
+        date__gte=start_date.strftime('%Y-%m-%d')
+        , date__lt=end_date.strftime('%Y-%m-%d'))\
+        .values('oper', 'action_type__code').annotate(score__sum=Sum('score'))
+
+    tmp_list_first_name = []
+    for line_name in list_first_name:
+        n_sum = 0
+        print(line_name)
+        for line_data in count_data:
+            if line_data.get('oper') == line_name.get('first_name'):
+                n_sum += line_data.get('score__sum')
+
+        print(n_sum)
+        tmp_list_first_name.append({
+            'first_name': line_name.get('first_name')
+            , 'score': n_sum
         })
-    print(m.values())
+    list_first_name = tmp_list_first_name
 
-    data = []
-    for line in m.values():
-        score_sum = 0
-        for line_data in line.get('data'):
-            score_sum += line_data.get('score')
-        data.append(dict(line, **{
-            "score_sum": score_sum
-        }))
-    #
-    #     print(type(line))
 
-    # 录入数据
+    list_first_name.sort(key=lambda item: item.get('score'), reverse=False)
 
-    # 解答数据
+    list_dict_series = []
+    for line in action_type.objects.filter(~Q(code__in=['answer_auth_close', 'input_close', 'comments_close'])):
+        # print(line.__dict__)
+        # 'id': 14, 'code': 'answer_auth_close', 'name': '解答认证被取消', 'score': -50, 'score_limit_day': 9999
+        series_data = []
+        for line_name in list_first_name:
+            # count_data = action.objects.filter(
+            #     oper=line_name
+            #     , app_type=action_app_type.objects.get(code='search_problem')
+            #     , action_type=action_type.objects.get(id=line.id)
+            #     , date__gte='2020-04-01'
+            #     , date__lte='2020-04-22'
+            # ).aggregate(Sum('score'))
+            n = 0
+            for line_data in count_data:
+                if line_data.get('oper') == line_name.get('first_name') and line_data.get('action_type__code') == line.code:
+                    n = line_data.get('score__sum')
+            series_data.append(n)
+        list_dict_series.append({
+            'name': line.name
+            , 'type': 'bar'
+            , 'stack': '总量'
+            # , 'itemStyle': {'normal': {'label': {'show': -1, 'position': 'insideLeft'}, 'color': '#1089E7'}}
+            , 'data': series_data
+        })
 
-    # 解答被点击数据
+    data1 = {
+        'list_first_name': list_first_name
+        , 'list_dict_series': list_dict_series
+    }
 
-    data = []
+
+    # count_data = action.objects.filter(
+    #     app_type=action_app_type.objects.get(code='search_problem')
+    #     , action_type=action_type.objects.get(code='search')
+    #     , date__gte='2020-04-01'
+    #     , date__lte='2020-04-22'
+    # ).annotate(oper=Count('oper')).query
+    # count_data = action.objects.all().values('oper', 'action_type__code').annotate(score__sum=Sum('score'))
+    # count_data = action.objects.raw('''
+    # select * from search_problem_action
+    # ''')
+
+    # .aggregate(Sum('score'))
+
+    # print(count_data)
+    # for line in count_data:
+    #     print(line)
+    # 汇总数据
+    data2 = {}
+    # 总积分数
+    n = 0
+    for line in resp_oper.get('data'):
+        n += line.get('score')
+    data2 = dict(data2, **{'val_score_all': n})
+    # 今日增长量
+    day_date = datetime.datetime.now()
+
+    count_data = action.objects.filter(
+        date__gte=day_date.strftime('%Y-%m-%d')).aggregate(Sum('score'))
+    data2 = dict(data2, **{'var_score_day': count_data.get('score__sum')})
 
 
     resp = {
         'code': 0
-        , 'data': data
+        , 'data1': data1
+        , 'data2': data2
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
