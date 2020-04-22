@@ -530,7 +530,7 @@ def show_submit(request, info_id):
                 , 'info_id': r.id
             })
         # 进行认证时
-        if r_old.info_check_flag == 0 and r.info_check_flag == 1:
+        if r_old.info_check_flag != 1 and r.info_check_flag == 1:
             main.action_log(request, {
                 "app_type": "search_problem"
                 , 'action_type': "answer_auth"  # 解答人加分
