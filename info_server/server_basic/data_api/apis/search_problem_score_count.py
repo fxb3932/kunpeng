@@ -125,6 +125,12 @@ def search_problem_score_count(request):
     for line in resp_oper.get('data'):
         n += line.get('score')
     data2 = dict(data2, **{'val_score_all': n})
+    # 今日增长量
+    day_date = datetime.datetime.now()
+
+    count_data = action.objects.filter(
+        date__gte=day_date.strftime('%Y-%m-%d')).aggregate(Sum('score'))
+    data2 = dict(data2, **{'var_score_day': count_data.get('score__sum')})
 
 
     resp = {

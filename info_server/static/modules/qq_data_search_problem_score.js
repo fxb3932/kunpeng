@@ -43,7 +43,7 @@ layui.define(function (exports) {
 
                         // bar_right1(data);
                         $("p#val_score_all").text(data.data2.val_score_all);
-                        $("span#test1").text("fjklsdfasfdas");
+                        $("span#var_score_day").text(data.data2.var_score_day);
 
 
                         layer.close(index);
