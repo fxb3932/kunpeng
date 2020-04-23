@@ -17,6 +17,13 @@ def search_problem_score_count(request):
     end_date = datetime.datetime.strptime(request.POST.get('end_date'), "%Y-%m-%d")
     end_date += datetime.timedelta(days=1)
 
+    list_date = []
+    tmp_date = start_date
+    while tmp_date < end_date:
+        list_date.append(tmp_date.strftime("%Y-%m-%d"))
+        print(list_date)
+        tmp_date += datetime.timedelta(days=1)
+
     print('start_date = ' + str(start_date))
     print('end_date = ' + str(end_date))
     # 调用数据中台API
@@ -71,7 +78,7 @@ def search_problem_score_count(request):
     list_first_name.sort(key=lambda item: item.get('score'), reverse=False)
 
     list_dict_series = []
-    for line in action_type.objects.filter(~Q(code__in=['answer_auth_close', 'input_close', 'comments_close'])):
+    for line in action_type.objects.filter(~Q(code__in=['answer_auth_close', 'input_close', 'comments_close', 'answer_close'])):
         # print(line.__dict__)
         # 'id': 14, 'code': 'answer_auth_close', 'name': '解答认证被取消', 'score': -50, 'score_limit_day': 9999
         series_data = []
@@ -132,10 +139,30 @@ def search_problem_score_count(request):
         date__gte=day_date.strftime('%Y-%m-%d')).aggregate(Sum('score'))
     data2 = dict(data2, **{'var_score_day': count_data.get('score__sum')})
 
+    # 按日统计积分获取量
+    count_data = list(action.objects.filter(
+        date__gte=start_date.strftime('%Y-%m-%d')
+        , date__lt=end_date.strftime('%Y-%m-%d'))
+        .extra(select={"DATE": "date_format(date,'%%Y-%%m-%%d')"})
+        .values('DATE').annotate(score__sum=Sum('score')))
+
+    data3 = []
+    for line in list_date:
+        n = 0
+        for line_data in count_data:
+            if line_data.get('DATE') == line:
+                n = line_data.get('score__sum')
+
+        data3.append({
+            'DATE': line
+            , 'score__sum': n
+        })
 
     resp = {
         'code': 0
+        , 'list_date': list_date
         , 'data1': data1
         , 'data2': data2
+        , 'data3': data3
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
