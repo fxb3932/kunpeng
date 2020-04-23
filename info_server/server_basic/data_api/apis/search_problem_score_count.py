@@ -7,6 +7,7 @@ import requests
 from cmdb.models import action, action_type, action_app_type
 from django.db.models import Max,Avg,F,Q,Min,Count,Sum
 import datetime
+from django.forms.models import model_to_dict
 
 @csrf_exempt
 def search_problem_score_count(request):
@@ -59,15 +60,41 @@ def search_problem_score_count(request):
         , date__lt=end_date.strftime('%Y-%m-%d'))\
         .values('oper', 'action_type__code').annotate(score__sum=Sum('score'))
 
+
+    type_data_query = action_type.objects.all()
+    type_data = []
+
+    for line in type_data_query:
+        type_data.append(model_to_dict(line))
+
+    count_data_all = []
+    for line_name in list_first_name:
+        for line_type in type_data:
+            n = 0
+            for line_data in count_data:
+                #if line_data.get('oper') == line_name.get('first_name') and line_data.get('action_type__code') == line.code:
+                if line_data.get('oper') == line_name.get('first_name') and line_data.get('action_type__code') == line_type.get('code'):
+                    n += line_data.get('score__sum')
+            count_data_all.append({
+                'oper': line_name.get('first_name')
+                , 'action_type__code': line_type.get('code')
+                , 'score__sum': n
+            })
+
+    # {'id': 1, 'code': 'search', 'name': '搜索', 'score': 10, 'score_limit_day': 100}
+    # print(type_data)
+    # {'oper': '周勇', 'action_type__code': 'search', 'score__sum': 60}
+    # print(count_data)
+
     tmp_list_first_name = []
     for line_name in list_first_name:
         n_sum = 0
-        print(line_name)
-        for line_data in count_data:
+
+        for line_data in count_data_all:
             if line_data.get('oper') == line_name.get('first_name'):
                 n_sum += line_data.get('score__sum')
 
-        print(n_sum)
+        # print(n_sum)
         tmp_list_first_name.append({
             'first_name': line_name.get('first_name')
             , 'score': n_sum
@@ -91,9 +118,28 @@ def search_problem_score_count(request):
             #     , date__lte='2020-04-22'
             # ).aggregate(Sum('score'))
             n = 0
-            for line_data in count_data:
+            n_close = 0
+            for line_data in count_data_all:
                 if line_data.get('oper') == line_name.get('first_name') and line_data.get('action_type__code') == line.code:
                     n = line_data.get('score__sum')
+
+                    if line.code == 'comments':
+                        for line_close_data in count_data_all:
+                            if line_close_data.get('oper') == line_name.get('first_name') and line_close_data.get('action_type__code') == 'comments_close':
+                                n_close += line_close_data.get('score__sum')
+                    if line.code == 'answer_auth':
+                        for line_close_data in count_data_all:
+                            if line_close_data.get('oper') == line_name.get('first_name') and line_close_data.get('action_type__code') == 'answer_auth_close':
+                                n_close += line_close_data.get('score__sum')
+                    if line.code == 'input':
+                        for line_close_data in count_data_all:
+                            if line_close_data.get('oper') == line_name.get('first_name') and line_close_data.get('action_type__code') == 'input_close':
+                                n_close += line_close_data.get('score__sum')
+                    if line.code == 'answer':
+                        for line_close_data in count_data_all:
+                            if line_close_data.get('oper') == line_name.get('first_name') and line_close_data.get('action_type__code') == 'answer_close':
+                                n_close += line_close_data.get('score__sum')
+                    n += n_close
             series_data.append(n)
         list_dict_series.append({
             'name': line.name
