@@ -103,13 +103,13 @@
 </script>
 <script type="text/html" id="rowoper">
     <a class="layui-btn layui-btn-xs" lay-event="query">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="delete">删除</a>
     {{# var data = d.t_stat ; }}
     {{# if(data == '已完成'){ console.log(data) }}
     <!--<a class="layui-btn layui-btn-xs"></a>-->
     {{#  } else { }}
     <a class="layui-btn layui-btn-xs" lay-event="modify">修改</a>
     {{#  } }}
+    <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="delete">删除</a>
 </script>
 {% endverbatim %}
 
@@ -254,16 +254,44 @@
             }
             if (obj.event == "delete") {
                 console.log('console delete');
-                $.post(obj.data.thing_id + "/delete",
-                    {"date": "", "stat": ""},
-                    function (data, status) {
-                        layer.msg(data.msg, {
-                            time: 5000, //20s后自动关闭
-                            btn: ['知道了']
-                        });
-                        showsomething();
+
+                layer.open({
+                    type: 1
+                    ,
+                    title: false //不显示标题栏
+                    ,
+                    closeBtn: false
+                    ,
+                    area: '300px;'
+                    ,
+                    shade: 0.8
+                    ,
+                    id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,
+                    btn: ['火速删除', '默默离开']
+                    ,
+                    btnAlign: 'c'
+                    ,
+                    moveType: 1 //拖拽模式，0或者1
+                    ,
+                    content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br/>删除了可就要重新录入了哦^_^</div>'
+                    ,
+                    yes: function (layero) {
+                        console.log("come in success");
+                        $.post(obj.data.thing_id + "/delete",
+                            {"date": "", "stat": ""},
+                            function (data, status) {
+                                layer.msg(data.msg, {
+                                    time: 5000, //20s后自动关闭
+                                    btn: ['知道了']
+                                });
+                                showsomething();
+                            }
+                        );
                     }
-                );
+                });
+
+
             }
             if (obj.event == "query") {
                 console.log(obj);
@@ -275,7 +303,8 @@
                 // window.location.href = url;
                 parent.layui.index.openTabsPage(url, title);
             }
-        });
+        })
+        ;
 
     })
     ;
