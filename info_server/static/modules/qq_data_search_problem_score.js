@@ -40,6 +40,7 @@ layui.define(function (exports) {
 
                         index_1(data.data1);
                         index_2(data.data3);
+                        index_3(data.data4);
                         // line_left2(data);
 
                         // bar_right1(data);
@@ -192,6 +193,79 @@ layui.define(function (exports) {
                 };
                 if (!elemNormcol[0]) return;
                 renderNormcol(0);
+            });
+        }
+
+
+        //八卦新闻
+        function index_3(data) {
+            layui.use(['carousel', 'echarts'], function () {
+                var $ = layui.$
+                    , carousel = layui.carousel
+                    , echarts = layui.echarts;
+
+                var echartsApp = [], options = [
+                    {
+                        title: {
+                            //text: '积分统计',
+                            subtext: '数据来自小鲲数据中台',
+                            textStyle: {
+                                fontSize: 14
+                            }
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            //show: false,
+                            x: 'left',
+                            // data: ['罗纳尔多', '舍普琴科']
+                            data: ['score']
+                        },
+                        polar: [
+                            {
+                                // indicator: [
+                                //     {text: '进攻', max: 100},
+                                //     {text: '防守', max: 100},
+                                //     {text: '体能', max: 100},
+                                //     {text: '速度', max: 100},
+                                //     {text: '力量', max: 100},
+                                //     {text: '技巧', max: 100}
+                                // ],
+                                indicator: data.indicator,
+                                radius: 130
+                            }
+                        ],
+                        series: [
+                            {
+                                type: 'radar',
+                                center: ['50%', '50%'],
+                                itemStyle: {
+                                    normal: {
+                                        areaStyle: {
+                                            type: 'default'
+                                        }
+                                    }
+                                },
+                                data: [
+                                    // {value: [97, 42, 88, 94, 90, 86], name: '舍普琴科'},
+                                    // {value: [97, 32, 74, 95, 88, 92], name: '罗纳尔多'}
+                                    {value: data.series_data, name: 'score'}
+                                ]
+                            }
+                        ]
+                    }
+                ]
+                    , elemDataView = $('#LAY-index-3').children('div')
+                    , renderDataView = function (index) {
+                    echartsApp[index] = echarts.init(elemDataView[index], layui.echartsTheme);
+                    echartsApp[index].setOption(options[index]);
+                    window.onresize = echartsApp[index].resize;
+                };
+                //没找到DOM，终止执行
+                if (!elemDataView[0]) return;
+
+                renderDataView(0);
             });
         }
 
