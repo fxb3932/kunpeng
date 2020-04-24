@@ -16,8 +16,11 @@ import sys
 
 
 import chardet
+import os
+# home_path = '/home/insp_ap/kunpeng/info_server/static/app/cloud_file'
+home_path = os.getcwd() + '/static/app/cloud_file'
 
-home_path = '/home/insp_ap/devops/info_server/static/app/cloud_file'
+
 # _work_path = os.getcwd()
 
 # def output_env():
