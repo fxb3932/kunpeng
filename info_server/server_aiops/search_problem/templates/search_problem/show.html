@@ -39,7 +39,8 @@
         {% endautoescape %}
         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
             {% if stat == 1 %}
-                <legend>{{ data.answer_oper }} 已解答:</legend></fieldset>
+                <legend>{{ data.answer_oper }} 已解答:</legend>
+                </fieldset>
                 {% autoescape off %}
                     <blockquote class="layui-elem-quote">{{ data.problem_answer }}</blockquote>
                 {% endautoescape %}
@@ -47,19 +48,37 @@
                     <a href="update/"> <u><span style="color:#337FE5;">我要完善标准答案</span></u></a><br>
                 {% endif %}
                 <hr class="layui-bg-green">
-
-
-
-
                 {% for line in comments_data %}
-                    <em>{{ line.update_oper }} {{ line.update_date }}</em><br>
-                    {% autoescape off %}
-                        {{ line.name }}
-                    {% endautoescape %}
-                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
-
-
+                    <div class="caller-contar">
+                        <div class="caller-item">
+                            <div class="caller-main caller-fl">
+                                <p><strong>{{ line.update_oper }}</strong> <em>{{ line.update_date }}</em></p>
+                                <p class="message-text ">
+                                    {% autoescape off %}
+                                        {{ line.name }}
+                                    {% endautoescape %}
+                                </p>
+                                <br>
+                                <div class="caller-iconset">
+                                    <!--
+                                    <i class="layui-icon layui-icon-login-wechat"></i>
+                                    <i class="layui-icon layui-icon-login-qq"></i>
+                                    <i class="layui-icon layui-icon-login-weibo"></i>
+                                    -->
+                                </div>
+                                {% if line.stat_code == 0 %}
+                                    <button class="layui-btn layui-btn-sm caller-fr ">
+                                        <i class="layui-icon layui-icon-ok "></i>
+                                        已采纳
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
+                    </div>
                 {% endfor %}
+
+
                 <br>
                 <!-- 富文本输入框 -->
                 <textarea id="fwb_text_comments" style="display: none;">
@@ -86,11 +105,6 @@
                         </textarea>
                     </div>
                 </div>
-                <!--
-                <textarea id="fwb_text" style="display: none;">
-                    {{ data.problem_answer }}
-                </textarea>
-                -->
                 <br>
                 <div class="layui-col-md6">
                     {% if type == 'update' %}
@@ -111,7 +125,8 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">团队</label>
                             <div class="layui-input-inline">
-                                <select name="channel" lay-verify="required" lay-search="" lay-filter="select_filter2">
+                                <select name="channel" lay-verify="required" lay-search=""
+                                        lay-filter="select_filter2">
                                     <option value="">直接选择</option>
                                     {% for line in channel %}
                                         {% if line.code == data_channel_id %}
@@ -153,19 +168,39 @@
                 </div>
                 <div class="layui-col-md12">
                     <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">更新知识库</button>
-                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo2">关闭</button>
+                    <button type="submit" class="layui-btn" lay-submit="" lay-filter="demo2">关闭页面</button>
+                    <button type="submit" class="layui-btn layui-btn-danger" lay-submit="" lay-filter="close_info">
+                        关闭知识卡片
+                    </button>
                     <hr class="layui-bg-green">
                     {% for line in comments_data %}
                         <em>{{ line.update_oper }} {{ line.update_date }}</em><br>
                         {% autoescape off %}
                             {{ line.name }}
                         {% endautoescape %}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-block">
+                                {% for line_comments_stat in info_comments_stat_data %}
+                                    {% if line.stat_code == line_comments_stat.code %}
+                                        <input type="radio" name="{{ line.id }}"
+                                               value="{{ line_comments_stat.code }}"
+                                               title="{{ line_comments_stat.name }}" checked=""
+                                               lay-filter="select_comments_stat">
+                                    {% else %}
+                                        <input type="radio" name="{{ line.id }}"
+                                               value="{{ line_comments_stat.code }}"
+                                               title="{{ line_comments_stat.name }}"
+                                               lay-filter="select_comments_stat">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
                         <fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;"></fieldset>
                     {% endfor %}
 
                 </div>
             {% endif %}
-
 
         </fieldset>
         <br><br>
@@ -181,7 +216,6 @@
 
 
     </form>
-
 
 
     <script>
@@ -255,6 +289,28 @@
                 return false;
             });
 
+            // 关闭知识卡片
+            form.on('submit(close_info)', function (data) {
+                console.log(data);
+                //询问框
+                layer.confirm('确认将该知识关闭？', {
+                    btn: ['关闭', '取消'] //按钮
+                }, function () {
+                    req_data = {};
+                    $.post("close/",
+                        req_data,
+                        function (data, status) {
+                            console.log("Data: " + data + "\nStatus: " + status);
+                            console.log(data);
+                            layer.msg('关闭成功', {icon: 1});
+                            parent.layui.admin.events.closeThisTabs();
+                        }
+                    );
+
+                });
+                return false;
+            });
+
             // 评论
             form.on('submit(demo3)', function (data) {
                 req_data = {
@@ -302,8 +358,10 @@
                     shade: [0.3, '#000'],//黑色背景（0.3代表颜色深度）
                     shadeClose: true,//点击遮罩关闭大图
                     area: [width + 'px', height + 'px'], //宽高
+                    offset: ['10%', '5%'],
                     //area: ['80%', '80%'],
-                    //resize: false,//不可拖拽缩放
+                    //area: width + 'px',
+                    resize: false,//不可拖拽缩放
                     skin: 'myskin',//大图背景色定义类
                     // content: "<img alt=" + name + " title=" + name + " src=" + url + " height=500px; width=500px;" + "/>"
                     content: "<img alt=" + name + " title=" + name + " src=" + url + " height=100%; width=100%;" + "/>"
@@ -315,19 +373,44 @@
                 elem: '#test10'
                 , url: '/search_problem/upload/file/' //改成您自己的上传接口
                 , accept: 'file'
-                , done: function (res) {
-                    layer.msg('上传成功');
+                , done: function (data, status) {
 
-                    var text = layedit.getContent(index);
-                    console.log(text);
-                    //layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
-                    // <p><a target="_blank" href="http://ora.com"><b><u>http://ora.com</u></b></a><br></p>
-                    //$("#fwb_text").val(text + '<p><a target="_blank" href="' + res.data.src + '"><b><u>' + res.data.src + '</u></b></a><br></p>');//先赋值
-                    $("#fwb_text").val(text + '<p><a target="_blank" href="' + res.data.src + '"><b><u>' + res.data.file_name + '</u></b></a><br></p>');//先赋值
-                    //$("#fwb_text").val(text);
-                    index = layedit.build('fwb_text');//渲染build
-                    console.log(res)
+                    console.log(data);
+                    if (data.code === false) {
+                        layer.msg(data.msg);
+                    } else {
+                        layer.msg('上传成功');
+
+                        var text = layedit.getContent(index);
+                        console.log(text);
+                        //layui.$('#uploadDemoView').removeClass('layui-hide').find('img').attr('src', res.files.file);
+                        // <p><a target="_blank" href="http://ora.com"><b><u>http://ora.com</u></b></a><br></p>
+                        //$("#fwb_text").val(text + '<p><a target="_blank" href="' + res.data.src + '"><b><u>' + res.data.src + '</u></b></a><br></p>');//先赋值
+                        $("#fwb_text").val(text + '<p><a target="_blank" href="' + data.data.src + '"><b><u>' + data.data.file_name + '</u></b></a><br></p>');//先赋值
+                        //$("#fwb_text").val(text);
+                        index = layedit.build('fwb_text');//渲染build
+                    }
                 }
+            });
+
+            // 评论状态
+            form.on('radio(select_comments_stat)', function (data) {
+                console.log(data);
+                console.log(data.elem.name);
+                console.log(data.value);
+                req_data = {
+                    comments_id: data.elem.name
+                    , comment_stat_code: data.value
+                };
+                $.post("comments/stat/update/",
+                    req_data,
+                    function (data, status) {
+                        console.log("Data: " + data + "\nStatus: " + status);
+                        console.log(data);
+                        layer.msg('评论状态已更新：）');
+                    }
+                );
+                return false;
             });
 
 

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+
     <div id="LAY_app">
         <div class="layui-layout layui-layout-admin">
             <div class="layui-header">
@@ -80,6 +81,11 @@
                                 <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
                             </dl>
                         {% endif %}
+                    </li>
+                    <li class="layui-nav-item">
+                        <p style="color:#E53333;" id="get_score">积分：<span id="num1"></span></p>
+                        <span id="num1"></span>
+                        <span id="num2"></span>
                     </li>
 
                     <li class="layui-nav-item layui-hide-xs" lay-unselect>
@@ -166,7 +172,7 @@
                                 <dd data-name="console"><a lay-href="/qq_data/show/">QQ运营数据分析</a></dd>
                                 <dd data-name="console"><a lay-href="/qq_data/myview/show/">鲲鹏数据分析</a></dd>
                                 <dd data-name="console"><a lay-href="/qq_data/search_problem/show/">小鲲知道数据分析</a></dd>
-
+                                <dd data-name="console"><a lay-href="/qq_data/search_problem/score/">小鲲知道积分分析</a></dd>
 
                             </dl>
                         </li>
@@ -214,8 +220,6 @@
                                 </dd>
                             </dl>
                         </li>
-
-
 
 
                         <li data-name="structure" class="layui-nav-item">
@@ -448,11 +452,38 @@
             var $ = layui.$ //重点处
                 , layer = layui.layer;
 
-            /*
-            form.val('example', {
-                "acct_type": "{{ rjxf_stat}}"
-            });
-            */
+
+            var options = {
+                useEasing: true,  // 过渡动画效果，默认ture
+                useGrouping: true,  // 千分位效果，例：1000->1,000。默认true
+                separator: ',',   // 使用千分位时分割符号
+                decimal: '.',   // 小数位分割符号
+                prefix: '',    // 前置符号
+                suffix: ''    // 后置符号，可汉字
+            };
+
+
+            var tmp_num = 0;
+
+            function get_score() {
+                // var index = layer.load(1);
+                $.post("get_score/",
+                    {},
+                    function (data, status) {
+                        console.log(data);
+                        // dom节点, 初始值,  结束值, 小数位数, 过渡几秒 , 初始参数
+                        var num1 = new CountUp('num1', tmp_num, data.score, 0, 2, options);
+                        num1.start();
+                        tmp_num = data.score
+                        // $("p#get_score").text(data.score);
+                        // layer.close(index);
+                    }
+                );
+            }
+
+            get_score();
+            setInterval(get_score, 5000);
+
 
             //后面就跟你平时使用jQuery一样
             $.get("add_connect", {search_data: "", search_mode: "", search_par3: ""}, function (respData) {

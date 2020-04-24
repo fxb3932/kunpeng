@@ -9,7 +9,7 @@ import json
 from search_problem.models import info
 from search_problem.models import info_stat
 from search_problem.models import info_channel
-from search_problem.models import info_type,info_comments
+from search_problem.models import info_type,info_comments, info_close
 
 
 from django.forms.models import model_to_dict
@@ -55,6 +55,11 @@ def search_problem(request):
                 # | Q(t_comments__name__icontains=line)
             )
 
+    comm_i_info_close = request.POST.get('comm_i_info_close')
+    if comm_i_info_close != None and comm_i_info_close != '':
+        search_info_data = search_info_data.filter(t_close__code=comm_i_info_close)
+    else:
+        search_info_data = search_info_data.filter(~Q(t_close__code=999))
 
     # 0-已录入未解答 1-已解答 2-问题退回审核中 3-新解答审核中
     comm_i_info_stat = request.POST.get('comm_i_info_stat')
@@ -74,8 +79,9 @@ def search_problem(request):
         search_info_data = search_info_data.filter(info_check_flag=comm_i_info_check_flag)
 
     comm_i_info_check_flag = [
-        {'code': 0, 'name': '未认证'}
+        {'code': 0, 'name': '待处理'}
         , {'code': 1, 'name': '已认证'}
+        , {'code': 2, 'name': '未认证'}
     ]
 
     comm_i_info_check_update = request.POST.get('comm_i_info_check_update')
@@ -140,6 +146,11 @@ def search_problem(request):
     for line in info_type.objects.all():
         comm_i_info_type.append(model_to_dict(line))
 
+
+    comm_i_info_close = []
+    for line in info_close.objects.all():
+        comm_i_info_close.append(model_to_dict(line))
+
     data = []
     for line in search_info_data.all():
 
@@ -164,7 +175,7 @@ def search_problem(request):
 
         t_type = {}
         for line_sub in comm_i_info_type:
-            if line_sub.get('id') == line.t_channel_id:
+            if line_sub.get('id') == line.t_type_id:
                 t_type = {
                     "code": line_sub.get('code')
                     , "name": line_sub.get('name')
@@ -241,6 +252,7 @@ def search_problem(request):
         , 'comm_i_info_check_flag': comm_i_info_check_flag
         , 'comm_i_info_check_update': comm_i_info_check_update
         , 'comments_data': comments_data
+        , 'comm_i_info_close': comm_i_info_close
         # , 'new_data': data
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")

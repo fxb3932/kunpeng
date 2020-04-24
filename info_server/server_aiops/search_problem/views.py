@@ -25,7 +25,8 @@ def index(request):
         'title': 'rota_day'
     }
     # print(req)
-    return render(request, 'search_problem/index.html', req)
+    return render(request, 'search_problem/fxb.html', req)
+    # return render(request, 'search_problem/index.html', req)
 
 
 import requests
@@ -45,7 +46,6 @@ def new(request):
         , 'debug': False
         , 'perm': 'rjxf_server.view_flow'
     }
-
 
     resp_auth = main.auth(auth_data)
     # print('user : ' + request.user.first_name)
@@ -131,8 +131,22 @@ def new_text_upload(request):
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+
 @csrf_exempt
 def upload_file(request):
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net_sc': True
+        , 'login': True
+        , 'debug': True
+        , 'perm': ''
+    }
+    resp_auth = main.auth(auth_data)
+    if resp_auth.get('code') == False:
+        resp = resp_auth
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
     file_pwd = os.getcwd() + '/static/app/search_problem/file/'
     file_obj = request.FILES.get('file', None)
     s_date = time.strftime('%Y-%m-%d-%H:%M:%S', time.localtime())
@@ -165,6 +179,7 @@ def upload_file(request):
     # }
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+
 from .models import info
 from bs4 import BeautifulSoup
 
@@ -176,8 +191,6 @@ def new_submit(request):
     fwb_data = request.POST.get('fwb_data')
     fwb_text_answer = request.POST.get('fwb_text_answer')
     user = request.user
-
-
 
     print(input_data)
     print(fwb_data)
@@ -212,7 +225,7 @@ def new_submit(request):
         , problem_answer=fwb_text_answer
         , problem_answer_txt=problem_answer.get_text()
         , input_oper=user.first_name
-        , answer_oper = input_data.get('answer_oper')
+        , answer_oper=input_data.get('answer_oper')
         , bank_id=input_data.get('bank_id')
         , bank_oper=input_data.get('bank_oper')
         , problem_source=input_data.get('problem_source')
@@ -242,6 +255,20 @@ def new_submit(request):
             , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         )
         a.save()
+
+        # 积分计算
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "input"
+            , 'info_id': r.id
+        })
+        if stat == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer"
+                , 'info_id': r.id
+                , 'oper': r.answer_oper
+            })
     except Exception as msg_info:
         code = -1
         print(repr(msg_info))
@@ -269,6 +296,7 @@ from .models import info_channel
 from .models import info_type
 from .models import action, action_type
 
+
 # 小鲲度
 def search(request):
     print('def search')
@@ -279,10 +307,10 @@ def search(request):
 
     # 操作记录
     a = action(
-        type = action_type.objects.get(code=1)
-        , text = problem_id
-        , oper = request.user.first_name
-        , date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        type=action_type.objects.get(code=1)
+        , text=problem_id
+        , oper=request.user.first_name
+        , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     )
     a.save()
 
@@ -294,7 +322,6 @@ def search(request):
         , data={'comm_i_search': problem_id}
     )
     resp = json.loads(res.text)
-
 
     print(resp)
     data = []
@@ -311,11 +338,16 @@ def search(request):
     data.sort(key=lambda item: item.get('t_stat_id'), reverse=True)
     data.sort(key=lambda item: item.get('info_check_flag'), reverse=True)
 
-
-
     # 用时计算
     t2 = time.time()
     t3 = (t2 - t1) * 1000
+
+    # 积分计算
+    main.action_log(request, {
+        "app_type": "search_problem"
+        , 'action_type': "search"
+        , 'text': problem_id
+    })
 
     req = {
         'title': 'search'
@@ -326,18 +358,10 @@ def search(request):
     }
     return render(request, 'search_problem/search.html', req)
 
+
 def show(request, info_id):
     print('index show')
     print('info_id = [' + str(info_id) + ']')
-
-    # 操作记录
-    a = action(
-        type = action_type.objects.get(code=2)
-        , text = str(info_id)
-        , oper = request.user.first_name
-        , date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    )
-    a.save()
 
     # 计数
     r = info.objects.get(id=info_id)
@@ -350,8 +374,14 @@ def show(request, info_id):
         data_stat_id = line.t_stat.stat_id
         for line_comments in line.t_comments.all():
             # comments_data.append(model_to_dict(line_comments, exclude=['update_date']))
+            try:
+                stat_code = line_comments.i_stat.code
+            except:
+                stat_code = 999
             comments_data.append({
-                "name": line_comments.name
+                'id': line_comments.id
+                , "name": line_comments.name
+                , "stat_code": stat_code
                 , "update_oper": line_comments.update_oper
                 , "update_date": line_comments.update_date.strftime("%Y-%m-%d %H:%M:%S")
             })
@@ -362,7 +392,6 @@ def show(request, info_id):
         except:
             data_channel_id = 666
             data_type_id = 666
-
 
     print(data)
 
@@ -392,6 +421,36 @@ def show(request, info_id):
         if line.get('name') == '知识库管理员':
             app_auth = 1
 
+    # 操作记录
+    a = action(
+        type=action_type.objects.get(code=2)
+        , text=str(info_id)
+        , oper=request.user.first_name
+        , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    )
+    a.save()
+
+    # 积分计算 查看他人知识卡片
+    main.action_log(request, {
+        "app_type": "search_problem"
+        , 'action_type': "show"
+        , 'info_id': info_id
+    })
+
+    # 认证解答被查看
+    if r.info_check_flag == 1:
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "answer_auth_show"
+            , 'info_id': info_id
+            , 'oper': r.answer_oper
+        })
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "input_auth_show"
+            , 'info_id': info_id
+            , 'oper': r.input_oper
+        })
 
     resp = {
         "code": 0
@@ -413,7 +472,6 @@ def show(request, info_id):
 def show_submit(request, info_id):
     print('index new_submit')
 
-
     input_data = json.loads(request.POST.get('input_data'))
     fwb_data = request.POST.get('fwb_data')
     user = request.user
@@ -422,26 +480,32 @@ def show_submit(request, info_id):
     print(fwb_data)
 
     print('type = [' + request.POST.get('type') + ']')
-
     r = info.objects.get(id=info_id)
+    r_old = info.objects.get(id=info_id)
     r.title = input_data.get('title')
+    problem_answer = BeautifulSoup(fwb_data, 'html.parser')
+    problem_answer_txt = problem_answer.get_text()
     r.problem_answer = fwb_data
-    if request.POST.get('type') == 'new':
-        r.answer_oper = request.user.first_name
-        r.answer_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    r.problem_answer_txt = problem_answer_txt
+    if len(problem_answer_txt) > 1:
+        # 已解答
+        r.t_stat = info_stat.objects.get(stat_id=1)
+        # 初次时
+        if request.POST.get('type') == 'new':
+            r.answer_oper = request.user.first_name
+            r.answer_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    else:
+        # 未解答
+        r.t_stat = info_stat.objects.get(stat_id=0)
     r.update_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-    r.t_stat = info_stat.objects.get(stat_id=1)
     r.t_channel = info_channel.objects.get(code=input_data.get('channel'))
     r.t_type = info_type.objects.get(code=input_data.get('info_type'))
-
-    problem_answer = BeautifulSoup(fwb_data, 'html.parser')
-    r.problem_answer_txt = problem_answer.get_text()
     r.info_check_update = 0
 
     if input_data.get('info_check_flag') == 'on':
         r.info_check_flag = 1
     else:
-        r.info_check_flag = 0
+        r.info_check_flag = 2
 
     print(r)
 
@@ -457,6 +521,34 @@ def show_submit(request, info_id):
             , date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         )
         a.save()
+
+        # 进行解答时
+        if r_old.t_stat.stat_id == 0 and r.t_stat.stat_id == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer"
+                , 'info_id': r.id
+            })
+        # 进行认证时
+        if r_old.info_check_flag != 1 and r.info_check_flag == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer_auth"  # 解答人加分
+                , 'info_id': r.id
+                , 'oper': r.answer_oper
+            })
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "auth"  # 操作员加分
+                , 'info_id': r.id
+            })
+        if r_old.info_check_flag == 1 and r.info_check_flag != 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer_auth_close"  # 解答人减分
+                , 'info_id': r.id
+                , 'oper': r.answer_oper
+            })
     except Exception as msg_info:
         code = -1
         print(repr(msg_info))
@@ -472,6 +564,9 @@ def show_submit(request, info_id):
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
+from .models import info_comments_stat
+
+
 def show_update(request, info_id):
     print('index show_update')
 
@@ -481,7 +576,8 @@ def show_update(request, info_id):
         , 'net': False
         , 'login': True
         , 'debug': False
-        , 'perm': 'search_problem.add_info'
+        , 'perm': ''
+        , 'perm_group': '知识库管理员'
     }
     resp_auth = main.auth(auth_data)
     print('user : ' + request.user.first_name)
@@ -507,13 +603,29 @@ def show_update(request, info_id):
     for line in info.objects.filter(id=info_id):
         data = line.__dict__
         for line_comments in line.t_comments.all():
+            try:
+                stat_code = line_comments.i_stat.code
+            except:
+                stat_code = 999
             comments_data.append({
-                "name": line_comments.name
+                "id": line_comments.id
+                , "name": line_comments.name
+                , "stat_code": stat_code
                 , "update_oper": line_comments.update_oper
                 , "update_date": line_comments.update_date.strftime("%Y-%m-%d %H:%M:%S")
             })
 
     comments_data.sort(key=lambda item: item.get('update_date'), reverse=True)
+
+    info_comments_stat_data = []
+    for line in info_comments_stat.objects.all():
+        info_comments_stat_data.append({
+            'id': line.id
+            , 'code': line.code
+            , 'name': line.name
+        })
+
+    info_comments_stat_data.sort(key=lambda item: item.get('code'), reverse=False)
 
     resp = {
         "code": 0
@@ -525,6 +637,7 @@ def show_update(request, info_id):
         , "data_channel_id": data_channel_id
         , "data_type_id": data_type_id
         , "comments_data": comments_data
+        , 'info_comments_stat_data': info_comments_stat_data
     }
     return render(request, 'search_problem/show.html', resp)
 
@@ -540,6 +653,112 @@ def submit_ok(request, info_id):
     return render(request, 'search_problem/submit_ok.html', resp)
 
 
+@csrf_exempt
+def show_update_comments_stat_update(request, info_id):
+    print('index show_update_comments_stat_update')
+
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net': False
+        , 'login': True
+        , 'debug': False
+        , 'perm': ''
+        , 'perm_group': '知识库管理员'
+    }
+    resp_auth = main.auth(auth_data)
+    print('user : ' + request.user.first_name)
+    if resp_auth.get('code') == False: return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
+
+    r = info_comments.objects.get(id=request.POST.get('comments_id'))
+    r_old = info_comments.objects.get(id=request.POST.get('comments_id'))
+    r.i_stat = info_comments_stat.objects.get(code=request.POST.get('comment_stat_code'))
+    r.save()
+
+    try:
+        r_old_stat_code = r_old.i_stat.code
+    except:
+        r_old_stat_code = 999
+    print(r.i_stat.code)
+
+    if r_old_stat_code != 0 and r.i_stat.code == 0:
+        # 积分计算
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "comments"
+            , 'info_id': info_id
+            , 'text': r.id
+            , 'oper': r.update_oper
+        })
+    if r_old_stat_code == 0 and r.i_stat.code != 0:
+        # 积分计算
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "comments_close"
+            , 'info_id': info_id
+            , 'text': r.id
+            , 'oper': r.update_oper
+        })
+
+    resp = {
+        "code": 0
+    }
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+from .models import info_close
+
+
+@csrf_exempt
+def show_update_close(request, info_id):
+    print('index show_update_close')
+
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net': False
+        , 'login': True
+        , 'debug': False
+        , 'perm': ''
+        , 'perm_group': '知识库管理员'
+    }
+    resp_auth = main.auth(auth_data)
+    print('user : ' + request.user.first_name)
+    if resp_auth.get('code') == False: return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
+
+    r = info.objects.get(id=info_id)
+    r_old = info.objects.get(id=info_id)
+
+    r.t_close = info_close.objects.get(code=999)
+    r.save()
+
+    try:
+        r_old_close_code = r_old.t_close.code
+    except:
+        r_old_close_code = 0
+
+    if r_old_close_code != 999 and r.t_close.code == 999:
+        # 积分计算
+        if r.t_stat.stat_id == 1:
+            main.action_log(request, {
+                "app_type": "search_problem"
+                , 'action_type': "answer_close"
+                , 'info_id': info_id
+                , 'oper': r.answer_oper
+            })
+        main.action_log(request, {
+            "app_type": "search_problem"
+            , 'action_type': "input_close"
+            , 'info_id': info_id
+            , 'oper': r.input_oper
+        })
+
+    resp = {
+        "code": 0
+    }
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
 def list(request):
     print('index list')
 
@@ -551,7 +770,6 @@ def list(request):
     resp = json.loads(res.text)
 
     # resp.get('data') = resp.get('data').sort(key=lambda item: item.get('count_sum'), reverse=True)
-
 
     resp = {
         "code": 0
@@ -594,13 +812,15 @@ def get_table_data(request):
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+
 from .models import info_comments
+
+
 @csrf_exempt
 def show_submit_comments(request, info_id):
     print('start show_submit_comments')
 
     fwb_data = request.POST.get('fwb_data')
-
 
     # name = models.CharField(max_length=64)
     # update_oper = models.CharField(max_length=64)
@@ -611,7 +831,6 @@ def show_submit_comments(request, info_id):
         , update_date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     )
 
-
     code = -1
     msg = ''
     try:
@@ -620,8 +839,8 @@ def show_submit_comments(request, info_id):
 
         r = info.objects.get(id=info_id)
         r.t_comments.add(r_comments.id)
-        r.update_date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
-        r.info_check_update=1
+        r.update_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        r.info_check_update = 1
         r.save()
         code = 0
 
@@ -642,6 +861,7 @@ def show_submit_comments(request, info_id):
         , "msg": msg
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
 
 def report(request, info_id):
     print('index submit_ok')

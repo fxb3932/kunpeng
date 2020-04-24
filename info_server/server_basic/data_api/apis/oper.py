@@ -4,10 +4,9 @@ import json
 
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
-from django.contrib.auth.models import auth
-from django.forms.models import model_to_dict
 
 from cmdb.models import *
+import requests
 
 @csrf_exempt
 def oper(request):
@@ -33,6 +32,14 @@ def oper(request):
             , "name": line.name
         })
 
+
+    # 积分基础数据提取
+    res = requests.post(
+        url='http://' + request.META.get('HTTP_HOST') + '/' + 'data_api/search_problem_score/'
+        , data={}
+    )
+    resp_score = json.loads(res.text)
+
     data = []
     for line in search_info_data.all():
         group_data = []
@@ -43,17 +50,43 @@ def oper(request):
                 # , 'name': line_group.name
             })
 
-        list_user_info = user_info.objects.get(first_name=line.first_name)
+        # list_user_info = user_info.objects.get(first_name=line.first_name)
+        try:
+            list_user_info = user_info.objects.get(first_name=line.first_name)
+            bc_qq_code = list_user_info.qq_no
+        except:
+            r_user_info = user_info(
+                first_name=line.first_name
+            )
+            r_user_info.save()
+            bc_qq_code = ''
+
         try: bc_group_code = list_user_info.group.code
         except: bc_group_code = ''
         try: bc_group_name = list_user_info.group.name
         except: bc_group_name = ''
+
+        # score 用户积分计算
+        # db = pymysql.connect("localhost", "testuser", "test123", "TESTDB")
+
+        score = 0
+        score_data = {}
+        for line_score in resp_score.get('data'):
+            if line_score.get('first_name') == line.first_name:
+                score_data = line_score
+
+        score_data.setdefault('score_sum', 0)
+        score_data.setdefault('data', [])
+
         data.append({
             'id': line.id
             , 'username': line.username
             , 'first_name': line.first_name
 
-            , 'bc_qq_no': list_user_info.qq_no
+            , 'score': score_data.get('score_sum')
+            , 'score_data': score_data.get('data')
+
+            , 'bc_qq_no': bc_qq_code
             , 'bc_group_code': bc_group_code
             , 'bc_group_name': bc_group_name
 

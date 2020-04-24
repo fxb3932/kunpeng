@@ -1015,7 +1015,7 @@ layui.define(function (exports) {
             element.render('progress');
 
         });
-        exports('senior', {})
+        exports('qq_data', {})
 
     }
 );

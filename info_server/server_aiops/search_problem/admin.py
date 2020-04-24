@@ -42,21 +42,29 @@ class channelAdmin(admin.ModelAdmin):
     )  # list
 
 admin.site.register(models.info_channel, channelAdmin)
+admin.site.register(models.info_close)
 
 class typeAdmin(admin.ModelAdmin):
     list_display = ('code', 'name')  # list
 admin.site.register(models.info_type, typeAdmin)
 
 class info_comments(admin.ModelAdmin):
-    list_display = ('name', 'update_oper', 'update_date')  # list
+    list_display = ('name', 'i_stat', 'update_oper', 'update_date')  # list
 admin.site.register(models.info_comments, info_comments)
 # admin.site.register(models.info_comments)
-
+class info_comments_stat(admin.ModelAdmin):
+    list_display = ('code', 'name')  # list
+admin.site.register(models.info_comments_stat, info_comments_stat)
 
 class action(admin.ModelAdmin):
     list_display = ('type', 'text', 'oper', 'date')  # list
+    search_fields = (
+        'text',
+        'oper',
+        'date',
+    )
 admin.site.register(models.action, action)
 
 class action_type(admin.ModelAdmin):
-    list_display = ('id', 'code', 'name')  # list
+    list_display = ('id', 'code', 'name', 'score')  # list
 admin.site.register(models.action_type, action_type)

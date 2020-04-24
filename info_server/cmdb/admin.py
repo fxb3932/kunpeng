@@ -62,14 +62,24 @@ admin.site.register(models.i_app_mode)
 admin.site.register(models.i_app_team)
 
 class user_info(admin.ModelAdmin):
-    list_display = ('first_name', 'qq_no', 'group')  # list
+    list_display = ('first_name', 'qq_no', 'group', 'score')  # list
 admin.site.register(models.user_info, user_info)
 
 class i_user_group(admin.ModelAdmin):
     list_display = ('code', 'name')  # list
 admin.site.register(models.i_user_group, i_user_group)
 
+class action(admin.ModelAdmin):
+    list_display = ('app_type', 'action_type', 'info_id', 'score', 'oper', 'date', 'text')  # list
+admin.site.register(models.action, action)
 
+class action_app_type(admin.ModelAdmin):
+    list_display = ('code', 'name')  # list
+admin.site.register(models.action_app_type, action_app_type)
+
+class action_type(admin.ModelAdmin):
+    list_display = ('code', 'name', 'score', 'score_limit_day')  # list
+admin.site.register(models.action_type, action_type)
 
 # class productAdmin(admin.ModelAdmin):
 #     list_display = (
@@ -80,3 +90,4 @@ admin.site.register(models.i_user_group, i_user_group)
 # admin.site.register(models.product, productAdmin)
 # admin.site.register(models.bank)
 # admin.site.register(models.server)
+

@@ -6,6 +6,8 @@ from django.contrib.auth.models import Group
 from myview.models import Article
 import requests
 import main
+from django.views.decorators.csrf import csrf_exempt
+
 def index(request):
     print('index myview home')
 
@@ -38,12 +40,13 @@ def index(request):
 
 
 
-    if user.is_authenticated == True:
-        user_id = str(user)
+    if user_data.get('is_authenticated') == True:
+        user_id = user_data.get('first_name')
     else:
         user_id = '未登陆'
     req = {
         "user_id": user_id
+        , "score": user_data.get('score')
     }
 
     for line in user_data.get('group_data'):
@@ -51,13 +54,30 @@ def index(request):
             return render(request, 'myview/index.html', req)
     return render(request, 'myview/index2.html', req)
 
+@csrf_exempt
+def get_score(request):
+    user = request.user
+    # 调用数据中台API
+    res = requests.post(
+        url='http://' + request.META.get('HTTP_HOST') + '/' + 'data_api/oper/'
+        , data={"comm_i_user_first_name": user.first_name}
+    )
+    resp = json.loads(res.text)
+
+    user_data = {}
+    for line in resp.get('data'):
+        user_data = line
+    resp = {
+        'score': user_data.get('score')
+    }
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
 def console(request):
     return render(request, 'home/console.html')
 
 import time
 import json
 from django.db.models import Count
-from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 def add_connect(request):
     # data = Article.objects.all()

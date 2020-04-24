@@ -11,4 +11,5 @@ urlpatterns = [
     , path('user/login.html', views.user_logout, name='user_logout')
     , path('register_index', views.register_index, name='register_index')
     , path('test_resp', views.test_resp, name='test_resp')
+    , path('get_score/', views.get_score, name='get_score')
 ]

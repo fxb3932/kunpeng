@@ -9,5 +9,6 @@ from django.http import HttpResponse, Http404
 def index(request):
     req = {}
     test = 'aaa'
+    print("aaa")
     print(test)
     return render(request, 'monitor/index.html', req)

@@ -16,7 +16,7 @@ class info(models.Model):
     bank_oper = models.CharField(max_length=32, null=True, blank=True)
     problem_source = models.CharField(max_length=32, null=True, blank=True)
 
-    #问题制作时间、下发完成时间、操作人
+    # 问题制作时间、下发完成时间、操作人
     input_date = models.DateTimeField(null=True, blank=True)
     answer_date = models.DateTimeField(null=True, blank=True)
     update_date = models.DateTimeField(null=True, blank=True)
@@ -45,6 +45,7 @@ class info(models.Model):
     # 1-有新评论标准答案待更新
     info_check_update = models.IntegerField()
 
+    t_close = models.ForeignKey("info_close", on_delete=models.PROTECT, blank=True, null=True)
 
     # 查询次数
     count_search = models.IntegerField(null=True)
@@ -56,7 +57,11 @@ class info(models.Model):
     comments_update_date = models.DateTimeField(null=True, blank=True)
     t_comments = models.ManyToManyField("info_comments", blank=True)
 
-
+class info_close(models.Model):
+    code = models.IntegerField(null=True)
+    name = models.CharField(max_length=64, blank=True,null=True)
+    def __str__(self):
+        return "%s_%s" % (self.code, self.name)
 
 class info_stat(models.Model):
     stat_id = models.IntegerField(null=True, db_index = True)
@@ -81,12 +86,19 @@ class info_comments(models.Model):
     name = models.CharField(max_length=2048)
     update_oper = models.CharField(max_length=64)
     update_date = models.DateTimeField()
+    i_stat = models.ForeignKey("info_comments_stat", on_delete=models.CASCADE, blank=True,null=True)
 
     # class Meta:
     #     unique_together = (("name", "update_oper", 'update_date'),)
 
     def __str__(self):
         return "%s_%s" % (self.name, self.update_oper)
+
+class info_comments_stat(models.Model):
+    code = models.IntegerField()
+    name = models.CharField(max_length=64)
+    def __str__(self):
+        return "%s_%s" % (self.code, self.name)
 
 class action(models.Model):
     type = models.ForeignKey("action_type", on_delete=models.CASCADE)
@@ -98,5 +110,6 @@ class action(models.Model):
 class action_type(models.Model):
     code = models.IntegerField()
     name = models.CharField(max_length=64)
+    score = models.IntegerField(default=0)
     def __str__(self):
         return "%s_%s" % (self.code, self.name)
