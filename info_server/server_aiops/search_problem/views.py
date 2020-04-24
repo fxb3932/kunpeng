@@ -338,6 +338,14 @@ def search(request):
     data.sort(key=lambda item: item.get('t_stat_id'), reverse=True)
     data.sort(key=lambda item: item.get('info_check_flag'), reverse=True)
 
+    tmp_data = []
+    for line in data:
+        if line.get('info_check_flag') == 1:
+            tmp_data.insert(0, line)
+        else:
+            tmp_data.append(line)
+    data = tmp_data
+
     # 用时计算
     t2 = time.time()
     t3 = (t2 - t1) * 1000
