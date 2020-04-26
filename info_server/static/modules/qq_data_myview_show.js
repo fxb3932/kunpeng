@@ -23,8 +23,6 @@ layui.define(function (exports) {
                 elem: '#end_date'
             });
 
-            var start_date = '2020-02-21';
-            var end_date = '2020-03-20';
             form.val('example', {
                 "start_date": start_date // "name": "value"
                 , "end_date": end_date

@@ -35,9 +35,11 @@
                     <div class="layui-card">
                         <!--<div class="layui-card-header">标题</div>-->
                         <div class="layui-card-body" style="height:800px">
-                            <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade" lay-filter="LAY-index-1">
+                            <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"
+                                 lay-filter="LAY-index-1">
                                 <div carousel-item id="LAY-index-1" style="height:800px">
-                                    <div style="height:800px"><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                                    <div style="height:800px"><i
+                                            class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -52,6 +54,12 @@
     <script src="/static/modules/senior.js"></script>
 -->
     <script>
+
+        var start_date = '{{ start_date }}';
+        var end_date = '{{ end_date }}';
+        console.log(start_date);
+        console.log(end_date);
+
         layui.config({
             base: '/static/' //静态资源所在路径
         }).extend({
