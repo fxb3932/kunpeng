@@ -27,9 +27,12 @@ def index(request):
     # print(req)
     return render(request, 'qq_data/index.html', req)
 
+
 import re
 import time
 from .models import info
+
+
 @csrf_exempt
 def upload(request):
     print('index upload')
@@ -57,7 +60,7 @@ def upload(request):
         if line.startswith('================================================================'):
             continue
         # print(line, end='\n')
-        #if len(line) > 0:
+        # if len(line) > 0:
         # 消息对象:清镇兴邦-运营服务
         if line.startswith('消息对象:'):
             qq_group = line.split(':')[1]
@@ -95,8 +98,6 @@ def upload(request):
             #     r.save()
             # except:
             #     print(qq_group + ':' + qq_date + ':' + qq_oper + ':' + line)
-
-
 
         if start_flag == 1:
             # 2017-12-26 8:33:02 兴业金融云-服务台I(1275494344)
@@ -126,7 +127,6 @@ def upload(request):
                 continue
             # print(line)
 
-
     # 用时计算
     t2 = time.time()
     t = (t2 - t1) * 1000
@@ -147,7 +147,10 @@ def upload(request):
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
+
 import datetime
+
+
 # 新增QQ响应时间
 @csrf_exempt
 def upload_v2(request):
@@ -177,7 +180,7 @@ def upload_v2(request):
         if line.startswith('================================================================'):
             continue
         # print(line, end='\n')
-        #if len(line) > 0:
+        # if len(line) > 0:
         # 消息对象:清镇兴邦-运营服务
         if line.startswith('消息对象:'):
             qq_group = line.split(':')[1]
@@ -191,7 +194,7 @@ def upload_v2(request):
             try:
                 re.match(r'\d\d\d\d-\d\d-\d\d \d*:\d\d:\d\d ', line).span()
                 # print(str(start_flag) + ':new:' + line)
-                now_date = datetime.datetime.strptime(qq_date + ' ' + qq_time,"%Y-%m-%d %H:%M:%S")
+                now_date = datetime.datetime.strptime(qq_date + ' ' + qq_time, "%Y-%m-%d %H:%M:%S")
                 try:
                     sec_date = now_date - old_date
                 except:
@@ -208,7 +211,7 @@ def upload_v2(request):
                 })
                 if old_qq_no != qq_no:
                     old_qq_no = qq_no
-                    old_date = datetime.datetime.strptime(qq_date + ' ' + qq_time,"%Y-%m-%d %H:%M:%S")
+                    old_date = datetime.datetime.strptime(qq_date + ' ' + qq_time, "%Y-%m-%d %H:%M:%S")
                 tmp_line_list.clear()
                 start_flag = 1
             except Exception as msg:
@@ -225,8 +228,6 @@ def upload_v2(request):
             #     r.save()
             # except:
             #     print(qq_group + ':' + qq_date + ':' + qq_oper + ':' + line)
-
-
 
         if start_flag == 1:
             # 2017-12-26 8:33:02 兴业金融云-服务台I(1275494344)
@@ -257,7 +258,6 @@ def upload_v2(request):
                 continue
             # print(line)
 
-
     # 用时计算
     t2 = time.time()
     t = (t2 - t1) * 1000
@@ -277,6 +277,7 @@ def upload_v2(request):
         "code": 0
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
 
 def show(request):
     print('start index show')
@@ -298,6 +299,7 @@ def show(request):
     # print(req)
     return render(request, 'qq_data/show.html', req)
 
+
 def myview_show(request):
     print('start index myview_show')
 
@@ -312,16 +314,36 @@ def myview_show(request):
     if resp_auth.get('code') == False:
         return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
 
+    start_date = datetime.datetime.now()
+    end_date = datetime.datetime.now()
+    for line in range(15):
+        print(line)
+        print(start_date.strftime("%Y-%m-%d"))
+        start_date -= datetime.timedelta(days=1)
+
     req = {
         'title': 'myview_show'
+        , 'start_date': start_date.strftime("%Y-%m-%d")
+        , 'end_date': end_date.strftime("%Y-%m-%d")
     }
     # print(req)
     return render(request, 'qq_data/myview_show.html', req)
 
 
 def search_problem_show(request):
-    req = {}
+    print('index search_problem_show')
+    start_date = datetime.datetime.now()
+    end_date = datetime.datetime.now()
+    for line in range(7):
+        print(line)
+        print(start_date.strftime("%Y-%m-%d"))
+        start_date -= datetime.timedelta(days=1)
+    req = {
+        'start_date': start_date.strftime("%Y-%m-%d")
+        , 'end_date': end_date.strftime("%Y-%m-%d")
+    }
     return render(request, 'qq_data/search_problem_show.html', req)
+
 
 def search_problem_score(request):
     print('index search_problem_score')
