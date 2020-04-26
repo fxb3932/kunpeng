@@ -106,7 +106,7 @@ def qq_data_count(request):
     # 按行统计 qq_data
     set_bank = set()
     for line in qq_data:
-        if '运营服务' in line.get('group'):
+        if '运营服务' in line.get('group') and 'AML' not in line.get('group'):
             set_bank.add(line.get('group'))
 
     print(set_bank)

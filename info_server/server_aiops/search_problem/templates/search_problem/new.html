@@ -30,7 +30,7 @@
         </div>
         -->
         <div class="layui-form-item">
-            <label class="layui-form-label">标题</label>
+            <label class="layui-form-label">标题*</label>
             <div class="layui-input-block">
                 <input type="text" name="title" lay-verify="required" autocomplete="off" placeholder="一句完整的描述您的问题"
                        class="layui-input">
@@ -61,8 +61,7 @@
                         <!--
                             <select name="bank_id" lay-search="" lay-verify="required" lay-filter="select_filter">
                             -->
-                        <select name="bank_id" lay-search="" lay-verify="required" lay-filter="select_filter">
-
+                        <select name="bank_id" lay-search="" lay-filter="select_filter">
                             <option value="">输入合作行大写字母</option>
                             {% for line in bank_info %}
                                 <option value="{{ line.name_ch }}_{{ line.name }}_{{ line.yhdm }}">{{ line.name_ch }}_{{ line.name }}_{{ line.yhdm }}</option>
