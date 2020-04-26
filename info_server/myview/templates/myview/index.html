@@ -482,7 +482,19 @@
             }
 
             get_score();
-            setInterval(get_score, 5000);
+            var interval_id = setInterval(get_score, 5000);
+
+            /*
+            window.onfocus = function () {
+                console.log('is');
+                interval_id = setInterval(get_score, 5000);
+            };
+            window.onblur = function (aaa) {
+                console.log('not is');
+                console.log(aaa);
+                clearInterval(interval_id);
+            };
+             */
 
 
             //后面就跟你平时使用jQuery一样

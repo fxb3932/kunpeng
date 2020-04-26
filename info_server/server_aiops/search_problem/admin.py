@@ -18,6 +18,7 @@ class infoAdmin(admin.ModelAdmin):
         , 'update_date'
     )  # list
     search_fields = (
+        'id',
         'title',
         'problem_info',
         'problem_answer',
@@ -49,7 +50,8 @@ class typeAdmin(admin.ModelAdmin):
 admin.site.register(models.info_type, typeAdmin)
 
 class info_comments(admin.ModelAdmin):
-    list_display = ('name', 'i_stat', 'update_oper', 'update_date')  # list
+    list_display = ('id','name', 'i_stat', 'update_oper', 'update_date')  # list
+    search_fields = ('id','name','update_oper',)
 admin.site.register(models.info_comments, info_comments)
 # admin.site.register(models.info_comments)
 class info_comments_stat(admin.ModelAdmin):
