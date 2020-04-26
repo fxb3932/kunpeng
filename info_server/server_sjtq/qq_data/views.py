@@ -293,8 +293,14 @@ def show(request):
     if resp_auth.get('code') == False:
         return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
 
+    start_date = datetime.datetime.now()
+    end_date = datetime.datetime.now()
+    for line in range(7):
+        start_date -= datetime.timedelta(days=1)
     req = {
         'title': 'show'
+        , 'start_date': start_date.strftime("%Y-%m-%d")
+        , 'end_date': end_date.strftime("%Y-%m-%d")
     }
     # print(req)
     return render(request, 'qq_data/show.html', req)
