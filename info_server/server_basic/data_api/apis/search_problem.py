@@ -16,6 +16,7 @@ from django.forms.models import model_to_dict
 
 import time
 from django.db.models import Q
+import datetime
 
 
 @csrf_exempt
@@ -24,21 +25,24 @@ def search_problem(request):
 
     print(request.POST)
 
+
+
+
     search_info_data = info.objects.all()
     info_comments_data = info_comments.objects.all()
 
-    start_date = request.POST.get('start_date')
-    if start_date != None and start_date != '':
-        search_info_data = search_info_data.filter(update_date__gte=start_date)
-        info_comments_data = info_comments_data.filter(update_date__gte=start_date)
+    input_start_date = request.POST.get('start_date')
+    if input_start_date != None and input_start_date != '':
+        start_date = datetime.datetime.strptime(input_start_date, "%Y-%m-%d")
+        search_info_data = search_info_data.filter(update_date__gte=start_date.strftime('%Y-%m-%d'))
+        info_comments_data = info_comments_data.filter(update_date__gte=start_date.strftime('%Y-%m-%d'))
 
-    end_date = request.POST.get('end_date')
-    if end_date != None and end_date != '':
-        search_info_data = search_info_data.filter(update_date__lte=end_date)
-        info_comments_data = info_comments_data.filter(update_date__lte=end_date)
-
-
-
+    input_end_date = request.POST.get('end_date')
+    if input_end_date != None and input_end_date != '':
+        end_date = datetime.datetime.strptime(input_end_date, "%Y-%m-%d")
+        end_date += datetime.timedelta(days=1)
+        search_info_data = search_info_data.filter(update_date__lte=end_date.strftime('%Y-%m-%d'))
+        info_comments_data = info_comments_data.filter(update_date__lte=end_date.strftime('%Y-%m-%d'))
 
 
     # 搜索

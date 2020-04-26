@@ -35,9 +35,10 @@ def search_problem_count_v2(request):
     # 获取日期列表
     start_date = datetime.datetime.strptime(request.POST.get('start_date'),"%Y-%m-%d")
     end_date = datetime.datetime.strptime(request.POST.get('end_date'),"%Y-%m-%d")
+    end_date += datetime.timedelta(days=1)
     list_date = []
     tmp_date = start_date
-    while tmp_date <= end_date:
+    while tmp_date < end_date:
         list_date.append(tmp_date.strftime("%Y-%m-%d"))
         print(list_date)
         tmp_date += datetime.timedelta(days=1)
@@ -67,10 +68,11 @@ def search_problem_count_v2(request):
     oper_all_sum.sort(key=lambda item: item.get('sum'), reverse=False)
 
 
-
+    print('start_date = ' + start_date.strftime('%Y-%m-%d'))
+    print('end_date = ' + end_date.strftime('%Y-%m-%d'))
     action_data = list(action.objects.filter(
-        date__gte=request.POST.get('start_date')
-        , date__lte=request.POST.get('end_date')
+        date__gte=start_date.strftime('%Y-%m-%d')
+        , date__lt=end_date.strftime('%Y-%m-%d')
     )
                       .extra(select={"date": "date_format(date,'%%Y-%%m-%%d')"})
                       .values('date')
