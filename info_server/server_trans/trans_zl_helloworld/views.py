@@ -188,6 +188,7 @@ def showdata2(request):
             , "reason": var.reason
             , "banknames": var.banknames
             , "deal_person": var.deal_person
+            , "t_team": var.t_team
             , "support_org": var.support_org
             , "t_stat": stat_str
             , "t_type": type_str
