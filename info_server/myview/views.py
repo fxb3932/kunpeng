@@ -57,6 +57,14 @@ def index(request):
 @csrf_exempt
 def get_score(request):
     user = request.user
+
+    if user.is_authenticated != True:
+        resp = {
+            'score': 0
+            , 'stat': user.is_authenticated
+        }
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
     # 调用数据中台API
     res = requests.post(
         url='http://' + request.META.get('HTTP_HOST') + '/' + 'data_api/oper/'
@@ -69,6 +77,7 @@ def get_score(request):
         user_data = line
     resp = {
         'score': user_data.get('score')
+        , 'stat': user.is_authenticated
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
 

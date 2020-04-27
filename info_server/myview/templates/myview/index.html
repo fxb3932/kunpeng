@@ -471,6 +471,10 @@
                     {},
                     function (data, status) {
                         console.log(data);
+
+                        if (data.stat !== true) {
+                            window.location.href = "/login_index";
+                        }
                         // dom节点, 初始值,  结束值, 小数位数, 过渡几秒 , 初始参数
                         var num1 = new CountUp('num1', tmp_num, data.score, 0, 2, options);
                         num1.start();
