@@ -19,3 +19,6 @@ class infoAdmin(admin.ModelAdmin):
     # fields = ('rjxf_id', 'rjxf_type') @
 
 admin.site.register(models.info, infoAdmin)
+admin.site.register(models.qq_data_count_bank_other)
+admin.site.register(models.qq_data_count_bank_cz)
+admin.site.register(models.qq_data_count_bank_big)
