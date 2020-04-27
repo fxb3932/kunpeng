@@ -37,7 +37,7 @@
     {% verbatim %}
     <script type="text/html" id="stat">
         {{# var data = d.t_stat ; }}
-        {{# if(data == '已完成'){ console.log(data) }}
+        {{# if(data == '已完成'){ }}
         <span style="background-color: #69f590;">{{ data }}</span>
         {{#  } else if(data == '处理中'){ }}
         <span style="background-color: #f5df50">{{ data }}</span>
@@ -104,7 +104,7 @@
     <script type="text/html" id="rowoper">
         <a class="layui-btn layui-btn-xs" lay-event="query">查看</a>
         {{# var data = d.t_stat ; }}
-        {{# if(data == '已完成'){ console.log(data) }}
+        {{# if(data == '已完成'){  }}
         <!--<a class="layui-btn layui-btn-xs"></a>-->
         {{#  } else { }}
         <a class="layui-btn layui-btn-xs" lay-event="modify">修改</a>
@@ -200,8 +200,6 @@
                         console.log("Data: " + data + "\nStatus: " + status);
                         console.log(data);
                         exportData = data;
-                        dn = data.data_now;
-                        console.log(data.data_now);
                         table.render({
                             elem: '#demo'
                             // , height: 2500
