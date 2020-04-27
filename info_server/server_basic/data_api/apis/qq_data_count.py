@@ -15,7 +15,7 @@ from cmdb.models import *
 
 
 
-
+from qq_data.models import qq_data_count_bank_other, qq_data_count_bank_cz, qq_data_count_bank_big
 @csrf_exempt
 def qq_data_count(request):
     print('start index qq_data_count')
@@ -130,50 +130,51 @@ def qq_data_count(request):
 
 
     list_bank_big_count = []
-    tmp_list = [
-        '达州银行-运营服务'
-        , 'V3+哈密商行-运营服务'
-        , 'V3+库尔勒银行-运营服务'
-        , '邯郸银行'
-        , '雅安商行-运营服务'
-        , '梅州客商-运营服务'
-        , '振兴银行-运营服务'
-        , '新安银行-运营服务'
-    ]
-    for line in tmp_list:
+    # tmp_list = [
+    #     '达州银行-运营服务'
+    #     , 'V3+哈密商行-运营服务'
+    #     , 'V3+库尔勒银行-运营服务'
+    #     , '邯郸银行'
+    #     , '雅安商行-运营服务'
+    #     , '梅州客商-运营服务'
+    #     , '振兴银行-运营服务'
+    #     , '新安银行-运营服务'
+    # ]
+    for line in qq_data_count_bank_big.objects.all():
         tmp_data.clear()
         for line_sub in qq_data:
-            if line_sub.get('group') == line:
+            if line_sub.get('group') == line.name:
                 tmp_data.append(line_sub)
 
         list_bank_big_count.append({
-            "group": line.replace('运营服务', '').replace('运营服', '').replace('-', '')
+            "group": line.name.replace('运营服务', '').replace('运营服', '').replace('-', '')
             , "sum": len(tmp_data)
         })
 
     list_bank_big_count.sort(key=lambda item: item.get('sum'), reverse=False)
 
     list_bank_cz_count = []
-    tmp_list = [
-        'V3+南阳村镇-运营服务'
-        , 'V3+沂源博商-运营服务'
-        , 'V3+桂林国民-运营服务'
-        , 'V3+闵行上银-运营服务'
-        , 'V3+内江兴隆-运营服务'
-        , 'V3+遵义长征-运营服务'
-        , 'V3+大洼恒丰-运营服务'
-        , 'V3+贵安发展-运营服务'
-        , 'V3+南宁国民-运营服务'
-        , 'V3+天津华明-运营服务'
-    ]
-    for line in tmp_list:
+    # qq_data_count_bank_cz
+    # tmp_list = [
+    #     'V3+南阳村镇-运营服务'
+    #     , 'V3+沂源博商-运营服务'
+    #     , 'V3+桂林国民-运营服务'
+    #     , 'V3+闵行上银-运营服务'
+    #     , 'V3+内江兴隆-运营服务'
+    #     , 'V3+遵义长征-运营服务'
+    #     , 'V3+大洼恒丰-运营服务'
+    #     , 'V3+贵安发展-运营服务'
+    #     , 'V3+南宁国民-运营服务'
+    #     , 'V3+天津华明-运营服务'
+    # ]
+    for line in qq_data_count_bank_cz.objects.all():
         tmp_data.clear()
         for line_sub in qq_data:
-            if line_sub.get('group') == line:
+            if line_sub.get('group') == line.name:
                 tmp_data.append(line_sub)
 
         list_bank_cz_count.append({
-            "group": line.replace('运营服务', '').replace('运营服', '').replace('-', '')
+            "group": line.name.replace('运营服务', '').replace('运营服', '').replace('-', '')
             , "sum": len(tmp_data)
         })
 
@@ -181,24 +182,15 @@ def qq_data_count(request):
 
 
     list_bank_other_count = []
-    tmp_list = [
-        'AML_运营服务'
-        , 'V2-各类监管报送系统'
-        , '支付结算合规监管数据接口'
-        , 'V3-监管报送经营分析'
-        , 'EAST'
-        , '全国集中账户管理系统'
-        , '现金共享平台系统'
-        , '外管局境外交易报送'
-    ]
-    for line in tmp_list:
+    # qq_data_count_bank_other
+    for line in qq_data_count_bank_other.objects.all():
         tmp_data.clear()
         for line_sub in qq_data:
-            if line_sub.get('group') == line:
+            if line_sub.get('group') == line.name:
                 tmp_data.append(line_sub)
 
         list_bank_other_count.append({
-            "group": line
+            "group": line.name
             , "sum": len(tmp_data)
         })
 
