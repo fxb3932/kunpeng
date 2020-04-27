@@ -1,13 +1,13 @@
 import time
 
-# Create your views here.
-import main
-from cmdb.models import i_bank
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt  # 可post调用url
 
+# Create your views here.
+import main
+from cmdb.models import i_bank
 from .commonutil import *
 from .models import *
 
@@ -139,8 +139,8 @@ def showdata2(request):
         , 'perm': ''
     }
     resp_auth = main.auth(auth_data)
-    if resp_auth.get('code') == False:
-        return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
+    # if resp_auth.get('code') == False:
+    #     return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
 
     query_date = request.POST.get('date')
     query_stat = request.POST.get('stat')
