@@ -9,3 +9,6 @@ class info(models.Model):
 
     class Meta:
         unique_together = (("group", "date", 'oper'),)
+
+# class bank_other(models):
+#     name
