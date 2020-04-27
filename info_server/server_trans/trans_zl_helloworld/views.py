@@ -1,13 +1,14 @@
 import time
 
-# Create your views here.
-import main
-from cmdb.models import i_bank
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt  # 可post调用url
 
+# Create your views here.
+import main
+from cmdb.models import i_bank
 from .commonutil import *
 from .models import *
 
@@ -100,9 +101,25 @@ def getListJson():
         bank_list_json.append(dict_data)
 
 
+def login_index(request):
+    return render(request, '../myview/user/login.html')
+
+
 @csrf_exempt
+@login_required
 def showdata1(request):
     log('start showdata')
+
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net': False
+        , 'login': True
+        , 'perm': ''
+    }
+    resp_auth = main.auth(auth_data)
+    if resp_auth.get('code') == False:
+        return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
 
     getListJson()
     # s_date = time.strftime('%Y-%m-%d', time.localtime())
@@ -135,7 +152,7 @@ def showdata2(request):
     auth_data = {
         'request': request
         , 'net': False
-        , 'login': False
+        , 'login': True
         , 'perm': ''
     }
     resp_auth = main.auth(auth_data)
@@ -188,6 +205,7 @@ def showdata2(request):
             , "reason": var.reason
             , "banknames": var.banknames
             , "deal_person": var.deal_person
+            , "t_team": var.t_team
             , "support_org": var.support_org
             , "t_stat": stat_str
             , "t_type": type_str
@@ -267,8 +285,20 @@ def add_submit(request):
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
 
+@login_required
 def add_data(request):
     log('start add_data')
+
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net': False
+        , 'login': True
+        , 'perm': ''
+    }
+    resp_auth = main.auth(auth_data)
+    if resp_auth.get('code') == False:
+        return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
 
     getListJson()
 
