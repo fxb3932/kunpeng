@@ -576,27 +576,6 @@ layui.define(function (exports) {
                                 })
                             }
                         ],
-                        dataZoom: [
-                            {
-                                show: true,
-                                start: 0,
-                                end: 100
-                            },
-                            {
-                                type: 'inside',
-                                start: 94,
-                                end: 100
-                            },
-                            {
-                                show: true,
-                                yAxisIndex: 0,
-                                filterMode: 'empty',
-                                width: 30,
-                                height: '50%',
-                                showDataShadow: false,
-                                left: '93%'
-                            }
-                        ],
                         series: [
                             {
                                 name: 'QQ活跃度',
@@ -1019,7 +998,7 @@ layui.define(function (exports) {
                         xAxis: [
                             {
                                 type: 'value',
-                                boundaryGap: [0, 1.01]
+                                boundaryGap: [0, 0.01]
                             }
                         ],
                         yAxis: [
@@ -1033,27 +1012,6 @@ layui.define(function (exports) {
                                 data: data.list_bank_other_count.map(function (item, i) {
                                     return item.group;
                                 })
-                            }
-                        ],
-                        dataZoom: [
-                            {
-                                show: true,
-                                start: 0,
-                                end: 100
-                            },
-                            {
-                                type: 'inside',
-                                start: 94,
-                                end: 100
-                            },
-                            {
-                                show: true,
-                                yAxisIndex: 0,
-                                filterMode: 'empty',
-                                width: 30,
-                                height: '50%',
-                                showDataShadow: false,
-                                left: '93%'
                             }
                         ],
                         series: [
