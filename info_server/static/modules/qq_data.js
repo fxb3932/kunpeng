@@ -547,7 +547,7 @@ layui.define(function (exports) {
                 var echnormbar = [], normbar = [
                     {
                         title: {
-                            text: '合作行活跃TOP10',
+                            text: '合作行活跃TOP20',
                             subtext: '数据来自小鲲数据中台'
                         },
                         tooltip: {
@@ -566,6 +566,10 @@ layui.define(function (exports) {
                         yAxis: [
                             {
                                 type: 'category',
+                                axisLabel: {
+                                    interval: 0
+                                    , fontSize: 8
+                                },
                                 //data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
                                 data: data.map(function (item, i) {
                                     return item.group;

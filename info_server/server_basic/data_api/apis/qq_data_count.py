@@ -126,7 +126,7 @@ def qq_data_count(request):
     list_bank_count.sort(key=lambda item: item.get('sum'), reverse=False)
     list_bank_count_all = list_bank_count
     list_bank_count2 = list_bank_count[:20]
-    list_bank_count = list_bank_count[-10:]
+    list_bank_count = list_bank_count[-20:]
 
 
     list_bank_big_count = []
