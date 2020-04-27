@@ -32,7 +32,8 @@ X_FRAME_OPTIONS = 'ALLOWALL'
 
 # Session的cookie失效日期（秒）（默认）
 SESSION_COOKIE_AGE = 43200
-# SESSION_SAVE_EVERY_REQUEST = True
+#SESSION_COOKIE_AGE = 60
+SESSION_SAVE_EVERY_REQUEST = True
 
 
 
@@ -95,6 +96,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'info_server.urls'
+LOGIN_URL = '/user/login.html'
 
 TEMPLATES = [
     {
