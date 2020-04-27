@@ -44,6 +44,8 @@ layui.define(function (exports) {
                 bar_right2(data.list_bank_count2);
                 bar_right3(data.list_group_count);
 
+                LAY_index_8(data);
+
                 //bar_6(data, 10);
             }
 
@@ -975,6 +977,96 @@ layui.define(function (exports) {
                     }
                 ]
                     , elemNormbar = $('#LAY-index-bar-7').children('div')
+                    , renderNormbar = function (index) {
+                    echnormbar[index] = echarts.init(elemNormbar[index], layui.echartsTheme);
+                    echnormbar[index].setOption(normbar[index]);
+                    window.onresize = echnormbar[index].resize;
+                };
+                if (!elemNormbar[0]) return;
+                renderNormbar(0);
+
+
+            });
+        }
+
+        function LAY_index_8(data) {
+            layui.use(['carousel', 'echarts'], function () {
+                var $ = layui.$
+                    , echarts = layui.echarts
+                    , carousel = layui.carousel;
+
+                //console.log(data.list_bank_count);
+                //console.log(data.list_bank_count.slice(-5,-1));
+                //标准条形图
+
+                var echnormbar = [], normbar = [
+                    {
+                        title: {
+                            text: '监管报送群',
+                            subtext: '数据来自小鲲数据中台'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: ['QQ活跃度']
+                        },
+                        calculable: true,
+                        xAxis: [
+                            {
+                                type: 'value',
+                                boundaryGap: [0, 1.01]
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'category',
+                                axisLabel: {
+                                    interval: 0
+                                    , fontSize: 12
+                                },
+                                //data: ['巴西', '印尼', '美国', '印度', '中国', '世界人口(万)']
+                                data: data.list_bank_other_count.map(function (item, i) {
+                                    return item.group;
+                                })
+                            }
+                        ],
+                        dataZoom: [
+                            {
+                                show: true,
+                                start: 0,
+                                end: 100
+                            },
+                            {
+                                type: 'inside',
+                                start: 94,
+                                end: 100
+                            },
+                            {
+                                show: true,
+                                yAxisIndex: 0,
+                                filterMode: 'empty',
+                                width: 30,
+                                height: '50%',
+                                showDataShadow: false,
+                                left: '93%'
+                            }
+                        ],
+                        series: [
+                            {
+                                name: 'QQ活跃度',
+                                type: 'bar',
+                                itemStyle: {normal: {label: {show: true, position: 'right'}}},
+
+                                //data: [18203, 23489, 29034, 104970, 131744, 630230]
+                                data: data.list_bank_other_count.map(function (item, i) {
+                                    return item.sum;
+                                })
+                            }
+                        ]
+                    }
+                ]
+                    , elemNormbar = $('#LAY-index-8').children('div')
                     , renderNormbar = function (index) {
                     echnormbar[index] = echarts.init(elemNormbar[index], layui.echartsTheme);
                     echnormbar[index].setOption(normbar[index]);

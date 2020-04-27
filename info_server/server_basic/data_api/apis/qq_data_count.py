@@ -179,6 +179,30 @@ def qq_data_count(request):
 
     list_bank_cz_count.sort(key=lambda item: item.get('sum'), reverse=False)
 
+
+    list_bank_other_count = []
+    tmp_list = [
+        'AML_运营服务'
+        , 'V2-各类监管报送系统'
+        , '支付结算合规监管数据接口'
+        , 'V3-监管报送经营分析'
+        , 'EAST'
+        , '全国集中账户管理系统'
+        , '现金共享平台系统'
+        , '外管局境外交易报送'
+    ]
+    for line in tmp_list:
+        tmp_data.clear()
+        for line_sub in qq_data:
+            if line_sub.get('group') == line:
+                tmp_data.append(line_sub)
+
+        list_bank_other_count.append({
+            "group": line
+            , "sum": len(tmp_data)
+        })
+
+    list_bank_other_count.sort(key=lambda item: item.get('sum'), reverse=False)
     # qq_data = []
     # for line in f_json:
     #     # group date oper content
@@ -383,6 +407,7 @@ def qq_data_count(request):
         , 'list_bank_count_all': list_bank_count_all
         , 'list_bank_big_count': list_bank_big_count
         , 'list_bank_cz_count': list_bank_cz_count
+        , 'list_bank_other_count': list_bank_other_count
         , 'list_oper_count': list_oper_count
         , 'list_oper_count_max': list_oper_count_max
         # , 'list_oper_count_max': 570
