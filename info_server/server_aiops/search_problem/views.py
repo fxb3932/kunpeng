@@ -42,6 +42,7 @@ def new(request):
     auth_data = {
         'request': request
         , 'net': False
+        , 'net_sc': True
         , 'login': True
         , 'debug': False
         , 'perm': 'rjxf_server.view_flow'
@@ -187,10 +188,33 @@ from bs4 import BeautifulSoup
 @csrf_exempt
 def new_submit(request):
     print('index new_submit')
+
+    # 权限检查
+    auth_data = {
+        'request': request
+        , 'net': False
+        , 'net_sc': True
+        , 'login': True
+        , 'debug': False
+        , 'perm': 'rjxf_server.view_flow'
+    }
+
+    resp_auth = main.auth(auth_data)
+    # print('user : ' + request.user.first_name)
+    if resp_auth.get('code') == False:
+        # return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
+        resp = {
+            "code": resp_auth.get('code')
+            , "msg": resp_auth.get('msg')
+        }
+        return HttpResponse(json.dumps(resp), content_type="application/json")
+
     input_data = json.loads(request.POST.get('input_data'))
     fwb_data = request.POST.get('fwb_data')
     fwb_text_answer = request.POST.get('fwb_text_answer')
     user = request.user
+
+
 
     print(input_data)
     print(fwb_data)
