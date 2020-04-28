@@ -28,10 +28,12 @@ def search_problem_count_v2(request):
     end_date += datetime.timedelta(days=1)
     list_date = []
     list_date_datetime = []
+    list_date_MMDD = []
     tmp_date = start_date
     while tmp_date < end_date:
         list_date.append(tmp_date.strftime("%Y-%m-%d"))
         list_date_datetime.append(tmp_date)
+        list_date_MMDD.append(tmp_date.strftime("%m-%d"))
         print(list_date)
         tmp_date += datetime.timedelta(days=1)
 
