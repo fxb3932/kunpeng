@@ -81,7 +81,9 @@ layui.define(function (exports) {
                             }
                         },
                         legend: {
-                            data: ['解答', '录入', '评论']
+                            data: data.data1.list_dict_series.map(function (item, i) {
+                                    return item.name;
+                                })
                         },
                         calculable: true,
                         xAxis: [
@@ -97,12 +99,13 @@ layui.define(function (exports) {
                                     , fontSize: 8
                                 },
                                 //data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-                                data: data.oper_all_sum.map(function (item, i) {
+                                data: data.data1.list_first_name.map(function (item, i) {
                                     return item.first_name;
                                 })
                             }
                         ],
-                        series: [
+                        series: data.data1.list_dict_series
+                            /*[
                             {
                                 name: '解答',
                                 type: 'bar',
@@ -133,7 +136,7 @@ layui.define(function (exports) {
                                     return item.comments_sum;
                                 })
                             }
-                        ]
+                        ]*/
                     }
                 ]
                     , elemheapbar = $('#LAY-index-1').children('div')
