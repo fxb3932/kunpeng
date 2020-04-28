@@ -5,11 +5,18 @@
     <form class="layui-form" action="" lay-filter="example">
 
         <div class="layui-form-item">
-            <div class="layui-inline layui-hide">
-                <label class="layui-form-label">上报日期</label>
+            <div class="layui-inline ">
+                <label class="layui-form-label">开始日期</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="date" id="date" placeholder="YYYY-MM-DD" autocomplete="off"
-                           class="layui-input">
+                    <input type="text" name="fromdate" id="fromdate" lay-verify="datetime"
+                           placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline ">
+                <label class="layui-form-label">结束日期</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="todate" id="todate" lay-verify="datetime"
+                           placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-inline ">
@@ -58,7 +65,9 @@
         {{#  } else if( data == '需求' ){ }}
         <span style="background-color: #CCFF80">{{ data }}</span>
         {{#  } else if(data == '重大变更' ){ }}
-        <span style="background-color: #9999CC">{{ data }}</span>
+        <span style="background-color: #9999CC;color: #f5ebf5;">{{ data }}</span>
+        {{#  } else if(data == '重大事件' ){ }}
+        <span style="background-color: #984B4B;color: #f5ebf5;">{{ data }}</span>
         {{#  } else if(data == '投诉'  ){ }}
         <span style="background-color: #AD5A5A;color: #f5ebf5;">{{ data }}</span>
         {{#  } else { }}
@@ -127,10 +136,19 @@
                 , $ = layui.jquery;
 
             //日期
-            // {#laydate.render({#}
-            // {#    elem: '#date'#}
-            // {#});#}
-
+            laydate.render({
+                elem: '#fromdate'
+                , type: 'date'
+                , format: 'yyyy-MM-dd' //可任意组合 yyyy年MM月dd日 HH时mm分ss秒===2017年08月18日 20时08分08秒，'yyyy/mm/dd'
+                // , value: '2020-01-01 18:00' //必须遵循format参数设定的格式String，默认值：new Date()
+            });
+            laydate.render({
+                elem: '#todate'
+                , type: 'date'
+                , format: 'yyyy-MM-dd' //可任意组合 yyyy年MM月dd日 HH时mm分ss秒===2017年08月18日 20时08分08秒，'yyyy/mm/dd'
+                // , value: '2020-01-01 18:00' //必须遵循format参数设定的格式String，默认值：new Date()
+            });
+            form.render();
 
             //赋默认值
             form.val('example', {
@@ -165,7 +183,7 @@
             showsomething();
 
             function showsomething() {
-                $.post("show2",
+                $.post("show3",
                     {"date": "", "stat": "全部"},
                     function (data, status) {
                         console.log("Data: " + data + "\nStatus: " + status);
@@ -194,7 +212,7 @@
                 console.log("request param ： " + JSON.stringify(data.field));
                 obj_data = data.field;
                 var index = layer.load(0);
-                $.post("show2",
+                $.post("show3",
                     data.field,
                     function (data, status) {
                         console.log("Data: " + data + "\nStatus: " + status);

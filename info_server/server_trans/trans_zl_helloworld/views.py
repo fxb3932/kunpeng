@@ -1,5 +1,6 @@
 import time
 
+import requests
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -145,10 +146,11 @@ def showdata1(request):
 
 
 @csrf_exempt
+@login_required
 def showdata2(request):
-    log('start showdata2')
+    log('start showdata2')  # zl
 
-    # 权限检查
+    # # 权限检查
     auth_data = {
         'request': request
         , 'net': False
@@ -158,6 +160,8 @@ def showdata2(request):
     resp_auth = main.auth(auth_data)
     if resp_auth.get('code') == False:
         return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
+
+    getListJson()
 
     query_date = request.POST.get('date')
     query_stat = request.POST.get('stat')
@@ -239,6 +243,148 @@ def showdata2(request):
 
 
 @csrf_exempt
+@login_required
+def showdata3(request):
+    log('start showdata3')  # zl
+
+    # # 权限检查
+    auth_data = {
+        'request': request
+        , 'net': False
+        , 'login': True
+        , 'perm': ''
+    }
+    resp_auth = main.auth(auth_data)
+    if resp_auth.get('code') == False:
+        return render(request, 'alarm/resp.html', {"message": resp_auth.get('msg')})
+
+    res = requests.post(
+        url='http://' + request.META.get('HTTP_HOST') + '/' + 'trans_zl_helloworld/abcd/boardsAPI'
+        , data=request.POST
+    )
+    resp = json.loads(res.text)
+
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+@csrf_exempt
+def boardsAPI(request):
+    log('start boardsAPI')
+    getListJson()
+
+    query_stat = request.POST.get('stat')
+    query_type = request.POST.get('t_type')
+    query_deal_Person = request.POST.get('deal_person')
+    query_submit_person = request.POST.get('submit_person')
+    query_t_team = request.POST.get('t_team')
+    query_fromdate = request.POST.get('fromdate')
+    query_todate = request.POST.get('todate')
+    log("query_stat : " + str(query_stat))
+    log("query_type : " + str(query_type))
+    log("query_deal_Person : " + str(query_deal_Person))
+    log("query_submit_person : " + str(query_submit_person))
+    log("query_t_team : " + str(query_t_team))
+    log("query_fromdate :" + str(query_fromdate))
+    log("query_todate :" + str(query_todate))
+    cur_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    log("cur_date（before query） : " + cur_date)
+    list_data = []
+    response = ""
+    rs = yything.objects.all()
+    t1 = time.time()
+    if query_stat != None and query_stat != "" and query_stat != "全部":
+        ys = yything_stat.objects.filter(stat_name=query_stat).first()
+        rs = rs.filter(t_stat=ys.stat_id)
+    if query_type != None and query_type != "" and query_type != "全部":
+        types = enum_type.objects.filter(type_name=query_type).first()
+        rs = rs.filter(t_type_id=types.id)
+    if query_deal_Person != None and query_deal_Person != "" and query_deal_Person != '全部':
+        rs = rs.filter(deal_person=query_deal_Person)
+    if query_submit_person != None and query_submit_person != "" and query_submit_person != '全部':
+        rs = rs.filter(submit_person=query_submit_person)
+    if query_t_team != None and query_t_team != "" and query_t_team != '全部':
+        rs = rs.filter(t_team=query_t_team)
+    if query_fromdate != None and query_fromdate != "":
+        rs = rs.filter(submit_date__gte=query_fromdate)
+    if query_todate != None and query_todate != "":
+        rs = rs.filter(submit_date__lte=query_todate)
+    rs = rs.order_by("-submit_date")
+
+    # start_date = request.POST.get('start_date')
+    # if start_date != None and start_date != '':
+    #     search_info_data = search_info_data.filter(update_date__gte=start_date)
+    #     info_comments_data = info_comments_data.filter(update_date__gte=start_date)
+    #
+    # end_date = request.POST.get('end_date')
+    # if end_date != None and end_date != '':
+    #     search_info_data = search_info_data.filter(update_date__lte=end_date)
+    #     info_comments_data = info_comments_data.filter(update_date__lte=end_date)
+
+    n = 0
+    for var in rs:
+        # ys = yything_stat.objects.filter(id=str(var.t_stat))
+        # print(ys.stat_name)
+        try:
+            # stat_str = var.t_stat.stat_name
+            stat_str = stat_dict.get(var.__dict__['t_stat_id'])
+        except:
+            stat_str = ''
+        try:
+            # type_str = var.t_type.type_name
+            type_str = type_dict.get(var.__dict__['t_type_id'])
+        except:
+            type_str = ''
+        try:
+            # zycd_str = var.t_zycd.zycd_name
+            zycd_str = zycd_dict.get(var.__dict__['t_zycd_id'])
+        except:
+            zycd_str = ''
+        try:
+            # jjcd_str = var.t_jjcd.jjcd_name
+            jjcd_str = jjcd_dict.get(var.__dict__['t_jjcd_id'])
+        except:
+            jjcd_str = ''
+        dict_data = {
+            "thing_id": var.id
+            , "title": var.title
+            , "reason": var.reason
+            , "banknames": var.banknames
+            , "deal_person": var.deal_person
+            , "t_team": var.t_team
+            , "support_org": var.support_org
+            , "t_stat": stat_str
+            , "t_type": type_str
+            , "t_zycd": zycd_str
+            , "t_jjcd": jjcd_str
+            , "diffcult": var.diffcult
+            , "want_date": str(var.want_date)
+            , "submit_date": str(var.submit_date)
+            , "close_date": str(var.close_date)
+            , "genjin": var.genjin
+            , "yanzheng": var.yanzheng
+            , "beizhu": var.beizhu
+        }
+        list_data.append(dict_data)
+        n += 1
+
+    resp = {
+        "code": 0
+        , "msg": "success"
+        , "count": n
+        , "data": list_data
+        # , 'date_now': time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    }
+    # cur_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+    # log("cur_date（after query） : " + cur_date)
+    # t2 = time.time()
+    # t = (t2 - t1) * 1000
+    # print('query time ：' + str(t))
+
+    return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+@csrf_exempt
+@login_required
 def add_submit(request):
     log('start add_submit')
     user = request.user
@@ -317,6 +463,7 @@ def add_data(request):
 
 
 @csrf_exempt
+@login_required
 def delete_data(request, thing_id):
     log('start delete_data')
     user = request.user
@@ -348,6 +495,7 @@ def delete_data(request, thing_id):
 
 
 @csrf_exempt
+@login_required
 def update_data(request, thing_id):
     log('start update_data')
     print('thing_id = [' + str(thing_id) + ']')
@@ -442,6 +590,7 @@ def update_data(request, thing_id):
 
 
 @csrf_exempt
+@login_required
 def query_data(request, thing_id):
     log('start query_data')
     print('thing_id = [' + str(thing_id) + ']')
@@ -535,6 +684,7 @@ def query_data(request, thing_id):
 
 
 @csrf_exempt
+@login_required
 def update_submit(request, thing_id):
     log('start update_submit')
     user = request.user
