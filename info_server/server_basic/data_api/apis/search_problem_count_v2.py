@@ -14,27 +14,17 @@ import requests
 import time
 import datetime
 
+from search_problem.models import info, info_comments
+from django.db.models import Max, Avg, F, Q, Min, Count, Sum
+
+
 @csrf_exempt
 def search_problem_count_v2(request):
     print('start index search_problem_count_v2')
 
-    # 调用数据中台API
-    res = requests.post(
-        url='http://' + request.META.get('HTTP_HOST') + '/' + 'data_api/search_problem/'
-        , data=dict(request.POST)
-    )
-    resp_info = json.loads(res.text)
-
-    # 调用数据中台API
-    res = requests.post(
-        url='http://' + request.META.get('HTTP_HOST') + '/' + 'data_api/oper/'
-        , data={}
-    )
-    resp_oper = json.loads(res.text)
-
     # 获取日期列表
-    start_date = datetime.datetime.strptime(request.POST.get('start_date'),"%Y-%m-%d")
-    end_date = datetime.datetime.strptime(request.POST.get('end_date'),"%Y-%m-%d")
+    start_date = datetime.datetime.strptime(request.POST.get('start_date'), "%Y-%m-%d")
+    end_date = datetime.datetime.strptime(request.POST.get('end_date'), "%Y-%m-%d")
     end_date += datetime.timedelta(days=1)
     list_date = []
     tmp_date = start_date
@@ -43,87 +33,99 @@ def search_problem_count_v2(request):
         print(list_date)
         tmp_date += datetime.timedelta(days=1)
 
-    oper_all_sum = []
-    for line in resp_oper.get('data'):
-        n1 = n2 = n3 = 0
-
-        if line.get('first_name') not in ['钟鸣']:
-            for line_info in resp_info.get('data'):
-                if line_info.get('answer_oper') == line.get('first_name'):
-                    n1 += 1
-                if line_info.get('input_oper') == line.get('first_name'):
-                    n2 += 1
-
-            for line_comments in resp_info.get('comments_data'):
-                if line_comments.get('update_oper') == line.get('first_name'):
-                    n3 += 1
-            oper_all_sum.append({
-                'first_name': line.get('first_name')
-                , 'answer_sum': n1
-                , 'input_sum': n2
-                , 'comments_sum': n3
-                , 'sum': n1 + n2 + n3
-            })
-
-    oper_all_sum.sort(key=lambda item: item.get('sum'), reverse=False)
-
-
-    print('start_date = ' + start_date.strftime('%Y-%m-%d'))
-    print('end_date = ' + end_date.strftime('%Y-%m-%d'))
-    action_data = list(action.objects.filter(
-        date__gte=start_date.strftime('%Y-%m-%d')
-        , date__lt=end_date.strftime('%Y-%m-%d')
+    # 调用数据中台API
+    res = requests.post(
+        url='http://' + request.META.get('HTTP_HOST') + '/' + 'data_api/oper/'
+        , data={}
     )
-                      .extra(select={"date": "date_format(date,'%%Y-%%m-%%d')"})
-                      .values('date')
-                      .annotate(count=Count('date')))
+    resp_oper = json.loads(res.text)
 
-    trans_data = []
-    # 使用情况
-    for line_date in list_date:
-        print(line_date)
-        n1 = n2 = n3 = n4 = 0
-        for line_info in resp_info.get('data'):
-            if line_date in line_info.get('input_date'):
-                print(line_info)
-                n1 += 1
-            if line_date in line_info.get('answer_date'):
-                print(line_info)
-                n2 += 1
-            if line_date in line_info.get('update_date'):
-                print(line_info)
-                n3 += 1
-        for line_action in action_data:
-            if line_date == line_action.get('date'):
-                #if line_action.type_id == 1:
-                n4 = line_action.get('count')
+    # info_data = info.objects.filter(
+    #     input_date__gte=start_date.strftime('%Y-%m-%d')
+    #     , input_date__lt=end_date.strftime('%Y-%m-%d'))
 
-        trans_data.append({
-            'date': line_date
-            , 'input_sum': n1
-            , 'answer_sum': n2
-            , 'update_sum': n3
-            , 'search_sum': n4
+    info_input_count = list(info.objects.filter(
+        input_date__gte=start_date.strftime('%Y-%m-%d')
+        , input_date__lt=end_date.strftime('%Y-%m-%d'))
+                            # .extra(select={OPER: 'input_oper'})
+                            .annotate(OPER=F('input_oper'))
+                            .values('OPER')
+                            .annotate(count=Count('OPER')))
+    info_answer_count = list(info.objects.filter(
+        answer_date__gte=start_date.strftime('%Y-%m-%d')
+        , answer_date__lt=end_date.strftime('%Y-%m-%d'))
+                             .annotate(OPER=F('answer_oper'))
+                             .values('OPER')
+                             .annotate(count=Count('OPER')))
+
+    info_comments_count = list(info_comments.objects.filter(
+        update_date__gte=start_date.strftime('%Y-%m-%d')
+        , update_date__lt=end_date.strftime('%Y-%m-%d')).annotate(OPER=F('update_oper')).values('OPER')
+                               .annotate(count=Count('OPER')))
+
+
+    # aaa = info.objects.filter(
+    #     input_date__gte=start_date.strftime('%Y-%m-%d')
+    #     , input_date__lt=end_date.strftime('%Y-%m-%d'))\
+    #                         .extra(select={'OPER': 'aaa'}).values('OPER')
+    #
+    # for line in aaa:
+    #     print(line.__dict__)
+    print(info_input_count)
+    print(info_answer_count)
+    print(info_comments_count)
+
+
+    list_first_name = []
+    for line_oper in resp_oper.get('data'):
+        n = 0
+        for line_input in info_input_count:
+            if line_input.get('OPER') == line_oper.get('first_name'):
+                n += line_input.get('count')
+        for line_answer in info_answer_count:
+            if line_answer.get('OPER') == line_oper.get('first_name'):
+                n += line_answer.get('count')
+        for line_comments in info_comments_count:
+            if line_comments.get('OPER') == line_oper.get('first_name'):
+                n += line_comments.get('count')
+        list_first_name.append({
+            'first_name': line_oper.get('first_name')
+            , 'sum': n
         })
 
+    list_first_name.sort(key=lambda item: item.get('sum'), reverse=False)
 
-    print('------')
+    list_dict_series = []
+    type_data = [
+        {'name': '录入', 'data': info_input_count}
+        , {'name': '解答', 'data': info_answer_count}
+        , {'name': '评论', 'data': info_comments_count}
+    ]
+    for line in type_data:
+        print(line)
+        series_data = []
+        for line_oper in list_first_name:
+            count = 0
+            for line_data in line.get('data'):
+                if line_oper.get('first_name') == line_data.get('OPER'):
+                    count += line_data.get('count')
+            series_data.append(count)
+        list_dict_series.append({
+            'name': line.get('name')
+            , 'type': 'bar'
+            , 'stack': '总量'
+            # , 'itemStyle': {'normal': {'label': {'show': -1, 'position': 'insideLeft'}, 'color': '#1089E7'}}
+            , 'data': series_data
+        })
 
-    # for line in info.objects.all():
-    #     if line.update_date == None:
-    #         r = info.objects.get(id=line.id)
-    #         r.update_date=r.input_date
-    #         r.save()
-    #         print(line)
-
+    data1 = {
+        'list_first_name': list_first_name
+        , 'list_dict_series': list_dict_series
+    }
 
     resp = {
         'code': 0
-        # , 'resp_info': resp_info
-        # , 'resp_oper': resp_oper
         , 'list_date': list_date
-        , 'oper_all_sum': oper_all_sum
-        , 'trans_data': trans_data
-        , 'action_data': action_data
+        , 'data1': data1
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
