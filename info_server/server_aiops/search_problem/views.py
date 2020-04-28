@@ -221,8 +221,10 @@ def new_submit(request):
 
     if request.POST.get('type') == 'input':
         stat = 1
+        answer_date = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
     else:
         stat = 0
+        answer_date = None
 
     print('type = [' + request.POST.get('type') + ']')
 
@@ -255,6 +257,7 @@ def new_submit(request):
         , problem_source=input_data.get('problem_source')
         , input_date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
         , update_date=time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())
+        , answer_date=answer_date
         , t_stat=info_stat.objects.get(stat_id=stat)
         , t_channel=info__t_channel
         , t_type=info__t_type
