@@ -112,9 +112,12 @@ layui.define(function (exports) {
                             })
                         },
                         calculable: true,
+                        grid: {y: 70},
                         xAxis: [
                             {
+                                position: 'top',
                                 type: 'value'
+
                             }
                         ],
                         yAxis: [
@@ -266,8 +269,8 @@ layui.define(function (exports) {
                         legend: {
                             // data: ['邮件营销', '联盟广告']
                             data: data.index_3.series.map(function (item, i) {
-                                    return item.name;
-                                }),
+                                return item.name;
+                            }),
                         },
                         calculable: true,
                         xAxis: [
@@ -284,20 +287,20 @@ layui.define(function (exports) {
                             }
                         ],
                         series: data.index_3.series
-                            /* [
-                            {
-                                name: '邮件营销',
-                                type: 'line',
-                                stack: '总量',
-                                data: [120, 132, 101, 134, 90, 230, 210]
-                            },
-                            {
-                                name: '联盟广告',
-                                type: 'line',
-                                stack: '总量',
-                                data: [220, 182, 191, 234, 290, 330, 310]
-                            }
-                        ]*/
+                        /* [
+                        {
+                            name: '邮件营销',
+                            type: 'line',
+                            stack: '总量',
+                            data: [120, 132, 101, 134, 90, 230, 210]
+                        },
+                        {
+                            name: '联盟广告',
+                            type: 'line',
+                            stack: '总量',
+                            data: [220, 182, 191, 234, 290, 330, 310]
+                        }
+                    ]*/
                     }
                 ]
                     , elemheapline = $('#LAY-index-3').children('div')
