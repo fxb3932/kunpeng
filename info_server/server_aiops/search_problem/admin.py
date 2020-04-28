@@ -11,6 +11,7 @@ class infoAdmin(admin.ModelAdmin):
         , 't_channel'
         , 't_type'
         , 'info_check_flag'
+        , 't_close'
         , 'trans_code'
         , 'trans_err'
         , 'input_date'
@@ -29,7 +30,8 @@ admin.site.register(models.info, infoAdmin)
 
 class info_statAdmin(admin.ModelAdmin):
     list_display = (
-        'stat_id'
+        'id'
+        , 'stat_id'
         , 'stat_name'
     )  # list
     # fields = ('rjxf_id', 'rjxf_type') @
@@ -38,7 +40,8 @@ admin.site.register(models.info_stat, info_statAdmin)
 
 class channelAdmin(admin.ModelAdmin):
     list_display = (
-        'code'
+        'id'
+        , 'code'
         , 'name'
     )  # list
 

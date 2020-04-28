@@ -27,9 +27,11 @@ def search_problem_count_v2(request):
     end_date = datetime.datetime.strptime(request.POST.get('end_date'), "%Y-%m-%d")
     end_date += datetime.timedelta(days=1)
     list_date = []
+    list_date_datetime = []
     tmp_date = start_date
     while tmp_date < end_date:
         list_date.append(tmp_date.strftime("%Y-%m-%d"))
+        list_date_datetime.append(tmp_date)
         print(list_date)
         tmp_date += datetime.timedelta(days=1)
 
@@ -43,26 +45,28 @@ def search_problem_count_v2(request):
     # info_data = info.objects.filter(
     #     input_date__gte=start_date.strftime('%Y-%m-%d')
     #     , input_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_data = info.objects.filter(~Q(t_close__code=999))
 
-    info_input_count = list(info.objects.filter(
+    info_input_data = info_data.filter(
         input_date__gte=start_date.strftime('%Y-%m-%d')
         , input_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_input_count = list(info_input_data
                             # .extra(select={OPER: 'input_oper'})
                             .annotate(OPER=F('input_oper'))
                             .values('OPER')
                             .annotate(count=Count('OPER')))
-    info_answer_count = list(info.objects.filter(
+    info_answer_data = info_data.filter(
         answer_date__gte=start_date.strftime('%Y-%m-%d')
         , answer_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_answer_count = list(info_answer_data
                              .annotate(OPER=F('answer_oper'))
                              .values('OPER')
                              .annotate(count=Count('OPER')))
-
-    info_comments_count = list(info_comments.objects.filter(
+    info_comments_data = info_comments.objects.filter(
         update_date__gte=start_date.strftime('%Y-%m-%d')
-        , update_date__lt=end_date.strftime('%Y-%m-%d')).annotate(OPER=F('update_oper')).values('OPER')
+        , update_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_comments_count = list(info_comments_data.annotate(OPER=F('update_oper')).values('OPER')
                                .annotate(count=Count('OPER')))
-
 
     # aaa = info.objects.filter(
     #     input_date__gte=start_date.strftime('%Y-%m-%d')
@@ -74,7 +78,6 @@ def search_problem_count_v2(request):
     print(info_input_count)
     print(info_answer_count)
     print(info_comments_count)
-
 
     list_first_name = []
     for line_oper in resp_oper.get('data'):
@@ -123,9 +126,102 @@ def search_problem_count_v2(request):
         , 'list_dict_series': list_dict_series
     }
 
+    # 汇总数据
+    # 总量 & 解答率
+    time_id = time_begin()
+    info_count = info_data.aggregate(Count('id')).get('id__count')
+
+    answer_suc = info_data.filter(t_stat__stat_id=1).aggregate(Count('id')).get('id__count') / info_count
+    answer_suc = float(answer_suc)
+    auth_suc = float(info_data.filter(info_check_flag=1).aggregate(Count('id')).get('id__count') / info_count)
+
+    data0 = {
+        'card1_info_count': info_count
+        , 'card1_answer_suc': round(answer_suc * 100, 1)
+        , 'card1_auth_suc': round(auth_suc * 100, 1)
+        , 'card2_input_count': info_input_data.aggregate(Count('id')).get('id__count')
+        , 'card2_answer_count': info_answer_data.aggregate(Count('id')).get('id__count')
+        , 'card2_comments_count': info_comments_data.aggregate(Count('id')).get('id__count')
+        , 'card2_auth_count': info_input_data.filter(info_check_flag=1).aggregate(Count('id')).get('id__count')
+    }
+    print(data0)
+
+    index_2 = {}
+    # data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+    # data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+    index_2_data = []
+    date_count = info_input_data.extra(select={"DATE": "date_format(input_date,'%%Y-%%m-%%d')"}) \
+        .values('DATE').annotate(count=Count('id'))
+
+    for line in list_date:
+        n = 0
+        for line_input in date_count:
+            if line_input.get('DATE') == line:
+                n += line_input.get('count')
+        index_2_data.append({
+            'date': line
+            , 'count': n
+        })
+    index_2 = {
+        'data': index_2_data
+    }
+
+    time_end(time_id, '汇总数据')
+
+    # index_3 堆积折线图
+    time_id = time_begin()
+    series = []
+    index_3_list = []
+    data = []
+    for line_date in list_date_datetime:
+        line_date += datetime.timedelta(days=1)
+        data.append(info_data.filter(input_date__lt=line_date).aggregate(Count('id')).get('id__count'))
+    index_3_list.append({'name': '知识卡片', 'data': data})
+
+    data = []
+    for line_date in list_date_datetime:
+        line_date += datetime.timedelta(days=1)
+        data.append(info_data.filter(input_date__lt=line_date
+                                     , info_check_flag=1).aggregate(Count('id')).get('id__count'))
+    index_3_list.append({'name': '认证', 'data': data})
+    for line in index_3_list:
+        series.append({
+            'name': line.get('name')
+            , 'type': 'line'
+            , 'symbol': 'none'
+            , 'stack': line.get('name')
+            , 'data': line.get('data')
+            , 'markPoint': {
+                'data': [
+                    {'type': 'max', 'name': '最大值'}
+                    , {'type': 'min', 'name': '最小值'}
+                ]
+            }
+        })
+
+    index_3 = {
+        'list': list_date
+        , 'series': series
+    }
+    time_end(time_id, 'index_3')
+
     resp = {
         'code': 0
         , 'list_date': list_date
+        , 'data0': data0
         , 'data1': data1
+        , 'index_2': index_2
+        , 'index_3': index_3
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
+
+def time_begin():
+    return time.time()
+
+
+def time_end(t1, txt):
+    t2 = time.time()
+    t = (t2 - t1) * 1000
+    print(txt + ' use time : ' + str(int(t)))
+    return 0
