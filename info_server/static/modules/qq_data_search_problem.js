@@ -53,15 +53,18 @@ layui.define(function (exports) {
                         num1.start();
                         tmp_num = data.data0.card1_info_count
 
-                        $("span#card1_answer_suc").text('解答率：' + data.data0.card1_answer_suc + '%');
+                        $("p#card1_answer_suc").text('解答率：' + data.data0.card1_answer_suc + '%');
+                        $("p#card1_auth_suc").text('认证率：' + data.data0.card1_auth_suc + '%');
 
                         $("p#card2_input_count").text('录入：' + data.data0.card2_input_count);
                         $("p#card2_answer_count").text('解答：' + data.data0.card2_answer_count);
                         $("p#card2_comments_count").text('评论：' + data.data0.card2_comments_count);
+                        $("p#card2_auth_count").text('认证：' + data.data0.card2_auth_count);
 
 
                         index_1(data);
                         index_2(data);
+                        index_3(data);
                         // line_left2(data);
 
                         // bar_right1(data);
@@ -241,6 +244,70 @@ layui.define(function (exports) {
                 };
                 if (!elemNormcol[0]) return;
                 renderNormcol(0);
+            });
+        }
+
+        function index_3(data) {
+            layui.use(['carousel', 'echarts'], function () {
+                var $ = layui.$
+                    , carousel = layui.carousel
+                    , echarts = layui.echarts;
+
+                //堆积折线图
+                var echheapline = [], heapline = [
+                    {
+                        title: {
+                            // text: '每日统计',
+                            subtext: '数据来自小鲲数据中台'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            // data: ['邮件营销', '联盟广告']
+                            data: data.index_3.series.map(function (item, i) {
+                                    return item.name;
+                                }),
+                        },
+                        calculable: true,
+                        xAxis: [
+                            {
+                                type: 'category',
+                                boundaryGap: false,
+                                // data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                                data: data.index_3.list
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value'
+                            }
+                        ],
+                        series: data.index_3.series
+                            /* [
+                            {
+                                name: '邮件营销',
+                                type: 'line',
+                                stack: '总量',
+                                data: [120, 132, 101, 134, 90, 230, 210]
+                            },
+                            {
+                                name: '联盟广告',
+                                type: 'line',
+                                stack: '总量',
+                                data: [220, 182, 191, 234, 290, 330, 310]
+                            }
+                        ]*/
+                    }
+                ]
+                    , elemheapline = $('#LAY-index-3').children('div')
+                    , renderheapline = function (index) {
+                    echheapline[index] = echarts.init(elemheapline[index], layui.echartsTheme);
+                    echheapline[index].setOption(heapline[index]);
+                    window.onresize = echheapline[index].resize;
+                };
+                if (!elemheapline[0]) return;
+                renderheapline(0);
             });
         }
 

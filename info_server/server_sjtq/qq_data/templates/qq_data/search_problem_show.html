@@ -36,10 +36,8 @@
             </div>
             <div class="layui-card-body layuiadmin-card-list">
                 <p class="layuiadmin-big-font" style="color: #ba2133" id="card1_info_count">0</p>
-                <p>
-                    &nbsp
-                    <span class="layuiadmin-span-color" id="card1_answer_suc">0 </span>
-                </p>
+                <p style="color: #2173ba" id="card1_auth_suc">0</p>
+                <p style="color: #2173ba" id="card1_answer_suc">0</p>
             </div>
         </div>
     </div>
@@ -53,6 +51,7 @@
                 <p class="" id="card2_input_count"></p>
                 <p class="" id="card2_answer_count"></p>
                 <p class="" id="card2_comments_count"></p>
+                <p class="" id="card2_auth_count"></p>
             </div>
         </div>
     </div>
@@ -87,6 +86,20 @@
         </div>
     </div>
 
+    <hr class="layui-bg-green">
+
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-body">
+                <div class="layui-carousel layadmin-carousel layadmin-dataview" data-anim="fade"
+                     lay-filter="LAY-index-3">
+                    <div carousel-item id="LAY-index-3">
+                        <div><i class="layui-icon layui-icon-loading1 layadmin-loading"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="layui-col-md6">
         <div class="layui-card">
             <div class="layui-card-body">
@@ -100,6 +113,7 @@
         </div>
     </div>
 
+    <hr class="layui-bg-green">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
