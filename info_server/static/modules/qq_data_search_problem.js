@@ -60,8 +60,8 @@ layui.define(function (exports) {
                         $("p#card2_comments_count").text('评论：' + data.data0.card2_comments_count);
 
 
-
                         index_1(data);
+                        index_2(data);
                         // line_left2(data);
 
                         // bar_right1(data);
@@ -174,6 +174,75 @@ layui.define(function (exports) {
             });
         }
 
+        function index_2(data) {
+            layui.use(['carousel', 'echarts'], function () {
+                var $ = layui.$
+                    , carousel = layui.carousel
+                    , echarts = layui.echarts;
+
+                //标准柱状图
+                var echnormcol = [], normcol = [
+                    {
+                        title: {
+                            text: '每日统计',
+                            subtext: '数据来自小鲲数据中台'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+
+                        legend: {
+                            data: ['录入']
+                        },
+
+
+                        //vlegend: new_data.legend,
+                        calculable: true,
+                        xAxis: [
+                            {
+                                type: 'category',
+                                // data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                                data: data.index_2.data.map(function (item, i) {
+                                    return item.date;
+                                })
+                            }
+                        ],
+                        yAxis: [
+                            {
+                                type: 'value'
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '录入',
+                                type: 'bar',
+                                // data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+                                data: data.index_2.data.map(function (item, i) {
+                                    return item.count;
+                                }),
+                                markPoint: {
+                                    data: [
+                                        {type: 'max', name: '最大值'},
+                                        {type: 'min', name: '最小值'}
+                                    ]
+                                },
+                                markLine: {
+                                    data: [{type: 'average', name: '平均值'}]
+                                }
+                            }
+                        ]
+                    }
+                ]
+                    , elemNormcol = $('#LAY-index-2').children('div')
+                    , renderNormcol = function (index) {
+                    echnormcol[index] = echarts.init(elemNormcol[index], layui.echartsTheme);
+                    echnormcol[index].setOption(normcol[index]);
+                    window.onresize = echnormcol[index].resize;
+                };
+                if (!elemNormcol[0]) return;
+                renderNormcol(0);
+            });
+        }
 
         //区块轮播切换
         layui.use(['admin', 'carousel'], function () {

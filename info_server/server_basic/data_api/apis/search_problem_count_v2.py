@@ -146,12 +146,31 @@ def search_problem_count_v2(request):
 
     time_end(time_id, '汇总数据')
 
+    index_2 = {}
+    # data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+    # data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+    index_2_data = []
+    for line in list_date:
+        print(line)
+        n = 0
+        for line_input in info_input_data.extra(select={"DATE": "date_format(input_date,'%%Y-%%m-%%d')"})\
+                .values('DATE').annotate(count=Count('id')):
+            if line_input.get('DATE') == line:
+                n += line_input.get('count')
+        index_2_data.append({
+            'date': line
+            , 'count': n
+        })
+    index_2 = {
+        'data': index_2_data
+    }
 
     resp = {
         'code': 0
         , 'list_date': list_date
         , 'data0': data0
         , 'data1': data1
+        , 'index_2': index_2
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
 
