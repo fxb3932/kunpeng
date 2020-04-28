@@ -43,15 +43,16 @@ def search_problem_count_v2(request):
     # info_data = info.objects.filter(
     #     input_date__gte=start_date.strftime('%Y-%m-%d')
     #     , input_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_data = info.objects.filter(~Q(t_close__code=999))
 
-    info_input_count = list(info.objects.filter(
+    info_input_count = list(info_data.filter(
         input_date__gte=start_date.strftime('%Y-%m-%d')
         , input_date__lt=end_date.strftime('%Y-%m-%d'))
                             # .extra(select={OPER: 'input_oper'})
                             .annotate(OPER=F('input_oper'))
                             .values('OPER')
                             .annotate(count=Count('OPER')))
-    info_answer_count = list(info.objects.filter(
+    info_answer_count = list(info_data.filter(
         answer_date__gte=start_date.strftime('%Y-%m-%d')
         , answer_date__lt=end_date.strftime('%Y-%m-%d'))
                              .annotate(OPER=F('answer_oper'))
@@ -122,6 +123,14 @@ def search_problem_count_v2(request):
         'list_first_name': list_first_name
         , 'list_dict_series': list_dict_series
     }
+
+    # for line in info.objects.all():
+    #     if line.t_stat_id == 2 and line.answer_date is None:
+    #         print(line.title)
+    #         print(line.answer_date)
+            # r = info.objects.get(id=line.id)
+            # r.answer_date = r.input_date
+            # r.save()
 
     resp = {
         'code': 0
