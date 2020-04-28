@@ -45,23 +45,25 @@ def search_problem_count_v2(request):
     #     , input_date__lt=end_date.strftime('%Y-%m-%d'))
     info_data = info.objects.filter(~Q(t_close__code=999))
 
-    info_input_count = list(info_data.filter(
+    info_input_data = info_data.filter(
         input_date__gte=start_date.strftime('%Y-%m-%d')
         , input_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_input_count = list(info_input_data
                             # .extra(select={OPER: 'input_oper'})
                             .annotate(OPER=F('input_oper'))
                             .values('OPER')
                             .annotate(count=Count('OPER')))
-    info_answer_count = list(info_data.filter(
+    info_answer_data = info_data.filter(
         answer_date__gte=start_date.strftime('%Y-%m-%d')
         , answer_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_answer_count = list(info_answer_data
                              .annotate(OPER=F('answer_oper'))
                              .values('OPER')
                              .annotate(count=Count('OPER')))
-
-    info_comments_count = list(info_comments.objects.filter(
+    info_comments_data = info_comments.objects.filter(
         update_date__gte=start_date.strftime('%Y-%m-%d')
-        , update_date__lt=end_date.strftime('%Y-%m-%d')).annotate(OPER=F('update_oper')).values('OPER')
+        , update_date__lt=end_date.strftime('%Y-%m-%d'))
+    info_comments_count = list(info_comments_data.annotate(OPER=F('update_oper')).values('OPER')
                                .annotate(count=Count('OPER')))
 
 
@@ -124,17 +126,40 @@ def search_problem_count_v2(request):
         , 'list_dict_series': list_dict_series
     }
 
-    # for line in info.objects.all():
-    #     if line.t_stat_id == 2 and line.answer_date is None:
-    #         print(line.title)
-    #         print(line.answer_date)
-            # r = info.objects.get(id=line.id)
-            # r.answer_date = r.input_date
-            # r.save()
+    # 汇总数据
+    # 总量 & 解答率
+    time_id = time_begin()
+    info_count = info_data.aggregate(Count('id')).get('id__count')
+
+    answer_suc = info_data.filter(t_stat__stat_id=1).aggregate(Count('id')).get('id__count') / info_count
+    answer_suc = float(answer_suc)
+
+
+    data0 = {
+        'card1_info_count': info_count
+        , 'card1_answer_suc': round(answer_suc * 100, 1)
+        , 'card2_input_count': info_input_data.aggregate(Count('id')).get('id__count')
+        , 'card2_answer_count': info_answer_data.aggregate(Count('id')).get('id__count')
+        , 'card2_comments_count': info_comments_data.aggregate(Count('id')).get('id__count')
+    }
+    print(data0)
+
+    time_end(time_id, '汇总数据')
+
 
     resp = {
         'code': 0
         , 'list_date': list_date
+        , 'data0': data0
         , 'data1': data1
     }
     return HttpResponse(json.dumps(resp), content_type="application/json")
+
+def time_begin():
+    return time.time()
+
+def time_end(t1, txt):
+    t2 = time.time()
+    t = (t2 - t1) * 1000
+    print(txt + ' use time : ' + str(int(t)))
+    return 0

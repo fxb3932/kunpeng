@@ -29,6 +29,17 @@ layui.define(function (exports) {
                 , "end_date": end_date
             });
 
+            var options = {
+                useEasing: true,  // 过渡动画效果，默认ture
+                useGrouping: true,  // 千分位效果，例：1000->1,000。默认true
+                separator: ',',   // 使用千分位时分割符号
+                decimal: '.',   // 小数位分割符号
+                prefix: '',    // 前置符号
+                suffix: ''    // 后置符号，可汉字
+            };
+
+            var tmp_num = 0;
+
             function swInit(input_date) {
                 var index = layer.load(1);
                 console.log(input_date.field);
@@ -37,6 +48,18 @@ layui.define(function (exports) {
                     function (data, status) {
                         console.log("Data: " + data + "\nStatus: " + status);
                         console.log(data);
+
+                        var num1 = new CountUp('card1_info_count', tmp_num, data.data0.card1_info_count, 0, 1, options);
+                        num1.start();
+                        tmp_num = data.data0.card1_info_count
+
+                        $("span#card1_answer_suc").text('解答率：' + data.data0.card1_answer_suc + '%');
+
+                        $("p#card2_input_count").text('录入：' + data.data0.card2_input_count);
+                        $("p#card2_answer_count").text('解答：' + data.data0.card2_answer_count);
+                        $("p#card2_comments_count").text('评论：' + data.data0.card2_comments_count);
+
+
 
                         index_1(data);
                         // line_left2(data);
@@ -82,8 +105,8 @@ layui.define(function (exports) {
                         },
                         legend: {
                             data: data.data1.list_dict_series.map(function (item, i) {
-                                    return item.name;
-                                })
+                                return item.name;
+                            })
                         },
                         calculable: true,
                         xAxis: [
@@ -105,38 +128,38 @@ layui.define(function (exports) {
                             }
                         ],
                         series: data.data1.list_dict_series
-                            /*[
-                            {
-                                name: '解答',
-                                type: 'bar',
-                                stack: '总量',
-                                itemStyle: {normal: {label: {show: true, position: 'insideLeft'}, color: '#168a76'}},
-                                // data: [320, 302, 301, 334, 390, 330, 320]
-                                data: data.oper_all_sum.map(function (item, i) {
-                                    return item.answer_sum;
-                                })
-                            },
-                            {
-                                name: '录入',
-                                type: 'bar',
-                                stack: '总量',
-                                itemStyle: {normal: {label: {show: true, position: 'insideLeft'}, color: '#2bb1c2'}},
-                                // data: [120, 132, 101, 134, 90, 230, 210]
-                                data: data.oper_all_sum.map(function (item, i) {
-                                    return item.input_sum;
-                                })
-                            },
-                            {
-                                name: '评论',
-                                type: 'bar',
-                                stack: '总量',
-                                itemStyle: {normal: {label: {show: true, position: 'right'}, color: '#e74732'}},
-                                // data: [220, 182, 191, 234, 290, 330, 310]
-                                data: data.oper_all_sum.map(function (item, i) {
-                                    return item.comments_sum;
-                                })
-                            }
-                        ]*/
+                        /*[
+                        {
+                            name: '解答',
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle: {normal: {label: {show: true, position: 'insideLeft'}, color: '#168a76'}},
+                            // data: [320, 302, 301, 334, 390, 330, 320]
+                            data: data.oper_all_sum.map(function (item, i) {
+                                return item.answer_sum;
+                            })
+                        },
+                        {
+                            name: '录入',
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle: {normal: {label: {show: true, position: 'insideLeft'}, color: '#2bb1c2'}},
+                            // data: [120, 132, 101, 134, 90, 230, 210]
+                            data: data.oper_all_sum.map(function (item, i) {
+                                return item.input_sum;
+                            })
+                        },
+                        {
+                            name: '评论',
+                            type: 'bar',
+                            stack: '总量',
+                            itemStyle: {normal: {label: {show: true, position: 'right'}, color: '#e74732'}},
+                            // data: [220, 182, 191, 234, 290, 330, 310]
+                            data: data.oper_all_sum.map(function (item, i) {
+                                return item.comments_sum;
+                            })
+                        }
+                    ]*/
                     }
                 ]
                     , elemheapbar = $('#LAY-index-1').children('div')
