@@ -93,8 +93,10 @@ layui.define(function (exports) {
                             })
                         },
                         calculable: true,
+                        grid: {y: 70},
                         xAxis: [
                             {
+                                position: 'top',
                                 type: 'value'
                             }
                         ],
